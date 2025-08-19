@@ -4,7 +4,7 @@ import {
   type RouteObject,
 } from 'react-router-dom';
 import type { JSX } from 'react';
-import { AppLayout } from '../App/AppLayout';
+import { AppLayout } from 'App/AppLayout';
 
 const routes: RouteObject[] = [
   {
