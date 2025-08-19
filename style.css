@@ -3,3 +3,8 @@
 @theme {
     --font-cyber: "Russo One", sans-serif;
 }
+
+@theme inline {
+    --color-cyber-yellow: var(--color-lime-300);
+    --color-cyber-purple: var(--color-fuchsia-400);
+}
