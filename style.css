@@ -1,10 +1,10 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @theme {
-    --font-cyber: "Russo One", sans-serif;
+  --font-cyber: 'Russo One', sans-serif;
 }
 
 @theme inline {
-    --color-cyber-yellow: var(--color-lime-300);
-    --color-cyber-purple: var(--color-fuchsia-400);
+  --color-cyber-primary: var(--color-pink-300);
+  --color-cyber-secondary: var(--color-emerald-200);
 }

@@ -6,6 +6,7 @@ import {
 import type { JSX } from 'react';
 import { Main } from 'pages/Main';
 import { AppLayout } from 'App/AppLayout';
+import { Temporal } from 'pages/Temporal/Temporal';
 
 const routes: RouteObject[] = [
   {
@@ -15,6 +16,10 @@ const routes: RouteObject[] = [
       {
         index: true,
         element: <Main />,
+      },
+      {
+        path: 'temp',
+        element: <Temporal />,
       },
       {
         path: '*',

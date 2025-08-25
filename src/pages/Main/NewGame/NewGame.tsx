@@ -1,7 +1,7 @@
-import { NewGameForm } from 'pages/Main/NewGame/NewGameForm';
 import type { JSX } from 'react';
 import { NewGameButton } from 'pages/Main/NewGame/NewGameButton';
 import { useState } from 'react';
+import { NewGameFormContainer } from 'pages/Main/NewGame/NewGameFormContainer/NewGameFormContainer';
 
 type Player = { name: string; score: number };
 
@@ -26,7 +26,8 @@ export const NewGame = (): JSX.Element => {
   return (
     <div className="flex h-full items-center justify-center">
       {step === 0 && <NewGameButton onClick={handleNewGame} />}
-      {step > 0 && <NewGameForm />}
+
+      {step > 0 && <NewGameFormContainer />}
     </div>
   );
 };
