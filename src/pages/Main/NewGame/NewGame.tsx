@@ -1,7 +1,8 @@
 import type { JSX } from 'react';
-import { NewGameButton } from 'pages/Main/NewGame/NewGameButton';
-import { useState } from 'react';
-import { NewGameFormContainer } from 'pages/Main/NewGame/NewGameFormContainer/NewGameFormContainer';
+import { AddPlayerForm } from 'pages/Main/NewGame/newGameForms/AddPlayersForm';
+import { PrimaryButton, SecondaryButton } from 'components';
+import { useCallback, useMemo, useState } from 'react';
+import { NewGameButton } from 'pages/Main/NewGame/newGameForms/NewGameButton';
 
 type Player = { name: string; score: number };
 
@@ -19,15 +20,56 @@ export const NewGame = (): JSX.Element => {
     finished: null,
   });
 
-  const handleNewGame = (): void => {
-    setStep(1);
+  const formContainerData = [
+    { title: '', subtitle: '' },
+    { title: 'Добавь игроков', subtitle: '' },
+  ];
+
+  const handleStepForward = (): void => {
+    setStep((prev) => prev + 1);
   };
 
-  return (
-    <div className="flex h-full items-center justify-center">
-      {step === 0 && <NewGameButton onClick={handleNewGame} />}
+  const handleStepBack = (): void => {
+    setStep((prev) => (prev <= 0 ? 0 : prev - 1));
+  };
 
-      {step > 0 && <NewGameFormContainer />}
+  const handlePlayersChange = useCallback((players: string[]): void => {
+    const filteredPlayers = players.filter((p) => !!p);
+    const newPlayers = filteredPlayers.map((p) => ({ name: p, score: 0 }));
+    setNewGameData((prev) => ({ ...prev, players: newPlayers }));
+  }, []);
+
+  const initialPlayers = useMemo(() => {
+    const playersNames = newGameData.players.map((p) => p.name);
+    if (!playersNames.length) return ['', ''];
+    if (playersNames.length === 1) return [...playersNames, ''];
+
+    return playersNames;
+  }, [newGameData.players]);
+
+  return (
+    <div className="flex h-full flex-col justify-center px-1 pb-4">
+      {step !== 0 && (
+        <div>
+          <p className="mb-1 text-center"> {`Шаг ${step}. ${formContainerData[step].title}`}</p>
+          <p className="mb-4 font-mono text-slate-300">{formContainerData[step].subtitle}</p>
+        </div>
+      )}
+
+      <div className="min-h-0 flex-1 pt-2 pb-10">
+        {step === 0 && <NewGameButton onClick={() => setStep(1)} />}
+
+        {step === 1 && (
+          <AddPlayerForm onPlayersChange={handlePlayersChange} initialPlayers={initialPlayers} />
+        )}
+      </div>
+
+      {step !== 0 && (
+        <div className="flex items-center justify-between">
+          <SecondaryButton onClick={handleStepBack}>Назад</SecondaryButton>
+          <PrimaryButton onClick={handleStepForward}>Далее</PrimaryButton>
+        </div>
+      )}
     </div>
   );
 };
