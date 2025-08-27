@@ -3,6 +3,7 @@ import { AddPlayerForm } from 'pages/Main/NewGame/newGameForms/AddPlayersForm';
 import { PrimaryButton, SecondaryButton } from 'components';
 import { useCallback, useMemo, useState } from 'react';
 import { NewGameButton } from 'pages/Main/NewGame/newGameForms/NewGameButton';
+import { AddLimitsForm } from 'pages/Main/NewGame/newGameForms';
 
 type Player = { name: string; score: number };
 
@@ -23,6 +24,7 @@ export const NewGame = (): JSX.Element => {
   const formContainerData = [
     { title: '', subtitle: '' },
     { title: 'Добавь игроков', subtitle: '' },
+    { title: 'Добавь лимиты', subtitle: '' },
   ];
 
   const handleStepForward = (): void => {
@@ -52,7 +54,7 @@ export const NewGame = (): JSX.Element => {
       {step !== 0 && (
         <div>
           <p className="mb-1 text-center"> {`Шаг ${step}. ${formContainerData[step].title}`}</p>
-          <p className="mb-4 font-mono text-slate-300">{formContainerData[step].subtitle}</p>
+          <p className="mb-4 font-mono font-bold text-slate-300">{formContainerData[step].subtitle}</p>
         </div>
       )}
 
@@ -62,12 +64,18 @@ export const NewGame = (): JSX.Element => {
         {step === 1 && (
           <AddPlayerForm onPlayersChange={handlePlayersChange} initialPlayers={initialPlayers} />
         )}
+        {step === 2 && <AddLimitsForm onLimitsChange={() => {}} />}
       </div>
 
       {step !== 0 && (
         <div className="flex items-center justify-between">
           <SecondaryButton onClick={handleStepBack}>Назад</SecondaryButton>
-          <PrimaryButton onClick={handleStepForward}>Далее</PrimaryButton>
+          <PrimaryButton
+            disabled={newGameData.players.filter((p) => p.name).length < 2}
+            onClick={handleStepForward}
+          >
+            Далее
+          </PrimaryButton>
         </div>
       )}
     </div>
