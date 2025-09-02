@@ -22,20 +22,15 @@ export const AddPlayerForm = ({ onPlayersChange, initialPlayers }: Props): JSX.E
     });
   };
 
-  console.log(initialPlayers);
-
   const addPlayer = (): void => {
     setPlayers((prev) => [...prev, '']);
+    lastInputRef?.current && lastInputRef.current?.focus();
   };
-
-  // Фокус на последнем инпуте при изменении количества игроков
-  useEffect(() => {
-    lastInputRef.current?.focus();
-  }, [players.length]);
 
   const removePlayer = (index: number): void =>
     setPlayers((prev) => prev.filter((_, i) => i !== index));
 
+  // записываем игроков в общий стейт
   useEffect(() => {
     onPlayersChange(players);
   }, [onPlayersChange, players]);

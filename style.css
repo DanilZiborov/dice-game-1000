@@ -8,3 +8,17 @@
   --color-cyber-primary: var(--color-pink-300);
   --color-cyber-secondary: var(--color-emerald-200);
 }
+
+/*Убираем стрелки инпута типа number*/
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0; /* обязательно для Chrome/Safari */
+}
+
+input[type="number"],
+input[type="number"]:hover,
+input[type="number"]:focus {
+  appearance: none;       /* Safari/Chrome */
+  -moz-appearance: textfield; /* Firefox */
+}
