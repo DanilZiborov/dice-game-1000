@@ -1,88 +1,107 @@
-import type { JSX } from 'react';
-import { useState } from 'react';
+import type { JSX, ChangeEvent } from 'react';
 import clsx from 'clsx';
 import { CustomCheckbox } from 'components/CustomCheckbox';
 import { CustomNumericInputWithSteps } from 'components';
+import type { GameConfig } from 'pages/Main/NewGame/types';
+import { MIN_MAX_GAME_CONFIGS } from 'pages/Main/NewGame/constants';
+
+type Rules = Pick<
+  GameConfig,
+  'withBolts' | 'boltsLimit' | 'withOvertake' | 'overtakeLimit' | 'pit200' | 'pit700' | 'truck'
+>;
 
 type Props = {
-  onRulesChange: (rules: {
-    boltsEnabled: boolean;
-    boltsValue: number;
-    pit200Enabled: boolean;
-    pit700Enabled: boolean;
-  }) => void;
-  initialRules: {
-    boltsEnabled: boolean;
-    boltsValue: number;
-    pit200Enabled: boolean;
-    pit700Enabled: boolean;
-  };
+  onConfigChange: (newRules: Partial<Rules>) => void;
+  rules: Rules;
 };
 
-export const AddRulesForm = ({ onRulesChange, initialRules }: Props): JSX.Element => {
-  const [rules, setRules] = useState(initialRules);
+const BOLTS_LIMIT_STEP = 5;
+const OVERTAKE_LIMIT_STEP = 5;
 
-  const handleChange = (newState: Partial<typeof rules>): void => {
-    const updated = { ...rules, ...newState };
-    setRules(updated);
-    onRulesChange(updated);
-  };
-
+export const AddRulesForm = ({ onConfigChange, rules }: Props): JSX.Element => {
   return (
-    <div className="flex h-full flex-col items-start justify-start">
-      <p className="mb-8">Шаг 3. Добавь дополнительные правила</p>
-
+    <div className="flex h-full flex-col items-start justify-around">
       {/* --- Болты --- */}
-      <div className="mb-6 w-full">
-        <div className="mb-2 flex items-center gap-2">
-          <CustomCheckbox
-            checked={rules.boltsEnabled}
-            onChange={(e) => handleChange({ boltsEnabled: e.target.checked })}
-            label="болты"
-          />
-        </div>
+      <div className="flex w-full flex-col gap-6">
+        <CustomCheckbox
+          checked={rules.withBolts}
+          label="болты"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            onConfigChange({ withBolts: e.target.checked })
+          }
+        />
 
-        <div className="flex w-full items-center justify-between">
-          <span className={clsx('text-sm', rules.boltsEnabled ? 'text-white' : 'text-slate-500')}>
+        <div className="flex w-full items-center gap-6">
+          <span className={clsx(rules.withBolts ? 'text-white' : 'text-slate-500')}>
             3 болта снимают
           </span>
           <CustomNumericInputWithSteps
-            value={rules.boltsValue}
-            onChange={(v) => handleChange({ boltsValue: v as number })}
-            step={5}
-            min={25}
-            max={100}
-            className={clsx(!rules.boltsEnabled && 'opacity-50')}
+            value={rules.boltsLimit}
+            step={BOLTS_LIMIT_STEP}
+            min={MIN_MAX_GAME_CONFIGS.boltsLimit.min}
+            max={MIN_MAX_GAME_CONFIGS.boltsLimit.max}
+            disabled={!rules.withBolts}
+            onChange={(value) => onConfigChange({ boltsLimit: value })}
           />
-          <span
-            className={clsx('ml-2 text-sm', rules.boltsEnabled ? 'text-white' : 'text-slate-500')}
-          >
+          <span className={clsx('ml-2', rules.withBolts ? 'text-white' : 'text-slate-500')}>
+            очков
+          </span>
+        </div>
+      </div>
+      <div className="flex w-full flex-col gap-6">
+        <CustomCheckbox
+          checked={rules.withOvertake}
+          label="правило обгона"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            onConfigChange({ withOvertake: e.target.checked })
+          }
+        />
+
+        <div className="flex w-full items-center gap-6">
+          <span className={clsx(rules.withOvertake ? 'text-white' : 'text-slate-500')}>
+            при обгоне снимается
+          </span>
+          <CustomNumericInputWithSteps
+            value={rules.overtakeLimit}
+            step={OVERTAKE_LIMIT_STEP}
+            min={MIN_MAX_GAME_CONFIGS.overtakeLimit.min}
+            max={MIN_MAX_GAME_CONFIGS.overtakeLimit.max}
+            disabled={!rules.withOvertake}
+            onChange={(value) => onConfigChange({ overtakeLimit: value })}
+          />
+          <span className={clsx('ml-2', rules.withOvertake ? 'text-white' : 'text-slate-500')}>
             очков
           </span>
         </div>
       </div>
 
-      {/* --- Ямы --- */}
-      <div className="flex flex-col gap-3">
-        <label
-          className={clsx('flex items-center gap-2', !rules.pit200Enabled && 'text-slate-500')}
-        >
+      {/* --- Ямы и самосвал --- */}
+      <div className="flex w-full justify-center">
+        <div className="flex flex-col gap-6">
           <CustomCheckbox
-            checked={rules.pit200Enabled}
-            onChange={(e) => handleChange({ pit200Enabled: e.target.checked })}
+            checked={rules.pit200}
+            label="яма 200-300"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onConfigChange({ pit200: e.target.checked })
+            }
           />
-          <span>яма 200-300</span>
-        </label>
 
-        <label
-          className={clsx('flex items-center gap-2', !rules.pit700Enabled && 'text-slate-500')}
-        >
           <CustomCheckbox
-            checked={rules.pit700Enabled}
-            onChange={(e) => handleChange({ pit700Enabled: e.target.checked })}
+            checked={rules.pit700}
+            label="яма 700-800"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onConfigChange({ pit700: e.target.checked })
+            }
           />
-          <span>яма 700-800</span>
-        </label>
+
+          <CustomCheckbox
+            checked={rules.truck}
+            label="самосвал"
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              onConfigChange({ truck: e.target.checked })
+            }
+          />
+        </div>
       </div>
     </div>
   );

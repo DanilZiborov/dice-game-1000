@@ -15,7 +15,7 @@ export const CustomCheckbox = ({
   className,
 }: CustomCheckboxProps): JSX.Element => {
   return (
-    <label className="flex cursor-pointer items-center gap-2 select-none">
+    <label className="inline-flex gap-2 cursor-pointer select-none">
       <input type="checkbox" checked={checked} onChange={onChange} className="hidden" />
       <span
         className={clsx(
@@ -23,7 +23,7 @@ export const CustomCheckbox = ({
           'border-2 transition-all duration-150',
           checked
             ? 'border-cyber-secondary bg-cyber-primary' +
-            ' shadow-[0_0_10px_theme(colors.cyber-secondary)]'
+                ' shadow-[0_0_10px_theme(colors.cyber-secondary)]'
             : 'border-cyber-secondary bg-transparent shadow-none',
           className,
         )}
@@ -40,7 +40,7 @@ export const CustomCheckbox = ({
           </svg>
         )}
       </span>
-      {label && <span className="text-sm text-white">{label}</span>}
+      {label && <span className="text-white">{label}</span>}
     </label>
   );
 };

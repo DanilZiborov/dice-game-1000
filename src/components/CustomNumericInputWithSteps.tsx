@@ -9,6 +9,7 @@ type CustomNumericInputWithStepsProps = {
   min: number;
   max: number;
   className?: string;
+  disabled?: boolean;
 };
 
 const initialDelay = 300; // задержка
@@ -21,6 +22,7 @@ export const CustomNumericInputWithSteps = ({
   min,
   max,
   className,
+  disabled = false,
 }: CustomNumericInputWithStepsProps): JSX.Element => {
   const intervalRef = useRef<number | null>(null);
   const timeoutRef = useRef<number | null>(null);
@@ -30,16 +32,17 @@ export const CustomNumericInputWithSteps = ({
   const valueRef = useRef<number>(value);
 
   const clamp = (val: number): number => Math.min(Math.max(min, val), max);
+  const zeroClamp = (val: number): number => Math.min(Math.max(0, val), max);
 
   const makeStep = (delta: number): void => {
-    const current = valueRef.current;
+    if (disabled) return;
 
+    const current = valueRef.current;
     const rounded = Math.round(current / step) * step;
 
     let next: number;
 
     if (Math.abs(current - rounded) < Number.EPSILON * 10) {
-      // текущее значение считаем кратным step
       next = current + delta;
     } else if (delta > 0) {
       next = Math.ceil(current / step) * step;
@@ -85,13 +88,16 @@ export const CustomNumericInputWithSteps = ({
   const renderButton = (delta: number, label: string) => (
     <button
       type="button"
+      disabled={disabled}
       className={clsx(
         'flex h-7 w-7 items-center justify-center rounded-full border-2 transition select-none',
-        'border-cyber-primary text-cyber-primary shadow-[0_0_5px_theme(colors.cyber-primary)]',
-        'active:bg-cyber-primary active:scale-85 active:text-black',
+        disabled
+          ? 'cursor-not-allowed border-slate-500 text-slate-500'
+          : 'border-cyber-primary text-cyber-primary shadow-[0_0_5px_theme(colors.cyber-primary)] active:bg-cyber-primary active:scale-85 active:text-black',
       )}
       onPointerDown={(e) => {
-        if (activePointerRef.current !== null) return;
+        if (disabled || activePointerRef.current !== null) return;
+
         activePointerRef.current = e.pointerId;
         const target = e.currentTarget as Element;
 
@@ -125,23 +131,31 @@ export const CustomNumericInputWithSteps = ({
       <input
         type="text"
         inputMode="numeric"
+        disabled={disabled}
         value={value}
         onChange={(e) => {
+          if (disabled) return;
           let val = e.target.value;
 
           if (!/^\d*$/.test(val)) return;
           val = val.replace(/^0+(?=\d)/, '');
 
-          const newVal = clamp(Number(val));
+          const newVal = zeroClamp(Number(val));
 
           onChange(newVal);
           valueRef.current = newVal;
         }}
+        onBlur={(e) => {
+          const newValue = clamp(Number(e.target.value));
+          onChange(newValue);
+          valueRef.current = newValue;
+        }}
         className={clsx(
-          'w-14 rounded-md border px-2 py-1 text-center text-white',
-          'border-cyber-primary shadow-[0_0_7px_theme(colors.cyber-primary)] border-2',
-          'focus:shadow-[0_0_10px_theme(colors.cyber-primary)] focus:border-pink-100 focus:outline-none',
+          'w-14 rounded-md border px-2 py-1 text-center',
           'appearance-none tracking-wider',
+          disabled
+            ? 'cursor-not-allowed border-slate-500 text-slate-500'
+            : 'border-cyber-primary shadow-[0_0_7px_theme(colors.cyber-primary)] focus:shadow-[0_0_10px_theme(colors.cyber-primary)] border-2 text-white focus:border-pink-100 focus:outline-none',
         )}
       />
 

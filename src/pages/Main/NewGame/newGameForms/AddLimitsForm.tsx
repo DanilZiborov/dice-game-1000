@@ -1,23 +1,32 @@
 import type { JSX } from 'react';
 import { CustomNumericInputWithSteps } from 'components';
+import type { GameConfig } from 'pages/Main/NewGame/types';
+import { MIN_MAX_GAME_CONFIGS } from 'pages/Main/NewGame/constants';
+
+type Limits = Pick<GameConfig, 'barrelLimit' | 'enterLimit'>;
 
 type Props = {
-  onLimitsChange: (newLimits: { enterLimit: number; barrelLimit: number }) => void;
-  limits: { enterLimit: number; barrelLimit: number };
+  onConfigChange: (newConfig: Partial<Limits>) => void;
+  limits: Limits;
 };
 
-export const AddLimitsForm = ({ onLimitsChange, limits }: Props): JSX.Element => {
+export const AddLimitsForm = ({ onConfigChange, limits }: Props): JSX.Element => {
+  const {
+    barrelLimit: { max: barrelLimitMax, min: barrelLimitMin },
+    enterLimit: { max: enterLimitMax, min: enterLimitMin },
+  } = MIN_MAX_GAME_CONFIGS;
+
   return (
     <div className="flex h-full flex-col items-start justify-center">
-      <p className="mb-8">укажи, сколько очков нужно...</p>
+      <p className="mb-8">укажите, сколько очков нужно...</p>
       <div className="mb-6 flex w-full items-center justify-between">
         <span className="text-white"> для входа в игру:</span>
         <CustomNumericInputWithSteps
           value={limits.enterLimit}
-          onChange={(v) => onLimitsChange({ ...limits, enterLimit: v })}
+          onChange={(v) => onConfigChange({ ...limits, enterLimit: v })}
           step={5}
-          min={0}
-          max={100}
+          min={enterLimitMin}
+          max={enterLimitMax}
         />
       </div>
 
@@ -25,10 +34,10 @@ export const AddLimitsForm = ({ onLimitsChange, limits }: Props): JSX.Element =>
         <span className="text-white">чтобы забраться на бочку:</span>
         <CustomNumericInputWithSteps
           value={limits.barrelLimit}
-          onChange={(v) => onLimitsChange({ ...limits, barrelLimit: v })}
+          onChange={(v) => onConfigChange({ ...limits, barrelLimit: v })}
           step={10}
-          min={0}
-          max={950}
+          min={barrelLimitMin}
+          max={barrelLimitMax}
         />
       </div>
     </div>
