@@ -1,5 +1,5 @@
 import type { JSX, ChangeEvent } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { CustomCheckbox } from 'components/CustomCheckbox';
 import { CustomNumericInputWithSteps } from 'components';
 import type { GameConfig } from 'pages/Main/NewGame/types';
@@ -20,9 +20,9 @@ const OVERTAKE_LIMIT_STEP = 5;
 
 export const AddRulesForm = ({ onConfigChange, rules }: Props): JSX.Element => {
   return (
-    <div className="flex h-full flex-col items-start justify-around">
+    <div className="flex h-full flex-none flex-col items-start justify-around">
       {/* --- Болты --- */}
-      <div className="flex w-full flex-col gap-6">
+      <div className="flex flex-col items-start gap-6">
         <CustomCheckbox
           checked={rules.withBolts}
           label="болты"
@@ -31,8 +31,8 @@ export const AddRulesForm = ({ onConfigChange, rules }: Props): JSX.Element => {
           }
         />
 
-        <div className="flex w-full items-center gap-6">
-          <span className={clsx(rules.withBolts ? 'text-white' : 'text-slate-500')}>
+        <div className="flex items-center gap-6">
+          <span className={clsx(rules.withBolts ? 'text-white' : 'text-cyber-disabled')}>
             3 болта снимают
           </span>
           <CustomNumericInputWithSteps
@@ -43,12 +43,12 @@ export const AddRulesForm = ({ onConfigChange, rules }: Props): JSX.Element => {
             disabled={!rules.withBolts}
             onChange={(value) => onConfigChange({ boltsLimit: value })}
           />
-          <span className={clsx('ml-2', rules.withBolts ? 'text-white' : 'text-slate-500')}>
+          <span className={clsx('ml-2', rules.withBolts ? 'text-white' : 'text-cyber-disabled')}>
             очков
           </span>
         </div>
       </div>
-      <div className="flex w-full flex-col gap-6">
+      <div className="flex flex-col items-start gap-6">
         <CustomCheckbox
           checked={rules.withOvertake}
           label="правило обгона"
@@ -57,8 +57,8 @@ export const AddRulesForm = ({ onConfigChange, rules }: Props): JSX.Element => {
           }
         />
 
-        <div className="flex w-full items-center gap-6">
-          <span className={clsx(rules.withOvertake ? 'text-white' : 'text-slate-500')}>
+        <div className="flex items-center gap-6">
+          <span className={clsx(rules.withOvertake ? 'text-white' : 'text-cyber-disabled')}>
             при обгоне снимается
           </span>
           <CustomNumericInputWithSteps
@@ -69,39 +69,37 @@ export const AddRulesForm = ({ onConfigChange, rules }: Props): JSX.Element => {
             disabled={!rules.withOvertake}
             onChange={(value) => onConfigChange({ overtakeLimit: value })}
           />
-          <span className={clsx('ml-2', rules.withOvertake ? 'text-white' : 'text-slate-500')}>
+          <span className={clsx('ml-2', rules.withOvertake ? 'text-white' : 'text-cyber-disabled')}>
             очков
           </span>
         </div>
       </div>
 
       {/* --- Ямы и самосвал --- */}
-      <div className="flex w-full justify-center">
-        <div className="flex flex-col gap-6">
-          <CustomCheckbox
-            checked={rules.pit200}
-            label="яма 200-300"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              onConfigChange({ pit200: e.target.checked })
-            }
-          />
+      <div className="flex flex-col items-start gap-6">
+        <CustomCheckbox
+          checked={rules.pit200}
+          label="яма 200-300"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            onConfigChange({ pit200: e.target.checked })
+          }
+        />
 
-          <CustomCheckbox
-            checked={rules.pit700}
-            label="яма 700-800"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              onConfigChange({ pit700: e.target.checked })
-            }
-          />
+        <CustomCheckbox
+          checked={rules.pit700}
+          label="яма 700-800"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            onConfigChange({ pit700: e.target.checked })
+          }
+        />
 
-          <CustomCheckbox
-            checked={rules.truck}
-            label="самосвал"
-            onChange={(e: ChangeEvent<HTMLInputElement>) =>
-              onConfigChange({ truck: e.target.checked })
-            }
-          />
-        </div>
+        <CustomCheckbox
+          checked={rules.truck}
+          label="самосвал"
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            onConfigChange({ truck: e.target.checked })
+          }
+        />
       </div>
     </div>
   );

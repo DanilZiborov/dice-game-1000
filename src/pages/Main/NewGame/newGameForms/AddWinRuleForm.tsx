@@ -12,7 +12,7 @@ type Props = {
 export const AddWinRuleForm = ({ onConfigChange, rules }: Props): JSX.Element => {
   return (
     <div className="h-full">
-      <div className="mb-10 flex flex-col gap-4 text-slate-300">
+      <div className="text-cyber-text-secondary mb-10 flex flex-col gap-4">
         <p>
           В классическом варианте игры, игроку, сидящему на бочке, даётся один ход, чтобы выбросить
           недостающие до 1000 очки. Если не получилось - он падает с бочки.

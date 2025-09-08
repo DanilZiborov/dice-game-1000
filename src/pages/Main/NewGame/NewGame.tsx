@@ -10,7 +10,16 @@ import {
   StartGameForm,
 } from 'pages/Main/NewGame/newGameForms';
 import type { Game } from 'pages/Main/NewGame/types';
-import { DEFAULT_NEW_GAME_CONFIG } from 'pages/Main/NewGame/constants';
+import { NEW_GAME_DEFAULT_CONFIG } from 'pages/Main/NewGame/constants';
+
+const formContainerTitle = [
+  '',
+  'Добавьте игроков',
+  'Добавьте лимиты',
+  'Добавьте дополнительные правила',
+  'Определите правило для победы',
+  '',
+] as const;
 
 export const NewGame = (): JSX.Element => {
   const [step, setStep] = useState<number>(0);
@@ -18,7 +27,7 @@ export const NewGame = (): JSX.Element => {
     players: [],
     started: '',
     finished: '',
-    ...DEFAULT_NEW_GAME_CONFIG,
+    ...NEW_GAME_DEFAULT_CONFIG,
   });
 
   const {
@@ -35,94 +44,94 @@ export const NewGame = (): JSX.Element => {
     truck,
   } = newGameData;
 
-  const limits = { barrelLimit, enterLimit };
-  const rules = {
-    withBolts,
-    boltsLimit,
-    withOvertake,
-    overtakeLimit,
-    pit200,
-    pit700,
-    truck,
-    withEasyWin,
-  };
+  const rules = useMemo(
+    () => ({
+      withBolts,
+      boltsLimit,
+      withOvertake,
+      overtakeLimit,
+      pit200,
+      pit700,
+      truck,
+      withEasyWin,
+    }),
+    [withBolts, boltsLimit, withOvertake, overtakeLimit, pit200, pit700, truck, withEasyWin],
+  );
 
-  const formContainerData = [
-    { title: '', subtitle: '' },
-    { title: 'Добавьте игроков', subtitle: '' },
-    { title: 'Добавьте лимиты', subtitle: '' },
-    { title: 'Добавьте дополнительные правила', subtitle: '' },
-    { title: 'Определите правило для победы', subtitle: '' },
-    { title: '', subtitle: '' },
-  ];
+  // если в массиве игроков меньше двух элементов, добавляем пустых игрокой
+  // в теории, это маловероятный сценарий
+  const initialPlayers = useMemo(() => {
+    const names = players.map((p) => p.name);
+    if (!names.length) return ['', ''];
+    if (names.length === 1) return [...names, ''];
 
-  const handleStepForward = (): void => {
-    setStep((prev) => prev + 1);
-  };
+    return names;
+  }, [players]);
 
-  const handleStepBack = (): void => {
-    setStep((prev) => (prev <= 0 ? 0 : prev - 1));
-  };
+  // Обработчики шагов
+  const handleStepForward = useCallback((): void => setStep((prev) => prev + 1), []);
+  const handleStepBack = useCallback((): void => setStep((prev) => (prev <= 0 ? 0 : prev - 1)), []);
 
   const handlePlayersChange = useCallback((nextPlayers: string[]): void => {
-    const filteredPlayers = nextPlayers.filter((p) => !!p);
-    const newPlayers = filteredPlayers.map((p) => ({ name: p, score: 0 }));
+    const newPlayers = nextPlayers.filter(Boolean).map((name) => ({ name, score: 0 }));
     setNewGameData((prev) => ({ ...prev, players: newPlayers }));
   }, []);
 
-  const initialPlayers = useMemo(() => {
-    const playersNames = players.map((p) => p.name);
-    if (!playersNames.length) return ['', ''];
-    if (playersNames.length === 1) return [...playersNames, ''];
-
-    return playersNames;
-  }, [players]);
-
-  const handleConfigChange = (newConfig: Partial<Game>): void => {
+  const handleConfigChange = useCallback((newConfig: Partial<Game>): void => {
     setNewGameData((prev) => ({ ...prev, ...newConfig }));
-  };
+  }, []);
 
-  const handleStartGame = (): void => {
+  const handleStartGame = useCallback((): void => {
     console.log('Партия началась!');
-  };
+  }, []);
 
-  console.log(newGameData);
+  // Функция рендера формы по шагу
+  const renderForm = useCallback((): JSX.Element => {
+    switch (step) {
+      case 0:
+        return <NewGameButton onClick={() => setStep(1)} />;
+      case 1:
+        return (
+          <AddPlayerForm onPlayersChange={handlePlayersChange} initialPlayers={initialPlayers} />
+        );
+      case 2:
+        return (
+          <AddLimitsForm limits={{ barrelLimit, enterLimit }} onConfigChange={handleConfigChange} />
+        );
+      case 3:
+        return <AddRulesForm onConfigChange={handleConfigChange} rules={rules} />;
+      case 4:
+        return <AddWinRuleForm onConfigChange={handleConfigChange} rules={rules} />;
+      case 5:
+        return <StartGameForm onStart={handleStartGame} />;
+      default:
+        throw new Error(`Ошибка логики рендеринга формы. Для шага ${step} не задано отображение.`);
+    }
+  }, [
+    step,
+    handlePlayersChange,
+    initialPlayers,
+    barrelLimit,
+    enterLimit,
+    handleConfigChange,
+    rules,
+    handleStartGame,
+  ]);
 
   return (
     <div className="flex h-full flex-col justify-center px-1 pb-4">
-      {step === 0 ||
-        (step !== 5 && (
-          <div>
-            <p className="mb-1 text-center"> {`Шаг ${step}. ${formContainerData[step].title}`}</p>
-            <p className="mb-4 font-mono font-bold text-slate-300">
-              {formContainerData[step].subtitle}
-            </p>
-          </div>
-        ))}
+      {step > 0 && step < 5 ? (
+        <div>
+          <p className="mb-1 text-center">{`Шаг ${step}. ${formContainerTitle[step]}`}</p>
+        </div>
+      ) : null}
 
-      <div className="min-h-0 flex-1 pt-2 pb-10">
-        {step === 0 && <NewGameButton onClick={() => setStep(1)} />}
-
-        {step === 1 && (
-          <AddPlayerForm onPlayersChange={handlePlayersChange} initialPlayers={initialPlayers} />
-        )}
-        {step === 2 && <AddLimitsForm limits={limits} onConfigChange={handleConfigChange} />}
-        {step === 3 && <AddRulesForm onConfigChange={handleConfigChange} rules={rules} />}
-        {step === 4 && <AddWinRuleForm onConfigChange={handleConfigChange} rules={rules} />}
-        {step === 5 && <StartGameForm onStart={handleStartGame} />}
-      </div>
+      <div className="min-h-0 flex-1 pt-2 pb-10">{renderForm()}</div>
 
       {step !== 0 && (
         <div className="flex items-center justify-between">
           <SecondaryButton onClick={handleStepBack}>Назад</SecondaryButton>
-          {step !== 5 && (
-            <PrimaryButton
-              // disabled={newGameData.players.filter((p) => p.name).length < 2}
-              onClick={handleStepForward}
-            >
-              Далее
-            </PrimaryButton>
-          )}
+          {step !== 5 && <PrimaryButton onClick={handleStepForward}>Далее</PrimaryButton>}
         </div>
       )}
     </div>

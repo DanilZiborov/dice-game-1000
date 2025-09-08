@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 import { useEffect, useRef } from 'react';
 
 type CustomNumericInputWithStepsProps = {
@@ -10,6 +10,7 @@ type CustomNumericInputWithStepsProps = {
   max: number;
   className?: string;
   disabled?: boolean;
+  formId?: string;
 };
 
 const initialDelay = 300; // задержка
@@ -23,6 +24,7 @@ export const CustomNumericInputWithSteps = ({
   max,
   className,
   disabled = false,
+  formId,
 }: CustomNumericInputWithStepsProps): JSX.Element => {
   const intervalRef = useRef<number | null>(null);
   const timeoutRef = useRef<number | null>(null);
@@ -92,7 +94,7 @@ export const CustomNumericInputWithSteps = ({
       className={clsx(
         'flex h-7 w-7 items-center justify-center rounded-full border-2 transition select-none',
         disabled
-          ? 'cursor-not-allowed border-slate-500 text-slate-500'
+          ? 'border-cyber-disabled text-cyber-disabled cursor-not-allowed'
           : 'border-cyber-primary text-cyber-primary shadow-[0_0_5px_theme(colors.cyber-primary)] active:bg-cyber-primary active:scale-85 active:text-black',
       )}
       onPointerDown={(e) => {
@@ -133,6 +135,7 @@ export const CustomNumericInputWithSteps = ({
         inputMode="numeric"
         disabled={disabled}
         value={value}
+        form={formId}
         onChange={(e) => {
           if (disabled) return;
           let val = e.target.value;
@@ -153,6 +156,7 @@ export const CustomNumericInputWithSteps = ({
         className={clsx(
           'w-14 rounded-md border px-2 py-1 text-center',
           'appearance-none tracking-wider',
+          'transition',
           disabled
             ? 'cursor-not-allowed border-slate-500 text-slate-500'
             : 'border-cyber-primary shadow-[0_0_7px_theme(colors.cyber-primary)] focus:shadow-[0_0_10px_theme(colors.cyber-primary)] border-2 text-white focus:border-pink-100 focus:outline-none',

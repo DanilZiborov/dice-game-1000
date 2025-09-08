@@ -7,7 +7,7 @@ export const MIN_MAX_GAME_CONFIGS = {
   overtakeLimit: { min: 25, max: 100 },
 } as const;
 
-export const DEFAULT_NEW_GAME_CONFIG: GameConfig = {
+export const NEW_GAME_DEFAULT_CONFIG: GameConfig = {
   enterLimit: 75,
   barrelLimit: 900,
   withBolts: false,

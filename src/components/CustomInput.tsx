@@ -1,5 +1,5 @@
 import type { ChangeEvent, JSX } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 type CustomInputProps = {
   value: string;
@@ -31,7 +31,7 @@ export const CustomInput = ({
           'shadow-[0_0_10px_theme(colors.cyber-primary)]',
           'focus:border-pink-100 focus:outline-none',
           'focus:shadow-[0_0_25px_theme(colors.cyber-primary)]',
-          'transition-all duration-150',
+          'transition',
           className,
         )}
       />

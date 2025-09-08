@@ -1,5 +1,5 @@
 import type { JSX, ChangeEvent } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 type CustomCheckboxProps = {
   checked: boolean;
@@ -15,12 +15,12 @@ export const CustomCheckbox = ({
   className,
 }: CustomCheckboxProps): JSX.Element => {
   return (
-    <label className="inline-flex gap-2 cursor-pointer select-none">
+    <label className="inline-flex w-auto cursor-pointer gap-2 select-none">
       <input type="checkbox" checked={checked} onChange={onChange} className="hidden" />
       <span
         className={clsx(
           'relative flex h-5 w-5 items-center justify-center',
-          'border-2 transition-all duration-150',
+          'border-2 transition',
           checked
             ? 'border-cyber-secondary bg-cyber-primary' +
                 ' shadow-[0_0_10px_theme(colors.cyber-secondary)]'

@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 type PrimaryButtonProps = {
   children: string;
@@ -21,7 +21,7 @@ export const PrimaryButton = ({
       disabled={disabled}
       className={clsx(
         'font-cyber relative inline-block px-1 py-1 tracking-wider uppercase',
-        'transition-all duration-150',
+        'transition',
         'group',
         'h-[40px]',
         'min-w-[150px]',
@@ -38,7 +38,7 @@ export const PrimaryButton = ({
             'translate-x-2 translate-y-2',
             'group-active:translate-x-1 group-active:translate-y-1',
             'shadow-[0_0_20px_theme(colors.cyber-secondary)]',
-            'transition-all duration-150',
+            'transition',
           )}
         />
       )}
@@ -47,7 +47,7 @@ export const PrimaryButton = ({
       <div
         className={clsx(
           'absolute inset-0 z-10 h-full w-full skew-x-[-15deg]',
-          'transition-all duration-150',
+          'transition',
           disabled
             ? 'border-none bg-gray-500'
             : 'bg-cyber-primary border-cyber-secondary border group-active:translate-x-1 group-active:translate-y-1',

@@ -1,5 +1,4 @@
 import type { JSX } from 'react';
-import { NewGame } from 'pages/Main/NewGame';
 
 // для тестов и экспериментов
 export const Temporal = (): JSX.Element => {
