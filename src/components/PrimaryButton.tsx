@@ -4,16 +4,11 @@ import { clsx } from 'clsx';
 type PrimaryButtonProps = {
   children: string;
   onClick?: () => void;
-  className?: string;
   disabled?: boolean;
+  className?: string;
 };
 
-export const PrimaryButton = ({
-  children,
-  onClick,
-  className,
-  disabled = false,
-}: PrimaryButtonProps): JSX.Element => {
+export const PrimaryButton = ({ children, onClick, className, disabled }: PrimaryButtonProps): JSX.Element => {
   return (
     <button
       type="button"
@@ -25,8 +20,8 @@ export const PrimaryButton = ({
         'group',
         'h-[40px]',
         'min-w-[150px]',
-        disabled ? 'cursor-not-allowed text-gray-400' : 'text-white',
-        className,
+        disabled ? 'text-cyber-disabled' : 'text-white',
+        className || '',
       )}
     >
       {/* Нижний прямоугольник (подложка) */}
@@ -54,7 +49,6 @@ export const PrimaryButton = ({
         )}
       />
 
-      {/* Текст поверх */}
       <span className="relative z-20">{children}</span>
     </button>
   );

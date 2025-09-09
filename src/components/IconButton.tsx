@@ -1,5 +1,5 @@
 import type { JSX, ReactNode } from 'react';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 type IconButtonProps = {
   children: ReactNode;
@@ -7,11 +7,7 @@ type IconButtonProps = {
   className?: string;
 };
 
-export const IconButton = ({
-  children,
-  onClick,
-  className,
-}: IconButtonProps): JSX.Element => {
+export const IconButton = ({ children, onClick, className }: IconButtonProps): JSX.Element => {
   return (
     <button
       type="button"
@@ -23,7 +19,7 @@ export const IconButton = ({
         'transition-colors duration-50 ease-in-out',
         'active:bg-cyber-secondary active:text-black',
         'focus:outline-none',
-        className,
+        className || '',
       )}
     >
       {children}

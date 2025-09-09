@@ -3,12 +3,7 @@ import { AddPlayerForm } from 'pages/Main/NewGame/newGameForms/AddPlayersForm';
 import { PrimaryButton, SecondaryButton } from 'components';
 import { useCallback, useMemo, useState } from 'react';
 import { NewGameButton } from 'pages/Main/NewGame/newGameForms/NewGameButton';
-import {
-  AddLimitsForm,
-  AddRulesForm,
-  AddWinRuleForm,
-  StartGameForm,
-} from 'pages/Main/NewGame/newGameForms';
+import { AddLimitsForm, AddRulesForm, AddWinRuleForm, StartGameForm } from 'pages/Main/NewGame/newGameForms';
 import type { Game } from 'pages/Main/NewGame/types';
 import { NEW_GAME_DEFAULT_CONFIG } from 'pages/Main/NewGame/constants';
 
@@ -58,7 +53,7 @@ export const NewGame = (): JSX.Element => {
     [withBolts, boltsLimit, withOvertake, overtakeLimit, pit200, pit700, truck, withEasyWin],
   );
 
-  // если в массиве игроков меньше двух элементов, добавляем пустых игрокой
+  // если в массиве игроков меньше двух элементов, добавляем пустых игроков
   // в теории, это маловероятный сценарий
   const initialPlayers = useMemo(() => {
     const names = players.map((p) => p.name);
@@ -82,6 +77,7 @@ export const NewGame = (): JSX.Element => {
   }, []);
 
   const handleStartGame = useCallback((): void => {
+    // eslint-disable-next-line no-console
     console.log('Партия началась!');
   }, []);
 
@@ -91,13 +87,9 @@ export const NewGame = (): JSX.Element => {
       case 0:
         return <NewGameButton onClick={() => setStep(1)} />;
       case 1:
-        return (
-          <AddPlayerForm onPlayersChange={handlePlayersChange} initialPlayers={initialPlayers} />
-        );
+        return <AddPlayerForm onPlayersChange={handlePlayersChange} initialPlayers={initialPlayers} />;
       case 2:
-        return (
-          <AddLimitsForm limits={{ barrelLimit, enterLimit }} onConfigChange={handleConfigChange} />
-        );
+        return <AddLimitsForm limits={{ barrelLimit, enterLimit }} onConfigChange={handleConfigChange} />;
       case 3:
         return <AddRulesForm onConfigChange={handleConfigChange} rules={rules} />;
       case 4:
@@ -107,16 +99,7 @@ export const NewGame = (): JSX.Element => {
       default:
         throw new Error(`Ошибка логики рендеринга формы. Для шага ${step} не задано отображение.`);
     }
-  }, [
-    step,
-    handlePlayersChange,
-    initialPlayers,
-    barrelLimit,
-    enterLimit,
-    handleConfigChange,
-    rules,
-    handleStartGame,
-  ]);
+  }, [step, handlePlayersChange, initialPlayers, barrelLimit, enterLimit, handleConfigChange, rules, handleStartGame]);
 
   return (
     <div className="flex h-full flex-col justify-center px-1 pb-4">

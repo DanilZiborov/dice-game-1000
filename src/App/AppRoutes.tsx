@@ -1,8 +1,4 @@
-import {
-  createBrowserRouter,
-  RouterProvider,
-  type RouteObject,
-} from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
 import type { JSX } from 'react';
 import { Main } from 'pages/Main';
 import { AppLayout } from 'App/AppLayout';

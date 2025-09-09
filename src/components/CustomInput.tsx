@@ -1,4 +1,4 @@
-import type { ChangeEvent, JSX } from 'react';
+import type { ChangeEvent, JSX, RefObject } from 'react';
 import { clsx } from 'clsx';
 
 type CustomInputProps = {
@@ -7,15 +7,10 @@ type CustomInputProps = {
   label: string;
   placeholder?: string;
   className?: string;
+  ref: RefObject<HTMLInputElement | null> | null;
 };
 
-export const CustomInput = ({
-  value,
-  onChange,
-  label,
-  placeholder,
-  className,
-}: CustomInputProps): JSX.Element => {
+export const CustomInput = ({ value, onChange, label, placeholder, className, ref }: CustomInputProps): JSX.Element => {
   return (
     <div className="flex grow flex-col">
       <label className="text-cyber-primary mb-1 text-sm">{label}</label>
@@ -32,8 +27,9 @@ export const CustomInput = ({
           'focus:border-pink-100 focus:outline-none',
           'focus:shadow-[0_0_25px_theme(colors.cyber-primary)]',
           'transition',
-          className,
+          className || '',
         )}
+        ref={ref}
       />
     </div>
   );

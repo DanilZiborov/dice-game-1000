@@ -1,4 +1,4 @@
-import type { JSX } from 'react';
+import type { JSX, SyntheticEvent, PointerEvent } from 'react';
 import { clsx } from 'clsx';
 import { useEffect, useRef } from 'react';
 
@@ -40,39 +40,39 @@ export const CustomNumericInputWithSteps = ({
     if (disabled) return;
 
     const current = valueRef.current;
-    const rounded = Math.round(current / step) * step;
 
     let next: number;
 
-    if (Math.abs(current - rounded) < Number.EPSILON * 10) {
+    if (current % step === 0) {
+      // текущее число уже кратно шагу → просто прибавляем delta
       next = current + delta;
     } else if (delta > 0) {
+      // прыжок к следующему шагу
       next = Math.ceil(current / step) * step;
     } else {
+      // прыжок к предыдущему шагу
       next = Math.floor(current / step) * step;
     }
 
-    next = clamp(Number(next.toFixed(10))); // защита от "0.30000000004"
+    next = clamp(next);
 
     valueRef.current = next;
     onChange(next);
   };
 
-  const stop = (e: React.PointerEvent | React.SyntheticEvent) => {
+  const stop = (e: PointerEvent | SyntheticEvent): void => {
     const pid = activePointerRef.current;
 
-    if (pid !== null && 'currentTarget' in (e as any)) {
-      try {
-        (e as React.PointerEvent).currentTarget.releasePointerCapture(pid);
-      } catch {}
+    if (pid !== null && e.currentTarget) {
+      void e.currentTarget.releasePointerCapture(pid);
     }
 
-    if (timeoutRef.current !== null) {
+    if (typeof timeoutRef.current === 'number') {
       clearTimeout(timeoutRef.current);
       timeoutRef.current = null;
     }
 
-    if (intervalRef.current !== null) {
+    if (typeof intervalRef.current === 'number') {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
@@ -82,12 +82,12 @@ export const CustomNumericInputWithSteps = ({
 
   useEffect(() => {
     return () => {
-      if (timeoutRef.current) clearTimeout(timeoutRef.current);
-      if (intervalRef.current) clearInterval(intervalRef.current);
+      if (typeof timeoutRef.current === 'number') clearTimeout(timeoutRef.current);
+      if (typeof intervalRef.current === 'number') clearInterval(intervalRef.current);
     };
   }, []);
 
-  const renderButton = (delta: number, label: string) => (
+  const renderButton = (delta: number, label: string): JSX.Element => (
     <button
       type="button"
       disabled={disabled}
@@ -95,7 +95,13 @@ export const CustomNumericInputWithSteps = ({
         'flex h-7 w-7 items-center justify-center rounded-full border-2 transition select-none',
         disabled
           ? 'border-cyber-disabled text-cyber-disabled cursor-not-allowed'
-          : 'border-cyber-primary text-cyber-primary shadow-[0_0_5px_theme(colors.cyber-primary)] active:bg-cyber-primary active:scale-85 active:text-black',
+          : [
+              'border-cyber-primary',
+              'text-cyber-primary',
+              'shadow-[0_0_5px_theme(colors.cyber-primary)]',
+              'active:bg-cyber-primary',
+              'active:scale-85 active:text-black',
+            ],
       )}
       onPointerDown={(e) => {
         if (disabled || activePointerRef.current !== null) return;
@@ -103,11 +109,7 @@ export const CustomNumericInputWithSteps = ({
         activePointerRef.current = e.pointerId;
         const target = e.currentTarget as Element;
 
-        try {
-          target.setPointerCapture(e.pointerId);
-        } catch {
-          /* empty */
-        }
+        if (target.setPointerCapture) void target.setPointerCapture(e.pointerId);
 
         makeStep(delta);
 
@@ -120,6 +122,8 @@ export const CustomNumericInputWithSteps = ({
       onPointerUp={stop}
       onPointerLeave={stop}
       onPointerCancel={stop}
+      onMouseUp={stop}
+      onMouseLeave={stop}
       onContextMenu={(e) => e.preventDefault()}
     >
       {label}
@@ -127,7 +131,7 @@ export const CustomNumericInputWithSteps = ({
   );
 
   return (
-    <div className={clsx('flex items-center gap-3', className)}>
+    <div className={clsx('flex items-center gap-3', className || '')}>
       {renderButton(-step, '–')}
 
       <input
@@ -143,12 +147,14 @@ export const CustomNumericInputWithSteps = ({
           if (!/^\d*$/.test(val)) return;
           val = val.replace(/^0+(?=\d)/, '');
 
+          // при ручном вводе разрешаем вводить меньше min
           const newVal = zeroClamp(Number(val));
 
           onChange(newVal);
           valueRef.current = newVal;
         }}
         onBlur={(e) => {
+          // валидируем значение через clamp после расфокуса инпута при ручном вводе
           const newValue = clamp(Number(e.target.value));
           onChange(newValue);
           valueRef.current = newValue;
@@ -159,7 +165,15 @@ export const CustomNumericInputWithSteps = ({
           'transition',
           disabled
             ? 'cursor-not-allowed border-slate-500 text-slate-500'
-            : 'border-cyber-primary shadow-[0_0_7px_theme(colors.cyber-primary)] focus:shadow-[0_0_10px_theme(colors.cyber-primary)] border-2 text-white focus:border-pink-100 focus:outline-none',
+            : [
+                'border-cyber-primary',
+                'shadow-[0_0_7px_theme(colors.cyber-primary)]',
+                'focus:shadow-[0_0_10px_theme(colors.cyber-primary)]',
+                'border-2',
+                'text-white',
+                'focus:border-pink-100',
+                'focus:outline-none',
+              ],
         )}
       />
 

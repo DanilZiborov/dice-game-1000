@@ -1,8 +1,8 @@
 import type { JSX, ChangeEvent } from 'react';
+import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { CustomInput, IconButton } from 'components';
-import { useState, useRef, useEffect } from 'react';
 import { CloseIcon, PlusIcon } from 'components/icons';
-import clsx from 'clsx';
+import { clsx } from 'clsx';
 
 type Props = {
   initialPlayers: string[];
@@ -12,6 +12,7 @@ type Props = {
 export const AddPlayerForm = ({ onPlayersChange, initialPlayers }: Props): JSX.Element => {
   const [players, setPlayers] = useState<string[]>(initialPlayers);
   const lastInputRef = useRef<HTMLInputElement | null>(null);
+  const shouldFocusRef = useRef(false);
 
   const handleChange = (index: number, value: string): void => {
     setPlayers((prev) => {
@@ -24,11 +25,18 @@ export const AddPlayerForm = ({ onPlayersChange, initialPlayers }: Props): JSX.E
 
   const addPlayer = (): void => {
     setPlayers((prev) => [...prev, '']);
-    lastInputRef?.current && lastInputRef.current?.focus();
+    shouldFocusRef.current = true; // помечаем, что нужно фокусироваться
   };
 
-  const removePlayer = (index: number): void =>
-    setPlayers((prev) => prev.filter((_, i) => i !== index));
+  const removePlayer = (index: number): void => setPlayers((prev) => prev.filter((_, i) => i !== index));
+
+  // фокусируемся после отрисовки DOM
+  useLayoutEffect(() => {
+    if (shouldFocusRef.current && lastInputRef.current) {
+      lastInputRef.current.focus();
+      shouldFocusRef.current = false; // сбрасываем фокус
+    }
+  }, [players]);
 
   // записываем игроков в общий стейт
   useEffect(() => {
@@ -37,9 +45,11 @@ export const AddPlayerForm = ({ onPlayersChange, initialPlayers }: Props): JSX.E
 
   return (
     <div className="flex h-full flex-col items-center justify-center">
-      <div className="mb-10 w-full overflow-auto">
+      <div className="w-full overflow-auto pb-10">
         {players.map((value, index) => (
           <div
+            /* тут это безопасно */
+            /* eslint-disable-next-line react/no-array-index-key */
             key={index}
             className={clsx('flex items-center justify-center gap-2 pl-6', { 'pr-12': index < 2 })}
           >

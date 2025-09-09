@@ -11,6 +11,7 @@ type Props = {
 };
 
 export const AddLimitsForm = ({ onConfigChange, limits }: Props): JSX.Element => {
+  // тут просто сложная деструктуризация
   const {
     barrelLimit: { max: barrelLimitMax, min: barrelLimitMin },
     enterLimit: { max: enterLimitMax, min: enterLimitMin },
