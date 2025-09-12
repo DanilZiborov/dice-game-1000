@@ -1,4 +1,4 @@
-import type { GameConfig } from 'pages/Main/NewGame/types';
+import type { NewGameConfig } from 'shared/types';
 
 export const MIN_MAX_GAME_CONFIGS = {
   enterLimit: { min: 0, max: 100 },
@@ -7,7 +7,7 @@ export const MIN_MAX_GAME_CONFIGS = {
   overtakeLimit: { min: 25, max: 100 },
 } as const;
 
-export const NEW_GAME_DEFAULT_CONFIG: GameConfig = {
+export const NEW_GAME_DEFAULT_CONFIG: NewGameConfig = {
   enterLimit: 75,
   barrelLimit: 900,
   withBolts: false,

@@ -3,9 +3,10 @@ import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { CustomInput, IconButton } from 'components';
 import { CloseIcon, PlusIcon } from 'components/icons';
 import { clsx } from 'clsx';
+import type { NewPlayerConfig } from 'shared/types';
 
 type Props = {
-  initialPlayers: string[];
+  initialPlayers: NewPlayerConfig;
   onPlayersChange: (players: string[]) => void;
 };
 

@@ -1,11 +1,14 @@
 import type { JSX } from 'react';
-import { AppRoutes } from 'App/AppRoutes';
 import { StrictMode } from 'react';
+import { AppRoutes } from 'App/AppRoutes';
+import { DbProvider } from 'db/DbContext';
 
 export const App = (): JSX.Element => {
   return (
     <StrictMode>
-      <AppRoutes />
+      <DbProvider>
+        <AppRoutes />
+      </DbProvider>
     </StrictMode>
   );
 };

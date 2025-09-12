@@ -1,15 +1,19 @@
 import type { JSX, ChangeEvent } from 'react';
 import { CustomCheckbox } from 'components/CustomCheckbox';
-import type { GameConfig } from 'pages/Main/NewGame/types';
-
-type Rules = Pick<GameConfig, 'withEasyWin'>;
+import type { NewGameConfig } from 'shared/types';
+import { useDb } from 'db/DbContext';
 
 type Props = {
-  onConfigChange: (newRules: Partial<Rules>) => void;
-  rules: Rules;
+  onConfigChange: (newRules: Partial<NewGameConfig>) => void;
+  currentConfig: NewGameConfig;
 };
 
-export const AddWinRuleForm = ({ onConfigChange, rules }: Props): JSX.Element => {
+export const AddWinRuleForm = ({ onConfigChange, currentConfig }: Props): JSX.Element => {
+
+  const db = useDb();
+
+  console.log(db);
+
   return (
     <div className="h-full">
       <div className="text-cyber-text-secondary mb-10 flex flex-col gap-4">
@@ -26,7 +30,7 @@ export const AddWinRuleForm = ({ onConfigChange, rules }: Props): JSX.Element =>
 
       <div className="flex justify-center">
         <CustomCheckbox
-          checked={rules.withEasyWin}
+          checked={currentConfig.withEasyWin}
           label='включить "Быструю победу"'
           onChange={(e: ChangeEvent<HTMLInputElement>) => onConfigChange({ withEasyWin: e.target.checked })}
         />
