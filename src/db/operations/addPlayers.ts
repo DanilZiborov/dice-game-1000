@@ -8,11 +8,11 @@ type AddPlayersArgs = {
   playerNames: NewPlayerConfig;
 };
 
-export const addPlayers = async ({ db, gameId, playerNames }: AddPlayersArgs): Promise<number[]> => {
+export const addPlayers = async ({ db, gameId, playerNames }: AddPlayersArgs): Promise<IDBValidKey[]> => {
   const tx = db.transaction(STORE_PLAYERS, 'readwrite');
   const store = tx.objectStore(STORE_PLAYERS);
 
-  const ids: number[] = [];
+  const ids: IDBValidKey[] = [];
 
   for (const name of playerNames) {
     const player: Omit<Player, 'id'> = {
@@ -22,10 +22,11 @@ export const addPlayers = async ({ db, gameId, playerNames }: AddPlayersArgs): P
       boltsNumber: 0,
       barrelAttempts: 0,
       isWinner: false,
+      isInPit: false,
       log: [],
     };
 
-    const id = await awaitRequest(store.add(player) as IDBRequest<number>);
+    const id = await awaitRequest<IDBValidKey>(store.add(player));
     ids.push(id);
   }
 

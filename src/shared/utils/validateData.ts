@@ -9,7 +9,7 @@ export const validateData = (schema: AnySchema, data: unknown): ValidateResult =
 
   if (!result.success) {
     // eslint-disable-next-line no-console
-    console.error('Validation error:', result.issues);
+    console.error('Ошибка валидации данных:', result.issues);
 
     return { isValid: false };
   }

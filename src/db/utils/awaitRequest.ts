@@ -1,7 +1,7 @@
 /**
  * Превращает любой IDBRequest в промис для использования с async/await
  */
-export const awaitRequest = <T extends IDBValidKey>(request: IDBRequest<T>): Promise<T> => {
+export const awaitRequest = <T>(request: IDBRequest<T>): Promise<T> => {
   return new Promise((resolve, reject) => {
     const req = request;
     req.onsuccess = () => resolve(req.result);

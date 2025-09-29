@@ -5,8 +5,8 @@ export const initDB = async (): Promise<IDBDatabase> => {
   // открываем IndexedDB
   const request = indexedDB.open(DB_NAME, DB_VERSION);
 
-  // onupgradeneeded всё равно остаётся, потому что это событие синхронное при апгрейде
   request.onupgradeneeded = () => {
+    // eslint-disable-next-line no-console
     console.log(`Создание БД ${DB_NAME}`);
     const db = request.result;
 

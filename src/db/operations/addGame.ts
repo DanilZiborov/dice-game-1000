@@ -7,7 +7,7 @@ type AddGameArgs = {
   gameConfig: NewGameConfig;
 };
 
-export const addGame = async ({ db, gameConfig }: AddGameArgs): Promise<number> => {
+export const addGame = async ({ db, gameConfig }: AddGameArgs): Promise<IDBValidKey> => {
   const tx = db.transaction(STORE_GAMES, 'readwrite');
   const store = tx.objectStore(STORE_GAMES);
 
@@ -17,5 +17,5 @@ export const addGame = async ({ db, gameConfig }: AddGameArgs): Promise<number> 
     ended: undefined,
   });
 
-  return await awaitRequest(request as IDBRequest<number>);
+  return await awaitRequest<IDBValidKey>(request);
 };

@@ -9,9 +9,9 @@ type Props = {
 };
 
 export const AddWinRuleForm = ({ onConfigChange, currentConfig }: Props): JSX.Element => {
-
   const db = useDb();
 
+  // eslint-disable-next-line no-console
   console.log(db);
 
   return (

@@ -1,7 +1,6 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 import { initDB } from 'db/index';
-
-import type { JSX } from 'react';
+import type { JSX, ReactNode } from 'react';
 
 const DbContext = createContext<IDBDatabase | null>(null);
 
@@ -13,14 +12,21 @@ export const DbProvider = ({ children }: { children: ReactNode }): JSX.Element =
       try {
         const database = await initDB();
         setDb(database);
-        console.log('DB initialized');
+        // eslint-disable-next-line no-console
+        console.log('Успешная инициализация БД');
       } catch (err) {
-        console.error('Ошибка при открытии базы', err);
+        // eslint-disable-next-line no-console
+        console.error('Ошибка при Инициализации', err);
       }
     };
 
     void openDb();
   }, []);
+
+  // ждем инициализации базы, пока ничего не рендерим
+  if (!db) {
+    return <div className="flex h-full items-center justify-center">Загрузка базы данных...</div>;
+  }
 
   return <DbContext.Provider value={db}>{children}</DbContext.Provider>;
 };

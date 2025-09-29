@@ -30,6 +30,7 @@ export const playerSchema = object({
   score: number(),
   boltsNumber: number(),
   barrelAttempts: number(),
+  isInPit: boolean(),
   isWinner: boolean(),
   log: array(string()),
 });
