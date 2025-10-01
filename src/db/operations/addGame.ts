@@ -1,6 +1,8 @@
 import type { NewGameConfig } from 'shared/types';
 import { STORE_GAMES } from 'db/constants';
 import { awaitRequest } from 'db/utils/awaitRequest';
+import { getObjectStore } from 'db/utils/getObjectSotre';
+import { throwAssertedError } from 'shared/utils/throwAssertedError';
 
 type AddGameArgs = {
   db: IDBDatabase;
@@ -8,14 +10,19 @@ type AddGameArgs = {
 };
 
 export const addGame = async ({ db, gameConfig }: AddGameArgs): Promise<IDBValidKey> => {
-  const tx = db.transaction(STORE_GAMES, 'readwrite');
-  const store = tx.objectStore(STORE_GAMES);
+  const store = getObjectStore(db, STORE_GAMES, 'readwrite');
 
-  const request = store.add({
-    ...gameConfig,
-    started: new Date().toISOString(),
-    ended: undefined,
-  });
+  try {
+    return await awaitRequest<IDBValidKey>(
+      store.add({
+        ...gameConfig,
+        started: new Date().toISOString(),
+        ended: undefined,
+      }),
+    );
+  } catch (err) {
+    throwAssertedError(err, 'Ошибка при создании игры');
 
-  return await awaitRequest<IDBValidKey>(request);
+    return undefined as never;
+  }
 };

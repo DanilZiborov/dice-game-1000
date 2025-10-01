@@ -1,6 +1,8 @@
 import type { NewPlayerConfig, Player } from 'shared/types';
 import { STORE_PLAYERS } from 'db/constants';
 import { awaitRequest } from 'db/utils/awaitRequest';
+import { getObjectStore } from 'db/utils/getObjectSotre';
+import { throwAssertedError } from 'shared/utils/throwAssertedError';
 
 type AddPlayersArgs = {
   db: IDBDatabase;
@@ -9,26 +11,31 @@ type AddPlayersArgs = {
 };
 
 export const addPlayers = async ({ db, gameId, playerNames }: AddPlayersArgs): Promise<IDBValidKey[]> => {
-  const tx = db.transaction(STORE_PLAYERS, 'readwrite');
-  const store = tx.objectStore(STORE_PLAYERS);
+  const store = getObjectStore(db, STORE_PLAYERS, 'readwrite');
 
-  const ids: IDBValidKey[] = [];
+  try {
+    const ids: IDBValidKey[] = [];
 
-  for (const name of playerNames) {
-    const player: Omit<Player, 'id'> = {
-      gameId,
-      name,
-      score: 0,
-      boltsNumber: 0,
-      barrelAttempts: 0,
-      isWinner: false,
-      isInPit: false,
-      log: [],
-    };
+    for (const name of playerNames) {
+      const player: Omit<Player, 'id'> = {
+        gameId,
+        name,
+        score: 0,
+        boltsNumber: 0,
+        barrelAttempts: 0,
+        isWinner: false,
+        isInPit: false,
+        log: [],
+      };
 
-    const id = await awaitRequest<IDBValidKey>(store.add(player));
-    ids.push(id);
+      const id = await awaitRequest<IDBValidKey>(store.add(player));
+      ids.push(id);
+    }
+
+    return ids;
+  } catch (err) {
+    throwAssertedError(err, 'Ошибка при добавлении игроков');
+
+    return undefined as never;
   }
-
-  return ids;
 };

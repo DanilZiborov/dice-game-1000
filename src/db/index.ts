@@ -1,7 +1,7 @@
 import { awaitRequest } from 'db/utils/awaitRequest';
 import { DB_NAME, DB_VERSION, PLAYER_INDEXES, STORE_GAMES, STORE_PLAYERS } from './constants';
 
-export const initDB = async (): Promise<IDBDatabase> => {
+export const initDB = (): Promise<IDBDatabase> => {
   // открываем IndexedDB
   const request = indexedDB.open(DB_NAME, DB_VERSION);
 
@@ -22,5 +22,5 @@ export const initDB = async (): Promise<IDBDatabase> => {
   };
 
   // ждём завершения открытия базы через промис
-  return await awaitRequest<IDBDatabase>(request);
+  return awaitRequest<IDBDatabase>(request);
 };

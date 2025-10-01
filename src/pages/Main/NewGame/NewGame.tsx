@@ -9,6 +9,8 @@ import type { Game, NewGameConfig, NewPlayerConfig, Player } from 'shared/types'
 import { useDb } from 'db/DbContext';
 import { addGame } from 'db/operations/addGame';
 import { addPlayers } from 'db/operations/addPlayers';
+import { getGameById } from 'db/operations/getGameById';
+import { getPlayersByGameId } from 'db/operations/getPlayersByGameId';
 
 type Props = {
   onGameStarted: ({ game, players }: { game: Game; players: Player[] }) => void;
@@ -47,36 +49,13 @@ export const NewGame = ({ onGameStarted }: Props): JSX.Element => {
   }, []);
 
   const handleStartGame = useCallback(async (): Promise<void> => {
-    if (!db) return;
+    const gameId = await addGame({ db, gameConfig: newGameConfig });
+    await addPlayers({ db, gameId: Number(gameId), playerNames: newPlayers });
 
-    try {
-      const gameId = await addGame({ db, gameConfig: newGameConfig });
-      const playerIds = await addPlayers({ db, gameId: Number(gameId), playerNames: newPlayers });
+    const createdGame = await getGameById({ db, gameId });
+    const createdPlayers = await getPlayersByGameId({ db, gameId });
 
-      const game: Game = {
-        ...newGameConfig,
-        id: Number(gameId),
-        started: new Date().toISOString(),
-        ended: undefined,
-      };
-
-      const players: Player[] = newPlayers.map((name, i) => ({
-        id: Number(playerIds[i]),
-        gameId: Number(gameId),
-        name,
-        score: 0,
-        boltsNumber: 0,
-        barrelAttempts: 0,
-        isWinner: false,
-        isInPit: false,
-        log: [],
-      }));
-
-      onGameStarted({ game, players });
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.error('Ошибка при создании игры', err);
-    }
+    onGameStarted({ game: createdGame, players: createdPlayers });
   }, [db, newGameConfig, newPlayers, onGameStarted]);
 
   // Функция рендера формы по шагу
