@@ -1,6 +1,10 @@
-import type { Player, Game } from 'shared/types';
-import { STORE_PLAYERS, STORE_GAMES } from 'db/constants';
+import type { Player } from 'shared/types';
+import { STORE_PLAYERS } from 'db/constants';
 import { awaitRequest } from 'db/utils/awaitRequest';
+import { getObjectStore } from 'db/utils/getObjectSotre';
+import { throwAssertedError } from 'shared/utils/throwAssertedError';
+import { getGameById } from 'db/operations/getGameById';
+import { getPlayersByGameId } from 'db/operations/getPlayersByGameId';
 
 type UpdatePlayerArgs = {
   db: IDBDatabase;
@@ -9,35 +13,33 @@ type UpdatePlayerArgs = {
   playerConfig: Partial<Omit<Player, 'id' | 'gameId'>>;
 };
 
-export const updatePlayer = async ({ db, playerId, gameId, playerConfig }: UpdatePlayerArgs): Promise<void> => {
-  // 1. Проверяем игру
-  const gameTx = db.transaction(STORE_GAMES, 'readonly');
-  const gameStore = gameTx.objectStore(STORE_GAMES);
-  const game = await awaitRequest<Game | undefined>(gameStore.get(gameId));
+export const updatePlayer = async ({ db, playerId, gameId, playerConfig }: UpdatePlayerArgs): Promise<IDBValidKey> => {
+  const playerStore = getObjectStore(db, STORE_PLAYERS, 'readonly');
 
-  if (!game) {
-    throw new Error(`Ошибка чтения из базы. Игра с id=${gameId} не найдена`);
+  try {
+    const game = await getGameById({ db, gameId });
+
+    if (game.ended) {
+      throw new Error(`Игра с id=${gameId} уже завершена`);
+    }
+
+    const players = await getPlayersByGameId({ db, gameId });
+
+    const existingPlayer = players.find((p) => p.id === playerId);
+
+    if (!existingPlayer) {
+      throw new Error(`Игрок с id=${playerId} не найден в игре с id=${gameId}`);
+    }
+
+    const updatedPlayer: Player = {
+      ...existingPlayer,
+      ...playerConfig,
+    };
+
+    return await awaitRequest(playerStore.put(updatedPlayer));
+  } catch (err) {
+    throwAssertedError(err, 'Ошибка при обновлении игрока');
+
+    return undefined as never;
   }
-
-  if (!game.started || game.ended) {
-    throw new Error(`Игра с id=${gameId} найдена в базе, но уже завершена`);
-  }
-
-  // 2. Проверяем игрока
-  const playerTx = db.transaction(STORE_PLAYERS, 'readwrite');
-  const store = playerTx.objectStore(STORE_PLAYERS);
-
-  const existingPlayer = await awaitRequest<Player | undefined>(store.get(playerId));
-
-  if (!existingPlayer || existingPlayer.gameId !== gameId) {
-    throw new Error(`Игрок с id=${playerId} не найден в игре ${gameId}`);
-  }
-
-  // 3. Обновляем
-  const updatedPlayer: Player = {
-    ...existingPlayer,
-    ...playerConfig,
-  };
-
-  await awaitRequest(store.put(updatedPlayer));
 };

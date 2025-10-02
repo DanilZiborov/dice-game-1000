@@ -3,29 +3,32 @@ import { STORE_GAMES } from 'db/constants';
 import { awaitRequest } from 'db/utils/awaitRequest';
 import { getObjectStore } from 'db/utils/getObjectSotre';
 import { throwAssertedError } from 'shared/utils/throwAssertedError';
+import { getGameById } from 'db/operations/getGameById';
+import { assertSchemaMatch } from 'shared/utils/asssertSchemaMatch';
+import { gameSchema } from 'shared/types';
 
 type EndGameArgs = {
   db: IDBDatabase;
   gameId: number;
 };
 
-export const endGame = async ({ db, gameId }: EndGameArgs): Promise<void> => {
+export const endGame = async ({ db, gameId }: EndGameArgs): Promise<IDBValidKey> => {
   const store = getObjectStore(db, STORE_GAMES, 'readwrite');
 
   try {
-    const game = await awaitRequest<Game | undefined>(store.get(gameId));
+    const game = await getGameById({ db, gameId });
 
-    if (!game) {
-      throw new Error(`Игра с id=${gameId} не найдена`);
-    }
+    assertSchemaMatch(gameSchema, game);
 
     const updatedGame: Game = {
       ...game,
       ended: new Date().toISOString(),
     };
 
-    await awaitRequest(store.put(updatedGame));
+    return await awaitRequest<IDBValidKey>(store.put(updatedGame));
   } catch (err) {
     throwAssertedError(err, 'Ошибка при завершении игры');
+
+    return undefined as never;
   }
 };

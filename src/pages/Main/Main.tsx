@@ -19,26 +19,19 @@ export const Main = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!db) return;
-
     const init = async (): Promise<void> => {
-      try {
-        const game = await getCurrentGame({ db });
+      const game = await getCurrentGame({ db });
 
-        if (!game) return;
+      if (!game) return;
 
-        setCurrentGame(game);
+      setCurrentGame(game);
 
-        const players = await getPlayersByGameId({
-          db,
-          gameId: game.id,
-        });
+      const players = await getPlayersByGameId({
+        db,
+        gameId: game.id,
+      });
 
-        setCurrentPlayers(players);
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.error('Возникла ошибка при поиске текущей партии', error);
-      }
+      setCurrentPlayers(players);
     };
 
     void init();
