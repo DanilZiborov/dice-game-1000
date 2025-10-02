@@ -1,4 +1,4 @@
-import { throwAssertedError } from 'shared/utils/throwAssertedError';
+import { throwAssertedError } from 'shared/utils';
 
 export const getObjectStore = (
   db: IDBDatabase,

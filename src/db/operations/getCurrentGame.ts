@@ -1,10 +1,8 @@
 import type { Game } from 'shared/types';
 import { STORE_GAMES } from 'db/constants';
-import { awaitRequest } from 'db/utils/awaitRequest';
-import { getObjectStore } from 'db/utils/getObjectSotre';
-import { throwAssertedError } from 'shared/utils/throwAssertedError';
-import { assertSchemaMatch } from 'shared/utils/asssertSchemaMatch';
 import { gameSchema } from 'shared/types';
+import { awaitRequest, getObjectStore } from 'db/utils';
+import { assertSchemaMatch, throwAssertedError } from 'shared/utils';
 
 type GetCurrentGameArgs = {
   db: IDBDatabase;

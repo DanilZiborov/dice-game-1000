@@ -6,15 +6,17 @@ type CurrentGameProps = {
   players: Player[];
 };
 
-export const CurrentGame = ({ game, players }: CurrentGameProps): JSX.Element => {
+export const CurrentGame = ({ players }: CurrentGameProps): JSX.Element => {
   return (
-    <div style={{ padding: 20, fontFamily: 'monospace' }}>
-      <h2>Current Game</h2>
-      <h3>Game:</h3>
-      <pre>{JSON.stringify(game, null, 2)}</pre>
-
-      <h3>Players:</h3>
-      <pre>{JSON.stringify(players, null, 2)}</pre>
+    <div className="align-center flex h-full flex-col justify-center">
+      <ul className="border-cyber-secondary my-10 border-y">
+        {players.map((player) => (
+          <li key={player.id} className={'border-cyber-secondary flex items-center justify-between border-b px-3 py-6'}>
+            <span>{player.name}</span>
+            <span className="text-lg tracking-wider">{player.score}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

@@ -1,8 +1,7 @@
 import type { NewPlayerConfig, Player } from 'shared/types';
 import { STORE_PLAYERS } from 'db/constants';
-import { awaitRequest } from 'db/utils/awaitRequest';
-import { getObjectStore } from 'db/utils/getObjectSotre';
-import { throwAssertedError } from 'shared/utils/throwAssertedError';
+import { awaitRequest, getObjectStore } from 'db/utils';
+import { throwAssertedError } from 'shared/utils';
 
 type AddPlayersArgs = {
   db: IDBDatabase;

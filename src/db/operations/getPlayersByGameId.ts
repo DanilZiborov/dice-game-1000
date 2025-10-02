@@ -1,10 +1,8 @@
 import type { Player } from 'shared/types';
 import { STORE_PLAYERS } from 'db/constants';
-import { awaitRequest } from 'db/utils/awaitRequest';
-import { getObjectStore } from 'db/utils/getObjectSotre';
-import { throwAssertedError } from 'shared/utils/throwAssertedError';
-import { assertSchemaMatch } from 'shared/utils/asssertSchemaMatch';
 import { playerSchema } from 'shared/types';
+import { awaitRequest, getObjectStore } from 'db/utils';
+import { assertSchemaMatch, throwAssertedError } from 'shared/utils';
 
 type GetPlayersByGameIdArgs = {
   db: IDBDatabase;
@@ -22,7 +20,7 @@ export const getPlayersByGameId = async ({ db, gameId }: GetPlayersByGameIdArgs)
     players.forEach((p) => assertSchemaMatch(playerSchema, p));
 
     return players;
-  } catch (err: unknown) {
+  } catch (err) {
     throwAssertedError(err, `Ошибка при получении игроков для игры с id=${gameId}`);
 
     return undefined as never;
