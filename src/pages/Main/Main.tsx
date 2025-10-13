@@ -43,3 +43,6 @@ export const Main = (): JSX.Element => {
 
   return <NewGame onGameStarted={handleGameStarted} />;
 };
+
+//TODO: сделать глобально лоадер
+//TODO: сделать здесь состояние isLoading, и показывать лоадер
