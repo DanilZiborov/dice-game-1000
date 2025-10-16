@@ -1,20 +1,26 @@
 import type { JSX } from 'react';
 import type { Game, Player } from 'shared/types';
-import { PlayerRow } from 'pages/Main/CurrentGame/PlayerRow';
+import { useState } from 'react';
+import { Record } from 'pages/Main/CurrentGame/Record';
+import { PlayersList } from 'pages/Main/CurrentGame/PlayersList';
 
 type CurrentGameProps = {
   game: Game;
   players: Player[];
 };
 
-export const CurrentGame = ({ players }: CurrentGameProps): JSX.Element => {
+export const CurrentGame = ({ players, game }: CurrentGameProps): JSX.Element => {
+  const [isRecordMode, setIsRecordMode] = useState(false);
+
   return (
     <div className="align-center flex h-full flex-col justify-center">
-      <ul className="border-cyber-secondary my-10 border-y">
-        {players.map((player) => (
-          <PlayerRow key={player.id} player={player} />
-        ))}
-      </ul>
+      {isRecordMode ? (
+        <Record disableRecordMode={() => setIsRecordMode(false)} />
+      ) : (
+        <PlayersList players={players} enableRecordMode={() => setIsRecordMode(true)} />
+      )}
     </div>
   );
 };
+
+// TODO: переписать всё-таки через роутер, чтобы работала навигация по тапу на кнопку назад

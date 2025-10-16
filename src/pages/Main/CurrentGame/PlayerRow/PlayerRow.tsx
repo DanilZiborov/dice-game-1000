@@ -46,7 +46,7 @@ const FailIcon = (): JSX.Element => (
 
 export const PlayerRow = ({ player }: Props): JSX.Element => {
   return (
-    <li className={'border-cyber-secondary flex h-20 items-center justify-between border-b px-3'}>
+    <div className={'border-cyber-secondary flex h-20 items-center justify-between border-b px-3'}>
       <div className="flex flex-col items-start justify-start">
         <span className="text-base">{player.name}</span>
         <div className="mt-1 flex gap-0.5">
@@ -65,6 +65,6 @@ export const PlayerRow = ({ player }: Props): JSX.Element => {
           <FailIcon />
         </div>
       </div>
-    </li>
+    </div>
   );
 };

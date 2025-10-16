@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import type { Game, Player } from 'shared/types';
 import { NewGame } from 'pages/Main/NewGame';
 import { useDb } from 'db/DbContext';
@@ -18,7 +18,7 @@ export const Main = (): JSX.Element => {
     setCurrentPlayers(players);
   };
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const init = async (): Promise<void> => {
       const game = await getCurrentGame({ db });
 
