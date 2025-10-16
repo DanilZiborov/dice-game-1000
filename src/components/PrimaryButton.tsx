@@ -9,15 +9,47 @@ type PrimaryButtonProps = {
   className?: string;
 };
 
+const DURATION = 250; // ms
+const RADIUS = 54;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
+
+// Общие стили
+const baseBtn = clsx(
+  'font-cyber relative inline-block px-1 py-1 tracking-wider uppercase',
+  'transition group h-[40px] min-w-[150px] select-none',
+);
+
+const disabledBtnStyle = 'text-cyber-disabled';
+const enabledBtnStyle = 'text-white';
+
+const overlayStyle = clsx(
+  'absolute inset-0 z-5 h-full w-full',
+  'bg-cyber-secondary skew-x-[-15deg]',
+  'translate-x-2 translate-y-2',
+  'group-active:translate-x-1 group-active:translate-y-1',
+  'shadow-[0_0_20px_theme(colors.cyber-secondary)]',
+  'transition',
+);
+
+const mainLayerEnabled = clsx(
+  'absolute inset-0 z-10 h-full w-full skew-x-[-15deg]',
+  'transition',
+  'bg-cyber-primary border-cyber-secondary border group-active:translate-x-1 group-active:translate-y-1',
+);
+
+const mainLayerDisabled = clsx(
+  'absolute inset-0 z-10 h-full w-full skew-x-[-15deg]',
+  'transition',
+  'bg-gray-500 border-none',
+);
+
+const textStyle = 'relative z-20 transition group-active:translate-x-1 group-active:translate-y-1';
+
 export const PrimaryButton = ({ children, onClick, className, disabled }: PrimaryButtonProps): JSX.Element => {
-  const [progress, setProgress] = useState(0); // 0..1
-  const targetProgress = useRef(0); // к чему анимируем
+  const [progress, setProgress] = useState(0);
+  const targetProgress = useRef(0);
   const rafRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
-
-  const DURATION = 800; // время удержания до срабатывания, ms
-  const RADIUS = 54;
-  const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
   const animate = (time: number) => {
     if (!lastTimeRef.current) lastTimeRef.current = time;
@@ -25,7 +57,6 @@ export const PrimaryButton = ({ children, onClick, className, disabled }: Primar
     lastTimeRef.current = time;
 
     setProgress((prev) => {
-      // скорость изменения прогресса в 1 секунду (delta в ms)
       const speed = 1 / DURATION;
       let next = prev;
 
@@ -76,39 +107,11 @@ export const PrimaryButton = ({ children, onClick, className, disabled }: Primar
       onMouseLeave={stopHold}
       onTouchStart={startHold}
       onTouchEnd={stopHold}
-      className={clsx(
-        'font-cyber relative inline-block px-1 py-1 tracking-wider uppercase',
-        'transition',
-        'group',
-        'h-[40px]',
-        'min-w-[150px]',
-        disabled ? 'text-cyber-disabled' : 'text-white',
-        className || '',
-        'select-none',
-      )}
+      className={clsx(baseBtn, disabled ? disabledBtnStyle : enabledBtnStyle, className)}
     >
-      {!disabled && (
-        <div
-          className={clsx(
-            'absolute inset-0 z-5 h-full w-full',
-            'bg-cyber-secondary skew-x-[-15deg]',
-            'translate-x-2 translate-y-2',
-            'group-active:translate-x-1 group-active:translate-y-1',
-            'shadow-[0_0_20px_theme(colors.cyber-secondary)]',
-            'transition',
-          )}
-        />
-      )}
+      {!disabled && <div className={overlayStyle} />}
 
-      <div
-        className={clsx(
-          'absolute inset-0 z-10 h-full w-full skew-x-[-15deg]',
-          'transition',
-          disabled
-            ? 'border-none bg-gray-500'
-            : 'bg-cyber-primary border-cyber-secondary border group-active:translate-x-1 group-active:translate-y-1',
-        )}
-      />
+      <div className={clsx(disabled ? mainLayerDisabled : mainLayerEnabled)} />
 
       {!disabled && (
         <svg className="absolute top-1/2 left-1/2 h-[120px] w-[120px] -translate-x-1/2 -translate-y-1/2">
@@ -117,7 +120,7 @@ export const PrimaryButton = ({ children, onClick, className, disabled }: Primar
             cy="60"
             r={RADIUS}
             className="stroke-cyber-secondary"
-            strokeWidth="4"
+            strokeWidth="2"
             fill="transparent"
             strokeDasharray={CIRCUMFERENCE}
             strokeDashoffset={CIRCUMFERENCE * (1 - progress)}
@@ -127,7 +130,7 @@ export const PrimaryButton = ({ children, onClick, className, disabled }: Primar
         </svg>
       )}
 
-      <p className="relative z-20 transition group-active:translate-x-1 group-active:translate-y-1">{children}</p>
+      <p className={textStyle}>{children}</p>
     </button>
   );
 };
