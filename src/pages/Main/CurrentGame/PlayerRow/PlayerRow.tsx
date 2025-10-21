@@ -50,9 +50,10 @@ export const PlayerRow = ({ player }: Props): JSX.Element => {
       <div className="flex flex-col items-start justify-start">
         <span className="text-base">{player.name}</span>
         <div className="mt-1 flex gap-0.5">
-          <BoltIcon />
-          <BoltIcon />
-          <BoltIcon />
+          {Array.from({ length: player.boltsNumber }).map((_, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <BoltIcon key={i} />
+          ))}
         </div>
       </div>
 
@@ -60,9 +61,10 @@ export const PlayerRow = ({ player }: Props): JSX.Element => {
       <div className="flex flex-col items-end justify-start">
         <span className="text-lg tracking-wider">{player.score}</span>
         <div className="mt-1 flex gap-1">
-          <FailIcon />
-          <FailIcon />
-          <FailIcon />
+          {Array.from({ length: player.barrelAttempts }).map((_, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <FailIcon key={i} />
+          ))}
         </div>
       </div>
     </div>

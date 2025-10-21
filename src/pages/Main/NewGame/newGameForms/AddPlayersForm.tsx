@@ -35,7 +35,7 @@ export const AddPlayerForm = ({ onPlayersChange, initialPlayers }: Props): JSX.E
   useLayoutEffect(() => {
     if (shouldFocusRef.current && lastInputRef.current) {
       lastInputRef.current.focus();
-      shouldFocusRef.current = false; // сбрасываем фокус
+      shouldFocusRef.current = false;
     }
   }, [players]);
 
@@ -46,7 +46,15 @@ export const AddPlayerForm = ({ onPlayersChange, initialPlayers }: Props): JSX.E
 
   return (
     <div className="flex h-full flex-col items-center justify-center">
-      <div className="w-full overflow-auto pb-10">
+      <form
+        className="w-full overflow-auto pb-10"
+        onSubmit={(e) => {
+          e.preventDefault();
+          // TODO: тут надо понаблюдать, какое поведение лучше
+          // addPlayer();
+          lastInputRef.current?.blur();
+        }}
+      >
         {players.map((value, index) => (
           <div
             /* тут это безопасно */
@@ -73,7 +81,8 @@ export const AddPlayerForm = ({ onPlayersChange, initialPlayers }: Props): JSX.E
             )}
           </div>
         ))}
-      </div>
+        <button type="submit" className="hidden" />
+      </form>
 
       <IconButton onClick={addPlayer} className="shrink-0">
         <PlusIcon />
