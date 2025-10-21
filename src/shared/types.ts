@@ -1,10 +1,6 @@
-import { array, boolean, number, object, optional, string } from 'valibot';
+import { array, boolean, maxLength, minLength, number, object, optional, pipe, string, trim } from 'valibot';
 import type { InferOutput } from 'valibot';
-
-// Конфиг для создания игроков
-export const newPlayerConfigSchema = array(string());
-
-export type NewPlayerConfig = InferOutput<typeof newPlayerConfigSchema>;
+import { PLAYER_NAME_MAXLENGTH, PLAYER_NAME_MINLENGTH } from 'shared/constants';
 
 // Конфиг для создания новой партии
 export const newGameConfigSchema = object({
@@ -22,17 +18,28 @@ export const newGameConfigSchema = object({
 
 export type NewGameConfig = InferOutput<typeof newGameConfigSchema>;
 
-// Игрок, получаемый из базы
-export const playerSchema = object({
-  id: number(),
+// Схема для валидации имени игрока
+
+export const playerNameSchema = pipe(string(), trim(), minLength(PLAYER_NAME_MINLENGTH), maxLength(PLAYER_NAME_MAXLENGTH));
+
+// Конфиг для записи нового игрока
+export const playerConfigSchema = object({
   gameId: number(),
-  name: string(),
+  name: playerNameSchema,
   score: number(),
   boltsNumber: number(),
   barrelAttempts: number(),
   isInPit: boolean(),
   isWinner: boolean(),
   log: array(string()),
+});
+
+export type PlayerConfig = InferOutput<typeof playerConfigSchema>;
+
+// Игрок, получаемый из базы
+export const playerSchema = object({
+  id: number(),
+  ...playerConfigSchema.entries,
 });
 
 export type Player = InferOutput<typeof playerSchema>;

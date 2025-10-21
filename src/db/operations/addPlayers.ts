@@ -1,22 +1,25 @@
-import type { NewPlayerConfig, Player } from 'shared/types';
+import type { PlayerConfig } from 'shared/types';
 import { STORE_PLAYERS } from 'db/constants';
 import { awaitRequest, getObjectStore } from 'db/utils';
-import { throwAssertedError } from 'shared/utils';
+import { assertSchemaMatch, throwAssertedError } from 'shared/utils';
+import { playerNameSchema } from 'shared/types';
 
 type AddPlayersArgs = {
   db: IDBDatabase;
   gameId: number;
-  playerNames: NewPlayerConfig;
+  playerNames: string[];
 };
 
 export const addPlayers = async ({ db, gameId, playerNames }: AddPlayersArgs): Promise<IDBValidKey[]> => {
+  playerNames.forEach((n) => assertSchemaMatch(playerNameSchema, n));
+
   const store = getObjectStore(db, STORE_PLAYERS, 'readwrite');
 
   try {
     const ids: IDBValidKey[] = [];
 
     for (const name of playerNames) {
-      const player: Omit<Player, 'id'> = {
+      const player: PlayerConfig = {
         gameId,
         name,
         score: 0,

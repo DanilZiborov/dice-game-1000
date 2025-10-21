@@ -10,6 +10,7 @@ type CurrentGameProps = {
 };
 
 export const CurrentGame = ({ players, game }: CurrentGameProps): JSX.Element => {
+  console.log(game);
   const [isRecordMode, setIsRecordMode] = useState(false);
 
   return (

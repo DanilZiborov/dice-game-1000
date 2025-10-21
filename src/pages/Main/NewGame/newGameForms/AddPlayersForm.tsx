@@ -3,10 +3,10 @@ import { useState, useRef, useLayoutEffect, useEffect } from 'react';
 import { CustomInput, IconButton } from 'components';
 import { CloseIcon, PlusIcon } from 'components/icons';
 import { clsx } from 'clsx';
-import type { NewPlayerConfig } from 'shared/types';
+import { PLAYER_NAME_MAXLENGTH } from 'shared/constants';
 
 type Props = {
-  initialPlayers: NewPlayerConfig;
+  initialPlayers: string[];
   onPlayersChange: (players: string[]) => void;
 };
 
@@ -61,6 +61,7 @@ export const AddPlayerForm = ({ onPlayersChange, initialPlayers }: Props): JSX.E
               label={`Игрок ${index + 1}`}
               placeholder="Введите имя игрока"
               className="mb-2"
+              maxLength={PLAYER_NAME_MAXLENGTH}
             />
             {index > 1 && (
               <IconButton

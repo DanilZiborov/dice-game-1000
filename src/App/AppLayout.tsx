@@ -17,7 +17,12 @@ export const AppLayout = (): JSX.Element => {
   }, [db]);
 
   return (
-    <div className={clsx('font-cyber bg-cyber-background text-cyber-text flex h-screen flex-col', 'items-center')}>
+    <div
+      className={clsx(
+        'font-cyber bg-cyber-background text-cyber-text flex h-screen flex-col',
+        'items-center overflow-hidden',
+      )}
+    >
       <div className="h-full w-full max-w-[900px] text-white">
         <header className="flex flex-row justify-between p-4">
           <button className="focus:outline-none">

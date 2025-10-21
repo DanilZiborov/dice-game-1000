@@ -1,22 +1,26 @@
-import type { Player } from 'shared/types';
+import type { Player, PlayerConfig } from 'shared/types';
 import { STORE_PLAYERS } from 'db/constants';
 import { getGameById } from 'db/operations/getGameById';
 import { getPlayersByGameId } from 'db/operations/getPlayersByGameId';
 import { awaitRequest, getObjectStore } from 'db/utils';
-import { throwAssertedError } from 'shared/utils';
+import { assertSchemaMatch, throwAssertedError } from 'shared/utils';
+import { playerConfigSchema } from 'shared/types';
 
 type UpdatePlayerArgs = {
   db: IDBDatabase;
   playerId: number;
-  gameId: number;
-  playerConfig: Partial<Omit<Player, 'id' | 'gameId'>>;
+  playerConfig: PlayerConfig;
 };
 
-export const updatePlayer = async ({ db, playerId, gameId, playerConfig }: UpdatePlayerArgs): Promise<IDBValidKey> => {
+export const updatePlayer = async ({ db, playerId, playerConfig }: UpdatePlayerArgs): Promise<IDBValidKey> => {
+  assertSchemaMatch(playerConfigSchema, playerConfig);
+
   const playerStore = getObjectStore(db, STORE_PLAYERS, 'readonly');
 
+  const { gameId } = playerConfig;
+
   try {
-    const game = await getGameById({ db, gameId });
+    const game = await getGameById({ db, gameId: gameId });
 
     if (game.ended) {
       throw new Error(`Игра с id=${gameId} уже завершена`);

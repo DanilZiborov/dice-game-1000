@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import type { Game, Player } from 'shared/types';
 import { NewGame } from 'pages/Main/NewGame';
 import { useDb } from 'db/DbContext';

@@ -5,7 +5,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { NewGameButton } from 'pages/Main/NewGame/newGameForms/NewGameButton';
 import { AddLimitsForm, AddRulesForm, AddWinRuleForm, StartGameForm } from 'pages/Main/NewGame/newGameForms';
 import { NEW_GAME_DEFAULT_CONFIG } from 'pages/Main/NewGame/constants';
-import type { Game, NewGameConfig, NewPlayerConfig, Player } from 'shared/types';
+import type { Game, NewGameConfig, Player } from 'shared/types';
 import { useDb } from 'db/DbContext';
 import { addGame } from 'db/operations/addGame';
 import { addPlayers } from 'db/operations/addPlayers';
@@ -29,7 +29,7 @@ export const NewGame = ({ onGameStarted }: Props): JSX.Element => {
   const db = useDb();
 
   const [step, setStep] = useState<number>(0);
-  const [newPlayers, setNewPlayers] = useState<NewPlayerConfig>(['', '']);
+  const [newPlayers, setNewPlayers] = useState<string[]>(['', '']);
   const [newGameConfig, setNewGameConfig] = useState<NewGameConfig>(NEW_GAME_DEFAULT_CONFIG);
 
   // если в массиве игроков меньше двух элементов, добавляем пустых игроков
@@ -49,8 +49,11 @@ export const NewGame = ({ onGameStarted }: Props): JSX.Element => {
   }, []);
 
   const handleStartGame = useCallback(async (): Promise<void> => {
+    const filteredPlayers = newPlayers.filter((p) => !!p);
+    if (filteredPlayers.length < 2) return;
+
     const gameId = await addGame({ db, gameConfig: newGameConfig });
-    await addPlayers({ db, gameId: Number(gameId), playerNames: newPlayers });
+    await addPlayers({ db, gameId: Number(gameId), playerNames: filteredPlayers });
 
     const createdGame = await getGameById({ db, gameId });
     const createdPlayers = await getPlayersByGameId({ db, gameId });
@@ -79,7 +82,7 @@ export const NewGame = ({ onGameStarted }: Props): JSX.Element => {
   }, [step, initialPlayers, newGameConfig, handleConfigChange, handleStartGame]);
 
   return (
-    <div className="flex h-full flex-col justify-center px-1 pb-4">
+    <div className="flex h-full flex-col justify-center p-4">
       {step > 0 && step < 5 ? (
         <div>
           <p className="mb-1 text-center">{`Шаг ${step}. ${formContainerTitle[step]}`}</p>
@@ -91,7 +94,11 @@ export const NewGame = ({ onGameStarted }: Props): JSX.Element => {
       {step !== 0 && (
         <div className="flex items-center justify-between">
           <SecondaryButton onClick={handleStepBack}>Назад</SecondaryButton>
-          {step !== 5 && <PrimaryButton onClick={handleStepForward}>Далее</PrimaryButton>}
+          {step !== 5 && (
+            <PrimaryButton disabled={newPlayers.filter((p) => !!p).length < 2} onClick={handleStepForward}>
+              Далее
+            </PrimaryButton>
+          )}
         </div>
       )}
     </div>

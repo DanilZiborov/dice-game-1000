@@ -1,12 +1,13 @@
 import type { JSX } from 'react';
 import { clsx } from 'clsx';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 
 type PrimaryButtonProps = {
   children: string;
   onClick?: () => void;
   disabled?: boolean;
   className?: string;
+  withDelay?: boolean; // true — с задержкой (по удержанию), false — обычный клик
 };
 
 const DURATION = 250; // ms
@@ -19,7 +20,7 @@ const baseBtn = clsx(
   'transition group h-[40px] min-w-[150px] select-none',
 );
 
-const disabledBtnStyle = 'text-cyber-disabled';
+const disabledBtnStyle = 'text-cyber-text-secondary pointer-events-none';
 const enabledBtnStyle = 'text-white';
 
 const overlayStyle = clsx(
@@ -40,57 +41,74 @@ const mainLayerEnabled = clsx(
 const mainLayerDisabled = clsx(
   'absolute inset-0 z-10 h-full w-full skew-x-[-15deg]',
   'transition',
-  'bg-gray-500 border-none',
+  'bg-cyber-disabled border-none',
 );
 
-const textStyle = 'relative z-20 transition group-active:translate-x-1 group-active:translate-y-1';
+const textStyle = 'relative z-20 text-inherit transition group-active:translate-x-1 group-active:translate-y-1';
 
-export const PrimaryButton = ({ children, onClick, className, disabled }: PrimaryButtonProps): JSX.Element => {
+export const PrimaryButton = ({
+  children,
+  onClick,
+  className,
+  disabled,
+  withDelay = false,
+}: PrimaryButtonProps): JSX.Element => {
   const [progress, setProgress] = useState(0);
   const targetProgress = useRef(0);
   const rafRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
 
-  const animate = (time: number) => {
-    if (!lastTimeRef.current) lastTimeRef.current = time;
-    const delta = time - lastTimeRef.current;
-    lastTimeRef.current = time;
+  const animate = useCallback(
+    (time: number) => {
+      if (!lastTimeRef.current) lastTimeRef.current = time;
+      const delta = time - lastTimeRef.current;
+      lastTimeRef.current = time;
 
-    setProgress((prev) => {
-      const speed = 1 / DURATION;
-      let next = prev;
+      setProgress((prev) => {
+        const speed = 1 / DURATION;
+        let next = prev;
 
-      if (targetProgress.current > prev) {
-        next = Math.min(prev + speed * delta, targetProgress.current);
-        if (next === 1) onClick?.();
-      } else if (targetProgress.current < prev) {
-        next = Math.max(prev - speed * delta, targetProgress.current);
-      }
+        if (targetProgress.current > prev) {
+          next = Math.min(prev + speed * delta, targetProgress.current);
+          if (next === 1) onClick?.();
+        } else if (targetProgress.current < prev) {
+          next = Math.max(prev - speed * delta, targetProgress.current);
+        }
 
-      return next;
-    });
+        return next;
+      });
 
-    rafRef.current = requestAnimationFrame(animate);
-  };
+      rafRef.current = requestAnimationFrame(animate);
+    },
+    [onClick],
+  );
 
-  const startHold = () => {
-    if (disabled) return;
+  // 🔹 обработчики для режима с удержанием
+  const startHold = useCallback(() => {
+    if (disabled || !withDelay) return;
     targetProgress.current = 1;
 
     if (!rafRef.current) {
       lastTimeRef.current = null;
       rafRef.current = requestAnimationFrame(animate);
     }
-  };
+  }, [disabled, withDelay, animate]);
 
-  const stopHold = () => {
+  const stopHold = useCallback(() => {
+    if (!withDelay) return;
     targetProgress.current = 0;
 
     if (!rafRef.current) {
       lastTimeRef.current = null;
       rafRef.current = requestAnimationFrame(animate);
     }
-  };
+  }, [withDelay, animate]);
+
+  // 🔹 обработчик обычного клика (без задержки)
+  const handleClick = useCallback(() => {
+    if (disabled) return;
+    if (!withDelay) onClick?.();
+  }, [disabled, withDelay, onClick]);
 
   useEffect(() => {
     return () => {
@@ -102,18 +120,19 @@ export const PrimaryButton = ({ children, onClick, className, disabled }: Primar
     <button
       type="button"
       disabled={disabled}
-      onMouseDown={startHold}
-      onMouseUp={stopHold}
-      onMouseLeave={stopHold}
-      onTouchStart={startHold}
-      onTouchEnd={stopHold}
+      onClick={handleClick} // работает только если withDelay = false
+      onMouseDown={withDelay ? startHold : undefined}
+      onMouseUp={withDelay ? stopHold : undefined}
+      onMouseLeave={withDelay ? stopHold : undefined}
+      onTouchStart={withDelay ? startHold : undefined}
+      onTouchEnd={withDelay ? stopHold : undefined}
       className={clsx(baseBtn, disabled ? disabledBtnStyle : enabledBtnStyle, className)}
     >
       {!disabled && <div className={overlayStyle} />}
 
       <div className={clsx(disabled ? mainLayerDisabled : mainLayerEnabled)} />
 
-      {!disabled && (
+      {withDelay && !disabled && (
         <svg className="absolute top-1/2 left-1/2 h-[120px] w-[120px] -translate-x-1/2 -translate-y-1/2">
           <circle
             cx="60"
