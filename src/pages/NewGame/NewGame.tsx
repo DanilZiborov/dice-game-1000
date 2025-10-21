@@ -1,20 +1,16 @@
 import type { JSX } from 'react';
-import { AddPlayerForm } from 'pages/Main/NewGame/newGameForms/AddPlayersForm';
+import { AddPlayerForm } from 'pages/NewGame/newGameForms/AddPlayersForm';
 import { PrimaryButton, SecondaryButton } from 'components';
-import { useCallback, useMemo, useState } from 'react';
-import { NewGameButton } from 'pages/Main/NewGame/newGameForms/NewGameButton';
-import { AddLimitsForm, AddRulesForm, AddWinRuleForm, StartGameForm } from 'pages/Main/NewGame/newGameForms';
-import { NEW_GAME_DEFAULT_CONFIG } from 'pages/Main/NewGame/constants';
-import type { Game, NewGameConfig, Player } from 'shared/types';
+import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { NewGameButton } from 'pages/NewGame/newGameForms/NewGameButton';
+import { AddLimitsForm, AddRulesForm, AddWinRuleForm, StartGameForm } from 'pages/NewGame/newGameForms';
+import { NEW_GAME_DEFAULT_CONFIG } from 'pages/NewGame/constants';
+import type { NewGameConfig } from 'shared/types';
 import { useDb } from 'db/DbContext';
 import { addGame } from 'db/operations/addGame';
 import { addPlayers } from 'db/operations/addPlayers';
-import { getGameById } from 'db/operations/getGameById';
-import { getPlayersByGameId } from 'db/operations/getPlayersByGameId';
-
-type Props = {
-  onGameStarted: ({ game, players }: { game: Game; players: Player[] }) => void;
-};
+import { useNavigate } from 'react-router-dom';
+import { getCurrentGame } from 'db/operations';
 
 const formContainerTitle = [
   '',
@@ -25,8 +21,10 @@ const formContainerTitle = [
   '',
 ] as const;
 
-export const NewGame = ({ onGameStarted }: Props): JSX.Element => {
+export const NewGame = (): JSX.Element => {
   const db = useDb();
+
+  const navigate = useNavigate();
 
   const [step, setStep] = useState<number>(0);
   const [newPlayers, setNewPlayers] = useState<string[]>(['', '']);
@@ -55,11 +53,8 @@ export const NewGame = ({ onGameStarted }: Props): JSX.Element => {
     const gameId = await addGame({ db, gameConfig: newGameConfig });
     await addPlayers({ db, gameId: Number(gameId), playerNames: filteredPlayers });
 
-    const createdGame = await getGameById({ db, gameId });
-    const createdPlayers = await getPlayersByGameId({ db, gameId });
-
-    onGameStarted({ game: createdGame, players: createdPlayers });
-  }, [db, newGameConfig, newPlayers, onGameStarted]);
+    navigate('/', { replace: true });
+  }, [db, navigate, newGameConfig, newPlayers]);
 
   // Функция рендера формы по шагу
   const renderForm = useCallback((): JSX.Element => {
@@ -80,6 +75,21 @@ export const NewGame = ({ onGameStarted }: Props): JSX.Element => {
         throw new Error(`Ошибка логики рендеринга формы. Для шага ${step} не задано отображение.`);
     }
   }, [step, initialPlayers, newGameConfig, handleConfigChange, handleStartGame]);
+
+  // protect against manual url navigation
+  useLayoutEffect(() => {
+    const checkGameStarted = async (): Promise<void> => {
+      const currentGame = await getCurrentGame({ db });
+
+      if (currentGame) {
+        navigate('/game', { replace: true });
+
+        return;
+      }
+    };
+
+    void checkGameStarted();
+  }, [db, navigate]);
 
   return (
     <div className="flex h-full flex-col justify-center p-4">

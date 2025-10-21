@@ -1,5 +1,5 @@
 import type { JSX } from 'react';
-import { PlayerRow } from 'pages/Main/CurrentGame/PlayerRow';
+import { PlayerRow } from 'pages/CurrentGame/PlayerRow';
 import type { Player } from 'shared/types';
 
 type Props = { players: Player[]; enableRecordMode: () => void };

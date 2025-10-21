@@ -3,7 +3,7 @@ import { clsx } from 'clsx';
 import { CustomCheckbox } from 'components/CustomCheckbox';
 import { CustomNumericInputWithSteps } from 'components';
 import type { NewGameConfig } from 'shared/types';
-import { MIN_MAX_GAME_CONFIGS } from 'pages/Main/NewGame/constants';
+import { MIN_MAX_GAME_CONFIGS } from 'pages/NewGame/constants';
 
 type Props = {
   onConfigChange: (newRules: Partial<NewGameConfig>) => void;

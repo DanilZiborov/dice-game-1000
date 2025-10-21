@@ -17,6 +17,8 @@ export const getPlayersByGameId = async ({ db, gameId }: GetPlayersByGameIdArgs)
 
     const players = await awaitRequest<Player[]>(index.getAll(gameId));
 
+    if (!players.length) throw Error(`В игре с id= ${gameId} нет игроков`);
+
     players.forEach((p) => assertSchemaMatch(playerSchema, p));
 
     return players;

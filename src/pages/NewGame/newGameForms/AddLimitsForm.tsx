@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 import { CustomNumericInputWithSteps } from 'components';
 import type { NewGameConfig } from 'shared/types';
-import { MIN_MAX_GAME_CONFIGS } from 'pages/Main/NewGame/constants';
+import { MIN_MAX_GAME_CONFIGS } from 'pages/NewGame/constants';
 
 type Props = {
   onConfigChange: (newConfig: Partial<NewGameConfig>) => void;
