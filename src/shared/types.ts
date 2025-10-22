@@ -20,7 +20,12 @@ export type NewGameConfig = InferOutput<typeof newGameConfigSchema>;
 
 // Схема для валидации имени игрока
 
-export const playerNameSchema = pipe(string(), trim(), minLength(PLAYER_NAME_MINLENGTH), maxLength(PLAYER_NAME_MAXLENGTH));
+export const playerNameSchema = pipe(
+  string(),
+  trim(),
+  minLength(PLAYER_NAME_MINLENGTH),
+  maxLength(PLAYER_NAME_MAXLENGTH),
+);
 
 // Конфиг для записи нового игрока
 export const playerConfigSchema = object({
@@ -29,9 +34,9 @@ export const playerConfigSchema = object({
   score: number(),
   boltsNumber: number(),
   barrelAttempts: number(),
-  isInPit: boolean(),
   isWinner: boolean(),
   log: array(string()),
+  easyWinLog: pipe(array(number()), minLength(0), maxLength(3)),
 });
 
 export type PlayerConfig = InferOutput<typeof playerConfigSchema>;

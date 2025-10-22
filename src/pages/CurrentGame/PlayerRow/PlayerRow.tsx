@@ -1,10 +1,12 @@
 import type { JSX } from 'react';
 import type { Player } from 'shared/types';
+import { useNavigate } from 'react-router-dom';
+import { RepeatComponent } from 'shared/utils/RepeatComponent';
 
 type Props = { player: Player };
 
 // Минималистичный болт
-const BoltIcon = (): JSX.Element => (
+export const BoltIcon = (): JSX.Element => (
   <svg
     width="16"
     height="16"
@@ -27,7 +29,7 @@ const BoltIcon = (): JSX.Element => (
   </svg>
 );
 
-const FailIcon = (): JSX.Element => (
+export const FailIcon = (): JSX.Element => (
   <svg
     width="10"
     height="10"
@@ -45,15 +47,19 @@ const FailIcon = (): JSX.Element => (
 );
 
 export const PlayerRow = ({ player }: Props): JSX.Element => {
+  const navigate = useNavigate();
+
   return (
-    <div className={'border-cyber-secondary flex h-20 items-center justify-between border-b px-3'}>
+    <div
+      onClick={() => navigate(`/game/record/${player.id}`)}
+      className={'border-cyber-secondary flex h-20' + ' items-center' + ' justify-between' + ' border-b px-3'}
+    >
       <div className="flex flex-col items-start justify-start">
         <span className="text-base">{player.name}</span>
         <div className="mt-1 flex gap-0.5">
-          {Array.from({ length: player.boltsNumber }).map((_, i) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <BoltIcon key={i} />
-          ))}
+          <RepeatComponent count={player.boltsNumber}>
+            <BoltIcon />
+          </RepeatComponent>
         </div>
       </div>
 
@@ -61,10 +67,9 @@ export const PlayerRow = ({ player }: Props): JSX.Element => {
       <div className="flex flex-col items-end justify-start">
         <span className="text-lg tracking-wider">{player.score}</span>
         <div className="mt-1 flex gap-1">
-          {Array.from({ length: player.barrelAttempts }).map((_, i) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <FailIcon key={i} />
-          ))}
+          <RepeatComponent count={player.barrelAttempts}>
+            <FailIcon />
+          </RepeatComponent>
         </div>
       </div>
     </div>

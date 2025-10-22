@@ -1,9 +1,10 @@
-import { createBrowserRouter, RouterProvider, type RouteObject, Navigate } from 'react-router-dom';
+import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
 import type { JSX } from 'react';
 import { AppLayout } from 'App/AppLayout';
 import { Temporal } from 'pages/Temporal/Temporal';
-import { CurrentGame, NewGame } from 'pages';
-import { Record } from 'pages/CurrentGame/Record/Record';
+import { CurrentGame, NewGame, StartPage } from 'pages';
+import { Record } from 'pages/Record/Record';
+import { RequireCurrentGame } from 'App/AppRoutes/RequireCurrentGame';
 
 const routes: RouteObject[] = [
   {
@@ -12,16 +13,21 @@ const routes: RouteObject[] = [
     children: [
       {
         index: true,
-        element: <Navigate to="/game" replace />,
+        element: <StartPage />,
       },
 
       {
         path: 'game',
-        element: <CurrentGame />,
+        element: <RequireCurrentGame />,
         children: [
           {
-            element: <Record disableRecordMode={}/>
-          }
+            index: true,
+            element: <CurrentGame />,
+          },
+          {
+            path: '/game/record/:playerId',
+            element: <Record />,
+          },
         ],
       },
 

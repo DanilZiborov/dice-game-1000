@@ -26,8 +26,8 @@ export const addPlayers = async ({ db, gameId, playerNames }: AddPlayersArgs): P
         boltsNumber: 0,
         barrelAttempts: 0,
         isWinner: false,
-        isInPit: false,
         log: [],
+        easyWinLog: [],
       };
 
       const id = await awaitRequest<IDBValidKey>(store.add(player));

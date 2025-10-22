@@ -39,7 +39,7 @@ export const AppLayout = (): JSX.Element => {
 
         <div className="border-cyber-secondary border-1"></div>
 
-        <main className="h-[calc(100vh_-_58px)]">
+        <main className="align-center flex h-[calc(100vh_-_58px)] flex-col justify-center select-none">
           <Outlet />
         </main>
       </div>
