@@ -27,8 +27,6 @@ export const Record = (): JSX.Element => {
 
   const [points, setPoints] = useState(0);
 
-  console.log(points);
-
   // Пока тестово
   const handleRecord = (): void => {
     const newScore = player.data.score + points;
@@ -40,7 +38,7 @@ export const Record = (): JSX.Element => {
       playerConfig: { score: newScore },
     });
     dispatch({ type: 'UPDATE_PLAYER', payload: { id: Number(playerId), data: { score: newScore } } });
-    navigate('/game')
+    navigate('/game');
   };
 
   return (
