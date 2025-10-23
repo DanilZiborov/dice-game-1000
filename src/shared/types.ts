@@ -2,6 +2,9 @@ import { array, boolean, maxLength, minLength, number, object, optional, pipe, s
 import type { InferOutput } from 'valibot';
 import { PLAYER_NAME_MAXLENGTH, PLAYER_NAME_MINLENGTH } from 'shared/constants';
 
+// В данные, которые лежат в базе, включаем только чистые значения. Всё, что можно посчитать (статусы на основе
+// данных), считаем на фронте и в базу не записываем.
+
 // Конфиг для создания новой партии
 export const newGameConfigSchema = object({
   enterLimit: number(),
@@ -39,14 +42,30 @@ export const playerConfigSchema = object({
   easyWinLog: pipe(array(number()), minLength(0), maxLength(3)),
 });
 
+// Статусы игрока. В базу не записываются, рассчитываются на фронте на основании данных
+export const playerStatusSchema = object({
+  isInPit: boolean(),
+  isEnterGame: boolean(),
+  isOnBarrel: boolean(),
+});
+
+export type PlayerStatus = InferOutput<typeof playerStatusSchema>;
+
 export type PlayerConfig = InferOutput<typeof playerConfigSchema>;
 
 // Игрок, получаемый из базы
-export const playerSchema = object({
+export const playerSchemaDTO = object({
   id: number(),
   ...playerConfigSchema.entries,
 });
 
+// Игрок и его посчитанные статусы, используемые в приложении
+export const playerSchema = object({
+  data: playerSchemaDTO,
+  status: playerStatusSchema,
+});
+
+export type PlayerDTO = InferOutput<typeof playerSchemaDTO>;
 export type Player = InferOutput<typeof playerSchema>;
 
 // Игра, получаемая из базы

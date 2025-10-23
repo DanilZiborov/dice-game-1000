@@ -7,10 +7,12 @@ export const CurrentGame = (): JSX.Element => {
     state: { players },
   } = useCurrentGame();
 
+  console.log(players);
+
   return (
     <ul className="border-cyber-secondary my-10 border-y">
       {players.map((player) => (
-        <li key={player.id}>
+        <li key={player.data.id}>
           <PlayerRow player={player} />
         </li>
       ))}

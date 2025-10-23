@@ -1,5 +1,6 @@
 import type { JSX } from 'react';
 import { clsx } from 'clsx';
+import { useState } from 'react';
 
 const baseBtn = clsx(
   'flex w-[80px] items-center justify-center rounded-full border-2 bg-transparent transition-colors',
@@ -19,26 +20,53 @@ const smallBtn = clsx(
   'shadow-[0_0_10px_theme(colors.cyber-secondary)]',
 );
 
-export const RecordButtons = (): JSX.Element => {
+const BUTTONS_CONFIG = [5, 10, 50];
+
+type Props = {
+  score: number;
+  points: number;
+  onSetPoints: (newPoints: number) => void;
+};
+
+export const RecordButtons = ({ score, points, onSetPoints }: Props): JSX.Element => {
+  const [isPositive, setIsPositive] = useState(true);
+
+  const togglePositive = (): void => setIsPositive((prev) => !prev);
+
+  const handleSetZero = (): void => {
+    onSetPoints(0);
+  };
+
+  const handleChangePoints = (delta: number): void => {
+    const num = isPositive ? delta : -delta;
+
+    // запрещает уход общего счёта игрока в минус
+    if (!isPositive && score + points + num < 0) {
+      return;
+    }
+
+    onSetPoints(points + num);
+  };
+
   return (
     <div className="mb-16">
       <div className="mb-5 flex justify-center gap-6">
-        <button type="button" className={clsx(baseBtn, bigBtn)}>
-          +5
-        </button>
-        <button type="button" className={clsx(baseBtn, bigBtn)}>
-          +10
-        </button>
-        <button type="button" className={clsx(baseBtn, bigBtn)}>
-          +50
-        </button>
+        {BUTTONS_CONFIG.map((value) => (
+          <button key={value} type="button" className={clsx(baseBtn, bigBtn)} onClick={() => handleChangePoints(value)}>
+            {isPositive ? `+${value}` : `-${value}`}
+          </button>
+        ))}
       </div>
 
       <div className="flex justify-evenly px-6">
-        <button type="button" className={clsx(baseBtn, smallBtn, 'mb-4')}>
-          +
+        <button onClick={togglePositive} type="button" className={clsx(baseBtn, smallBtn, 'mb-4')}>
+          {isPositive ? '+' : '-'}
         </button>
-        <button type="button" className={clsx(baseBtn, smallBtn, 'mb-4 w-20 font-mono text-sm')}>
+        <button
+          onClick={handleSetZero}
+          type="button"
+          className={clsx(baseBtn, smallBtn, 'mb-4 w-20 font-mono text-sm')}
+        >
           сброс
         </button>
       </div>

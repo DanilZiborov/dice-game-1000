@@ -1,4 +1,4 @@
-import type { Game, Player } from 'shared/types';
+import type { Game, Player, PlayerDTO } from 'shared/types';
 
 export type CurrentGameState = {
   game: Game | null;
@@ -7,5 +7,5 @@ export type CurrentGameState = {
 
 export type CurrentGameAction =
   | { type: 'SET_GAME'; payload: Game }
-  | { type: 'SET_PLAYERS'; payload: Player[] }
-  | { type: 'UPDATE_PLAYER'; payload: { id: number; data: Partial<Player> } };
+  | { type: 'SET_PLAYERS'; payload: PlayerDTO[] }
+  | { type: 'UPDATE_PLAYER'; payload: { id: number; data: Partial<PlayerDTO> } };

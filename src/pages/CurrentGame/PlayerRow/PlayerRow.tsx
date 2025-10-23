@@ -51,13 +51,13 @@ export const PlayerRow = ({ player }: Props): JSX.Element => {
 
   return (
     <div
-      onClick={() => navigate(`/game/record/${player.id}`)}
+      onClick={() => navigate(`/game/record/${player.data.id}`)}
       className={'border-cyber-secondary flex h-20' + ' items-center' + ' justify-between' + ' border-b px-3'}
     >
       <div className="flex flex-col items-start justify-start">
-        <span className="text-base">{player.name}</span>
+        <span className="text-base">{player.data.name}</span>
         <div className="mt-1 flex gap-0.5">
-          <RepeatComponent count={player.boltsNumber}>
+          <RepeatComponent count={player.data.boltsNumber}>
             <BoltIcon />
           </RepeatComponent>
         </div>
@@ -65,9 +65,9 @@ export const PlayerRow = ({ player }: Props): JSX.Element => {
 
       {/* Правая колонка: счёт + черепа */}
       <div className="flex flex-col items-end justify-start">
-        <span className="text-lg tracking-wider">{player.score}</span>
+        <span className="text-lg tracking-wider">{player.data.score}</span>
         <div className="mt-1 flex gap-1">
-          <RepeatComponent count={player.barrelAttempts}>
+          <RepeatComponent count={player.data.barrelAttempts}>
             <FailIcon />
           </RepeatComponent>
         </div>
