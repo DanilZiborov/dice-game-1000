@@ -10,7 +10,7 @@ export const RecordScore = ({ points, player }: Props): JSX.Element => {
   return (
     <div className="flex flex-col items-center">
       <div className="text-center text-[64px] leading-none">{points}</div>
-      <p className="text-cyber-text-secondary mb-3 text-center font-mono text-xs tracking-wider">{`${player.data.score} + ${points} = ${player.data.score + points}`}</p>
+      <p className="text-cyber-text-secondary mb-3 text-center font-mono text-xs tracking-wider">{`${player.score} + ${points} = ${player.score + points}`}</p>
     </div>
   );
 };

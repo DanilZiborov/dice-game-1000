@@ -27,17 +27,17 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
     <div className="w-full">
       {/*Игрок*/}
       <div className="flex items-center justify-between">
-        <div onClick={() => navigate('/game', {replace: true})}>
+        <div onClick={() => navigate('/game', { replace: true })}>
           <ArrowIcon direction="left" />
         </div>
-        <h1 className="text-[24px]">{player.data.name}</h1>
+        <h1 className="text-[24px]">{player.name}</h1>
         <div className="w-[20px]" />
       </div>
 
       <div className="flex flex-col items-center gap-1">
         {/*Статусы*/}
         <div className="flex gap-1">
-          <RepeatComponent count={player.data.boltsNumber}>
+          <RepeatComponent count={player.boltsNumber}>
             <BoltIcon />
           </RepeatComponent>
         </div>
@@ -48,9 +48,9 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
         {/*Сетка для easyWin*/}
         {game?.withEasyWin && (
           <div className="mb-2 flex">
-            <div className={clsx(cellBase, cellBorder)}>{player?.data.easyWinLog[0] || '-'}</div>
-            <div className={clsx(cellBase, cellBorder)}>{player?.data.easyWinLog[1] || '-'}</div>
-            <div className={clsx(cellBase, cellLast)}>{player?.data.easyWinLog[2] || '-'}</div>
+            <div className={clsx(cellBase, cellBorder)}>{player?.easyWinLog[0] || '-'}</div>
+            <div className={clsx(cellBase, cellBorder)}>{player?.easyWinLog[1] || '-'}</div>
+            <div className={clsx(cellBase, cellLast)}>{player?.easyWinLog[2] || '-'}</div>
           </div>
         )}
       </div>

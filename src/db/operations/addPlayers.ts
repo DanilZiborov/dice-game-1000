@@ -24,10 +24,11 @@ export const addPlayers = async ({ db, gameId, playerNames }: AddPlayersArgs): P
         name,
         score: 0,
         boltsNumber: 0,
-        barrelAttempts: 0,
+        failsNumber: 0,
         isWinner: false,
         log: [],
         easyWinLog: [],
+        isEnterGame: false,
       };
 
       const id = await awaitRequest<IDBValidKey>(store.add(player));

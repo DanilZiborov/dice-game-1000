@@ -1,4 +1,4 @@
-import type { PlayerConfig, PlayerDTO } from 'shared/types';
+import type { PlayerConfig, Player } from 'shared/types';
 import { STORE_PLAYERS } from 'db/constants';
 import { getGameById } from 'db/operations/getGameById';
 import { getPlayersByGameId } from 'db/operations/getPlayersByGameId';
@@ -27,9 +27,9 @@ export const updatePlayer = async ({ db, gameId, playerId, playerConfig }: Updat
       throw new Error(`Игрок с id=${playerId} не найден в игре с id=${gameId}`);
     }
 
-    const updatedPlayer: PlayerDTO = {
+    const updatedPlayer: Player = {
       ...existingPlayer,
-      ...playerConfig, // можно частично обновлять поля
+      ...playerConfig,
     };
 
     const playerStore = getObjectStore(db, STORE_PLAYERS, 'readwrite');

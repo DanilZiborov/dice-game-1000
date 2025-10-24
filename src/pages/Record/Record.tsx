@@ -8,38 +8,44 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { updatePlayer } from 'db/operations';
 import { useDb } from 'db/DbContext';
+import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
+import { getUpdatedPlayer } from 'pages/Record/handleRecord';
 
 export const Record = (): JSX.Element => {
   const db = useDb();
 
-  const { playerId } = useParams();
-
   const navigate = useNavigate();
 
+  const { playerId } = useParams();
+  if (!playerId) throw new Error('Не задан playerId');
+
+  // const navigate = useNavigate();
+
   const {
-    state: { players },
+    state: { players, game },
     dispatch,
   } = useCurrentGame();
+  if (!game) throw new Error('Игра c не найдена');
 
-  const player = players.find((p) => p.data.id.toString() === playerId);
+  const player = players.find((p) => p.id.toString() === playerId);
 
-  if (!player) throw new Error('Игрок не найден');
+  if (!player) throw new Error(`Игрок c id === ${playerId} не найден`);
+
+  const status = usePlayerStatus({ player });
 
   const [points, setPoints] = useState(0);
 
-  // Пока тестово
   const handleRecord = (): void => {
-    const newScore = player.data.score + points;
+    const newPlayer = getUpdatedPlayer({ player, points, game, status });
 
-    void updatePlayer({
-      db,
-      gameId: player.data.gameId,
-      playerId: Number(playerId),
-      playerConfig: { score: newScore },
+    updatePlayer({ db, playerId: Number(playerId), gameId: game.id, playerConfig: newPlayer }).then(() => {
+      dispatch({ type: 'UPDATE_PLAYER', payload: { id: newPlayer.id, data: newPlayer } });
+      navigate('/game');
     });
-    dispatch({ type: 'UPDATE_PLAYER', payload: { id: Number(playerId), data: { score: newScore } } });
-    navigate('/game');
   };
+
+  console.log(player);
+  console.log(status);
 
   return (
     <div className="flex h-full flex-col items-center justify-between px-4 pt-4 pb-25">
@@ -47,7 +53,7 @@ export const Record = (): JSX.Element => {
       <RecordScore points={points} player={player} />
 
       <div className="flex flex-col items-center">
-        <RecordButtons score={player.data.score} points={points} onSetPoints={(newPoints) => setPoints(newPoints)} />
+        <RecordButtons score={player.score} points={points} onSetPoints={(newPoints) => setPoints(newPoints)} />
         <PrimaryButton
           withDelay
           onClick={() => {

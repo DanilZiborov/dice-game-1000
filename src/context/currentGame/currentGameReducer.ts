@@ -1,6 +1,5 @@
 import type { CurrentGameAction, CurrentGameState } from 'context/currentGame/types';
 import type { Game } from 'shared/types';
-import { getPlayerWithStatus } from 'context/currentGame/getPlayerWithStatus';
 
 /**
  * Проверяет, что игра существует. Если нет — выбрасывает ошибку.
@@ -17,30 +16,29 @@ const ensureGame = (state: CurrentGameState): Game => {
 export const currentGameReducer = (state: CurrentGameState, action: CurrentGameAction): CurrentGameState => {
   switch (action.type) {
     case 'SET_GAME':
-      return { ...state, game: action.payload };
+      return {
+        ...state,
+        game: action.payload,
+      };
 
     case 'SET_PLAYERS': {
-      const game = ensureGame(state);
+      ensureGame(state);
 
       return {
         ...state,
-        players: action.payload.map((playerDTO) => getPlayerWithStatus({ playerDTO, game })),
+        players: action.payload,
       };
     }
 
     case 'UPDATE_PLAYER': {
-      const game = ensureGame(state);
-      const updatedPlayers = state.players.map((player) => {
-        if (player.data.id === action.payload.id) {
-          const updatedPlayerDTO = { ...player.data, ...action.payload.data };
+      ensureGame(state);
 
-          return getPlayerWithStatus({ playerDTO: updatedPlayerDTO, game });
-        }
-
-        return getPlayerWithStatus({ playerDTO: player.data, game });
-      });
-
-      return { ...state, players: updatedPlayers };
+      return {
+        ...state,
+        players: state.players.map((player) =>
+          player.id === action.payload.id ? { ...player, ...action.payload.data } : player,
+        ),
+      };
     }
 
     default:

@@ -4,7 +4,7 @@ import { CustomCheckbox } from 'components/CustomCheckbox';
 import { CustomNumericInputWithSteps } from 'components';
 import type { NewGameConfig } from 'shared/types';
 import { MIN_MAX_GAME_CONFIGS } from 'pages/NewGame/constants';
-import { MAX_BOLT_NUMBER } from 'shared/constants';
+import { MAX_BOLTS } from 'shared/constants';
 
 type Props = {
   onConfigChange: (newRules: Partial<NewGameConfig>) => void;
@@ -29,7 +29,7 @@ export const AddRulesForm = ({ onConfigChange, currentConfig }: Props): JSX.Elem
 
         <div className="flex items-center gap-6">
           <span className={clsx(withBolts ? 'text-white' : 'text-cyber-disabled')}>
-            {MAX_BOLT_NUMBER} болта снимают
+            {MAX_BOLTS} болта снимают
           </span>
           <CustomNumericInputWithSteps
             value={boltsLimit}

@@ -1,11 +1,21 @@
-import { array, boolean, maxLength, minLength, number, object, optional, pipe, string, trim } from 'valibot';
+import {
+  array,
+  boolean,
+  maxLength,
+  maxValue,
+  minLength,
+  number,
+  object,
+  optional,
+  pipe,
+  string,
+  trim,
+  intersect,
+} from 'valibot';
 import type { InferOutput } from 'valibot';
-import { PLAYER_NAME_MAXLENGTH, PLAYER_NAME_MINLENGTH } from 'shared/constants';
+import { MAX_BOLTS, MAX_EASY_WIN_ATTEMPTS, PLAYER_NAME_MAXLENGTH, PLAYER_NAME_MINLENGTH } from 'shared/constants';
 
-// В данные, которые лежат в базе, включаем только чистые значения. Всё, что можно посчитать (статусы на основе
-// данных), считаем на фронте и в базу не записываем.
-
-// Конфиг для создания новой партии
+// Конфиг новой партии
 export const newGameConfigSchema = object({
   enterLimit: number(),
   barrelLimit: number(),
@@ -21,8 +31,7 @@ export const newGameConfigSchema = object({
 
 export type NewGameConfig = InferOutput<typeof newGameConfigSchema>;
 
-// Схема для валидации имени игрока
-
+// Имя игрока
 export const playerNameSchema = pipe(
   string(),
   trim(),
@@ -30,50 +39,46 @@ export const playerNameSchema = pipe(
   maxLength(PLAYER_NAME_MAXLENGTH),
 );
 
-// Конфиг для записи нового игрока
+// Конфиг игрока
 export const playerConfigSchema = object({
   gameId: number(),
   name: playerNameSchema,
   score: number(),
-  boltsNumber: number(),
-  barrelAttempts: number(),
+  boltsNumber: pipe(number(), maxValue(MAX_BOLTS)),
+  failsNumber: number(),
   isWinner: boolean(),
-  log: array(string()),
-  easyWinLog: pipe(array(number()), minLength(0), maxLength(3)),
-});
-
-// Статусы игрока. В базу не записываются, рассчитываются на фронте на основании данных
-export const playerStatusSchema = object({
-  isInPit: boolean(),
   isEnterGame: boolean(),
-  isOnBarrel: boolean(),
+  log: array(number()),
+  easyWinLog: pipe(array(number()), minLength(0), maxLength(MAX_EASY_WIN_ATTEMPTS)),
 });
-
-export type PlayerStatus = InferOutput<typeof playerStatusSchema>;
 
 export type PlayerConfig = InferOutput<typeof playerConfigSchema>;
 
-// Игрок, получаемый из базы
-export const playerSchemaDTO = object({
-  id: number(),
-  ...playerConfigSchema.entries,
-});
+// Игрок из базы
+export const playerSchema = intersect([
+  playerConfigSchema,
+  object({
+    id: number(),
+  }),
+]);
 
-// Игрок и его посчитанные статусы, используемые в приложении
-export const playerSchema = object({
-  data: playerSchemaDTO,
-  status: playerStatusSchema,
-});
-
-export type PlayerDTO = InferOutput<typeof playerSchemaDTO>;
 export type Player = InferOutput<typeof playerSchema>;
 
-// Игра, получаемая из базы
-export const gameSchema = object({
-  id: number(),
-  ...newGameConfigSchema.entries,
-  started: string(),
-  ended: optional(string()),
-});
+// Игра из базы
+export const gameSchema = intersect([
+  newGameConfigSchema,
+  object({
+    id: number(),
+    started: string(),
+    ended: optional(string()),
+  }),
+]);
 
 export type Game = InferOutput<typeof gameSchema>;
+
+export type PlayerStatus = {
+  isInPit: boolean;
+  pitPointsLeft: number | null;
+  isOnBarrel: boolean;
+  barrelPointsLeft: number | null;
+};

@@ -2,6 +2,8 @@ import type { JSX } from 'react';
 import type { Player } from 'shared/types';
 import { useNavigate } from 'react-router-dom';
 import { RepeatComponent } from 'shared/utils/RepeatComponent';
+import { clsx } from 'clsx';
+import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
 
 type Props = { player: Player };
 
@@ -49,25 +51,27 @@ export const FailIcon = (): JSX.Element => (
 export const PlayerRow = ({ player }: Props): JSX.Element => {
   const navigate = useNavigate();
 
+  const { isOnBarrel } = usePlayerStatus({ player });
+
   return (
     <div
-      onClick={() => navigate(`/game/record/${player.data.id}`)}
-      className={'border-cyber-secondary flex h-20' + ' items-center' + ' justify-between' + ' border-b px-3'}
+      onClick={() => navigate(`/game/record/${player.id}`)}
+      className="border-cyber-secondary flex h-20 flex-col justify-center border-b px-3"
     >
-      <div className="flex flex-col items-start justify-start">
-        <span className="text-base">{player.data.name}</span>
+      <div className="flex items-center justify-between">
+        <span className="text-base">{player.name}</span>
+        <span className={clsx('text-lg tracking-wider', isOnBarrel && 'text-yellow-500')}>{player.score}</span>
+      </div>
+
+      <div className="flex items-center justify-between">
         <div className="mt-1 flex gap-0.5">
-          <RepeatComponent count={player.data.boltsNumber}>
+          <RepeatComponent count={player.boltsNumber}>
             <BoltIcon />
           </RepeatComponent>
         </div>
-      </div>
 
-      {/* Правая колонка: счёт + черепа */}
-      <div className="flex flex-col items-end justify-start">
-        <span className="text-lg tracking-wider">{player.data.score}</span>
         <div className="mt-1 flex gap-1">
-          <RepeatComponent count={player.data.barrelAttempts}>
+          <RepeatComponent count={player.failsNumber}>
             <FailIcon />
           </RepeatComponent>
         </div>
