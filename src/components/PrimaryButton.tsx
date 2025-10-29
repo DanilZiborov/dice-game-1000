@@ -57,31 +57,37 @@ export const PrimaryButton = ({
   const targetProgress = useRef(0);
   const rafRef = useRef<number | null>(null);
   const lastTimeRef = useRef<number | null>(null);
+  const onClickRef = useRef(onClick);
 
-  const animate = useCallback(
-    (time: number) => {
-      if (!lastTimeRef.current) lastTimeRef.current = time;
-      const delta = time - lastTimeRef.current;
-      lastTimeRef.current = time;
+  // обновляем ref при каждом изменении пропа onClick, чтобы onClick оставался актуальным
+  useEffect(() => {
+    onClickRef.current = onClick;
+  }, [onClick]);
 
-      setProgress((prev) => {
-        const speed = 1 / DURATION;
-        let next = prev;
+  const animate = useCallback((time: number) => {
+    if (!lastTimeRef.current) lastTimeRef.current = time;
+    const delta = time - lastTimeRef.current;
+    lastTimeRef.current = time;
 
-        if (targetProgress.current > prev) {
-          next = Math.min(prev + speed * delta, targetProgress.current);
-          if (next === 1) onClick?.();
-        } else if (targetProgress.current < prev) {
-          next = Math.max(prev - speed * delta, targetProgress.current);
+    setProgress((prev) => {
+      const speed = 1 / DURATION;
+      let next = prev;
+
+      if (targetProgress.current > prev) {
+        next = Math.min(prev + speed * delta, targetProgress.current);
+
+        if (next === 1) {
+          onClickRef.current?.();
         }
+      } else if (targetProgress.current < prev) {
+        next = Math.max(prev - speed * delta, targetProgress.current);
+      }
 
-        return next;
-      });
+      return next;
+    });
 
-      rafRef.current = requestAnimationFrame(animate);
-    },
-    [onClick],
-  );
+    rafRef.current = requestAnimationFrame(animate);
+  }, []);
 
   // 🔹 обработчики для режима с удержанием
   const startHold = useCallback(() => {
@@ -107,9 +113,10 @@ export const PrimaryButton = ({
   // 🔹 обработчик обычного клика (без задержки)
   const handleClick = useCallback(() => {
     if (disabled) return;
-    if (!withDelay) onClick?.();
-  }, [disabled, withDelay, onClick]);
+    if (!withDelay) onClickRef.current?.();
+  }, [disabled, withDelay]);
 
+  // очистка requestAnimationFrame при размонтировании
   useEffect(() => {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -120,7 +127,7 @@ export const PrimaryButton = ({
     <button
       type="button"
       disabled={disabled}
-      onClick={handleClick} // работает только если withDelay = false
+      onClick={handleClick}
       onMouseDown={withDelay ? startHold : undefined}
       onMouseUp={withDelay ? stopHold : undefined}
       onMouseLeave={withDelay ? stopHold : undefined}

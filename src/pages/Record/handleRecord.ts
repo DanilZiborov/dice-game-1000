@@ -16,6 +16,8 @@ type Args = {
 };
 
 export const getUpdatedPlayer = ({ player, points, game, status }: Args): Player => {
+  // TODO: тут нужен большой рефакторинг
+
   const { isInPit, isOnBarrel } = status;
 
   const { boltsLimit, withEasyWin, enterLimit, truck, barrelLimit } = game;
@@ -23,7 +25,22 @@ export const getUpdatedPlayer = ({ player, points, game, status }: Args): Player
 
   const playerCopy = structuredClone(player);
 
-  const resultScore = score + points;
+  let resultScore = score + points;
+
+  // нельзя записать больше 1000
+  if (resultScore > THOUSAND_WINNING_POINTS) resultScore = 1000;
+
+  // нельзя записать больше 900, когда садишься на бочку
+  if (score < barrelLimit && resultScore > barrelLimit) resultScore = barrelLimit;
+
+  // нельзя записать меньше паспорта при входе в игру
+  if (!isEnterGame && resultScore < enterLimit) resultScore = 0;
+
+  // сидя в яме нельзя писать меньше, чем нужно для прыжка
+  if (isInPit && points < status.pitPointsLeft) resultScore = score;
+
+  // нельзя уйти в минус
+  if (resultScore < 0) resultScore = 0;
 
   // обновляем счёт
   playerCopy.score = resultScore;
@@ -42,14 +59,13 @@ export const getUpdatedPlayer = ({ player, points, game, status }: Args): Player
       // иначе - списываем очки и обнуляем болты
       playerCopy.boltsNumber = boltsNumber + 1;
     } else {
-      playerCopy.score = score - boltsLimit;
+      // болты не могут увести игрока в минус
+      playerCopy.score = score < 0 ? 0 : score - boltsLimit;
       playerCopy.boltsNumber = 0;
     }
   }
 
   const isFail = !withEasyWin || (withEasyWin && easyWinLog.length > MAX_EASY_WIN_ATTEMPTS - 1);
-
-  console.log(isFail);
 
   // обрабатываем падения с бочки
   if (isOnBarrel) {
@@ -63,6 +79,7 @@ export const getUpdatedPlayer = ({ player, points, game, status }: Args): Player
           playerCopy.easyWinLog = [];
         } else {
           playerCopy.score = 0;
+          playerCopy.boltsNumber = 0;
           playerCopy.failsNumber = 0;
           playerCopy.easyWinLog = [];
         }

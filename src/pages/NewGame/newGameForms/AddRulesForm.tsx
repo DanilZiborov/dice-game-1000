@@ -28,9 +28,7 @@ export const AddRulesForm = ({ onConfigChange, currentConfig }: Props): JSX.Elem
         />
 
         <div className="flex items-center gap-6">
-          <span className={clsx(withBolts ? 'text-white' : 'text-cyber-disabled')}>
-            {MAX_BOLTS} болта снимают
-          </span>
+          <span className={clsx(withBolts ? 'text-white' : 'text-cyber-disabled')}>{MAX_BOLTS} болта снимают</span>
           <CustomNumericInputWithSteps
             value={boltsLimit}
             step={BOLTS_LIMIT_STEP}

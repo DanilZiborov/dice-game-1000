@@ -40,8 +40,10 @@ export const RecordButtons = ({ score, points, onSetPoints }: Props): JSX.Elemen
   const handleChangePoints = (delta: number): void => {
     const num = isPositive ? delta : -delta;
 
+    // console.log(points);
+
     // запрещает уход общего счёта игрока в минус
-    if (!isPositive && score + points + num < 0) {
+    if (score + points + num < 0) {
       return;
     }
 
