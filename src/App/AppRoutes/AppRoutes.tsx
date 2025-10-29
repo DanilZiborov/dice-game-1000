@@ -3,7 +3,6 @@ import type { JSX } from 'react';
 import { AppLayout } from 'App/AppLayout';
 import { Temporal } from 'pages/Temporal/Temporal';
 import { CurrentGame, NewGame, StartPage } from 'pages';
-import { Record } from 'pages/Record/Record';
 import { RequireCurrentGame } from 'App/AppRoutes/RequireCurrentGame';
 
 const routes: RouteObject[] = [
@@ -21,12 +20,8 @@ const routes: RouteObject[] = [
         element: <RequireCurrentGame />,
         children: [
           {
-            index: true,
+            path: '/game/:recordMode?',
             element: <CurrentGame />,
-          },
-          {
-            path: '/game/record/:playerId',
-            element: <Record />,
           },
         ],
       },

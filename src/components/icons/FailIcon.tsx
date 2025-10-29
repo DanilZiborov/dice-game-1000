@@ -1,14 +1,7 @@
 import type { JSX } from 'react';
 
 export const FailIcon = (): JSX.Element => (
-  <svg
-    width="12"
-    height="12"
-    viewBox="0 0 10 10"
-    fill="none"
-    xmlns="http://www.w3.org/2000/svg"
-    className="block"
-  >
+  <svg width="12" height="12" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg" className="block">
     {/* Круг */}
     <circle cx="5" cy="5" r="4.5" strokeWidth="1" fill="#FF4D4D" />
     {/* Крест */}

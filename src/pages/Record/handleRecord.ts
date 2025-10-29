@@ -37,7 +37,7 @@ export const getUpdatedPlayer = ({ player, points, game, status }: Args): Player
   if (!isEnterGame && resultScore < enterLimit) resultScore = 0;
 
   // сидя в яме нельзя писать меньше, чем нужно для прыжка
-  if (isInPit && points < status.pitPointsLeft) resultScore = score;
+  if (isInPit && typeof status.pitPointsLeft === 'number' && points < status.pitPointsLeft) resultScore = score;
 
   // нельзя уйти в минус
   if (resultScore < 0) resultScore = 0;

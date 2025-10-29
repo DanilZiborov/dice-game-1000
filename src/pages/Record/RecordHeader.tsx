@@ -21,6 +21,8 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
     state: { game },
   } = useCurrentGame();
 
+  if (!game) throw new Error('Игра не существует!');
+
   const { isInPit, isOnBarrel, barrelPointsLeft, pitPointsLeft } = usePlayerStatus({ player });
 
   // Если в массиве не хватает значений, дополняем до 3
@@ -37,7 +39,7 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
     if (isOnBarrel && game.withEasyWin) return `для победы нужно ${barrelPointsLeft} очков`;
 
     return '';
-  });
+  }, [barrelPointsLeft, game.enterLimit, game.withEasyWin, isInPit, isOnBarrel, pitPointsLeft, player.isEnterGame]);
 
   return (
     <div className="w-full">
@@ -75,7 +77,8 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
           <div className="mb-2 flex">
             {stableEasyWinLog.map((value, index, arr) => (
               <div
-                key={index}
+                /* eslint-disable-next-line react/no-array-index-key */
+                key={`easy-win-grid-${index}`}
                 className={clsx(
                   'border-cyber-text-secondary flex h-[16px] w-[36px] items-center justify-center border border-r font-mono text-[10px] leading-none tracking-widest',
                   index === arr.length - 1 && 'border-r-1',
