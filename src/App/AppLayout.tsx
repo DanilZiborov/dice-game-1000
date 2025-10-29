@@ -23,7 +23,7 @@ export const AppLayout = (): JSX.Element => {
         'items-center overflow-hidden',
       )}
     >
-      <div className="h-full w-full max-w-[900px] text-white">
+      <div className="h-full w-full max-w-[600px] text-white">
         <header className="flex flex-row justify-between p-4">
           <button className="focus:outline-none">
             <div className="bg-cyber-secondary mb-1.5 h-0.5 w-6 shadow-lg"></div>
