@@ -6,6 +6,6 @@ export type CurrentGameState = {
 };
 
 export type CurrentGameAction =
-  | { type: 'SET_GAME'; payload: Game }
+  | { type: 'SET_GAME'; payload: Game | null }
   | { type: 'SET_PLAYERS'; payload: Player[] }
   | { type: 'UPDATE_PLAYER'; payload: { id: number; data: Partial<Player> } };

@@ -11,8 +11,6 @@ type EndGameArgs = {
 };
 
 export const endGame = async ({ db, gameId }: EndGameArgs): Promise<IDBValidKey> => {
-  const store = getObjectStore(db, STORE_GAMES, 'readwrite');
-
   try {
     const game = await getGameById({ db, gameId });
 
@@ -22,6 +20,8 @@ export const endGame = async ({ db, gameId }: EndGameArgs): Promise<IDBValidKey>
       ...game,
       ended: new Date().toISOString(),
     };
+
+    const store = getObjectStore(db, STORE_GAMES, 'readwrite');
 
     return await awaitRequest<IDBValidKey>(store.put(updatedGame));
   } catch (err) {

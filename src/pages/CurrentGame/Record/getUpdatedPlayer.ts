@@ -28,7 +28,7 @@ export const getUpdatedPlayer = ({ player, points, game, status }: Args): Player
   let resultScore = score + points;
 
   // нельзя записать больше 1000
-  if (resultScore > THOUSAND_WINNING_POINTS) resultScore = 1000;
+  if (resultScore >= THOUSAND_WINNING_POINTS) resultScore = 1000;
 
   // нельзя записать больше 900, когда садишься на бочку
   if (score < barrelLimit && resultScore > barrelLimit) resultScore = barrelLimit;
@@ -51,6 +51,9 @@ export const getUpdatedPlayer = ({ player, points, game, status }: Args): Player
   // обновляем лог
   playerCopy.log.push(resultScore);
 
+  // обрабатываем победу
+  playerCopy.isWinner = resultScore === THOUSAND_WINNING_POINTS;
+
   // обрабатываем болты
   // болт назначается игроку, который выкинул 0, вошёл в игру, не находится на бочке и не находится в яме
   // в противном случае болт не записывается
@@ -63,7 +66,7 @@ export const getUpdatedPlayer = ({ player, points, game, status }: Args): Player
       playerCopy.boltsNumber = boltsNumber + 1;
     } else {
       // болты не могут увести игрока в минус
-      playerCopy.score = score < 0 ? 0 : score - boltsLimit;
+      playerCopy.score = score - boltsLimit < 0 ? 0 : score - boltsLimit;
       playerCopy.boltsNumber = 0;
     }
   }
