@@ -1,15 +1,15 @@
 import type { JSX } from 'react';
 import { PrimaryButton } from 'components';
-import { RecordHeader } from 'pages/Record/RecordHeader';
-import { RecordScore } from 'pages/Record/RecordScore';
-import { RecordButtons } from 'pages/Record/RecordButtons';
+import { RecordHeader } from 'pages/CurrentGame/Record/RecordHeader';
+import { RecordScore } from 'pages/CurrentGame/Record/RecordScore';
+import { RecordButtons } from 'pages/CurrentGame/Record/RecordButtons';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { updatePlayer } from 'db/operations';
 import { useDb } from 'db/DbContext';
 import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
-import { getUpdatedPlayer } from 'pages/Record/handleRecord';
+import { getUpdatedPlayer } from 'pages/CurrentGame/Record/getUpdatedPlayer';
 import type { Player } from 'shared/types';
 
 type Props = {
@@ -40,6 +40,9 @@ export const Record = ({ player }: Props): JSX.Element => {
       navigate('/game');
     });
   };
+
+  // console.log(player);
+  // console.log(game);
 
   return (
     <div className="flex h-full flex-col items-center justify-between px-4 pt-4 pb-25">

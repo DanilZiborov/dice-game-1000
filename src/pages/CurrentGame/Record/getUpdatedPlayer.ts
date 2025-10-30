@@ -36,8 +36,11 @@ export const getUpdatedPlayer = ({ player, points, game, status }: Args): Player
   // нельзя записать меньше паспорта при входе в игру
   if (!isEnterGame && resultScore < enterLimit) resultScore = 0;
 
-  // сидя в яме нельзя писать меньше, чем нужно для прыжка
-  if (isInPit && typeof status.pitPointsLeft === 'number' && points < status.pitPointsLeft) resultScore = score;
+  // сидя в яме нельзя записывать меньше, чем нужно для прыжка
+  // только если это не обгоны
+  // штраф за обгон может выбросить из ямы
+  if (isInPit && typeof status.pitPointsLeft === 'number' && points < status.pitPointsLeft && points > 0)
+    resultScore = score;
 
   // нельзя уйти в минус
   if (resultScore < 0) resultScore = 0;

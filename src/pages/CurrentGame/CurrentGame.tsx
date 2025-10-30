@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { Record } from 'pages/Record/Record';
+import { Record } from 'pages/CurrentGame/Record/Record';
 import { type JSX, useState } from 'react';
 import { PlayerRow } from 'pages/CurrentGame/PlayerRow';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
@@ -18,6 +18,8 @@ export const CurrentGame = (): JSX.Element => {
 
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
+  console.log(selectedPlayer?.score);
+
   const handleSelectPlayer = (player: Player): void => {
     setSelectedPlayer(player);
     navigate('/game/record');
@@ -28,7 +30,7 @@ export const CurrentGame = (): JSX.Element => {
       <ul className={clsx('border-cyber-secondary my-10 border-y', isRecordMode && 'hidden')}>
         {players.map((player) => (
           <li key={player.id}>
-            <PlayerRow player={player} onSelectPlayer={handleSelectPlayer} />
+            <PlayerRow player={player} onSelectPlayer={handleSelectPlayer} selectedPlayer={selectedPlayer} />
           </li>
         ))}
       </ul>

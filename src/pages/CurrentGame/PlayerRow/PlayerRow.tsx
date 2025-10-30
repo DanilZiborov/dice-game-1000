@@ -5,10 +5,11 @@ import { clsx } from 'clsx';
 import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
 import { BoltIcon, FailIcon, ShovelIcon } from 'components';
 import { useEffect, useRef, useState } from 'react';
+import { useOvertake } from 'pages/CurrentGame/PlayerRow/useOvertake';
 
-type Props = { player: Player; onSelectPlayer: (player: Player) => void };
+type Props = { player: Player; selectedPlayer: Player | null; onSelectPlayer: (player: Player) => void };
 
-export const PlayerRow = ({ player, onSelectPlayer }: Props): JSX.Element => {
+export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JSX.Element => {
   const { isOnBarrel, isInPit } = usePlayerStatus({ player });
 
   const [displayScore, setDisplayScore] = useState(player.score);
@@ -24,6 +25,8 @@ export const PlayerRow = ({ player, onSelectPlayer }: Props): JSX.Element => {
 
     return 1;
   };
+
+  useOvertake({ selectedPlayer, currentPlayer: player });
 
   useEffect(() => {
     const prev = prevScoreRef.current;
@@ -57,6 +60,9 @@ export const PlayerRow = ({ player, onSelectPlayer }: Props): JSX.Element => {
     }
   }, [player.score]);
 
+  // console.log(prevScoreRef.current);
+  // console.log(player.score)
+
   return (
     <div
       onClick={() => onSelectPlayer(player)}
@@ -68,9 +74,7 @@ export const PlayerRow = ({ player, onSelectPlayer }: Props): JSX.Element => {
 
           {/* отрицательная разница */}
           {diff !== null && (
-            <span className="animate-float-diff absolute -right-20 text-[36px] font-bold text-red-500">
-              -{diff}
-            </span>
+            <span className="animate-float-diff absolute -right-20 text-[36px] font-bold text-red-500">-{diff}</span>
           )}
         </span>
 
