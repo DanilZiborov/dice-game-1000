@@ -2,19 +2,12 @@ import type { JSX } from 'react';
 import { Outlet } from 'react-router-dom';
 import { clsx } from 'clsx';
 import { getFormattedDateString } from 'shared/utils/getFormattedDateString';
-import { getCurrentGame } from 'db/operations';
-import { useDb } from 'db/DbContext';
-import type { Game } from 'shared/types';
-import { useEffect, useState } from 'react';
+import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
 
 export const AppLayout = (): JSX.Element => {
-  const db = useDb();
-
-  const [currentGame, setCurrentGame] = useState<null | Game>(null);
-
-  useEffect(() => {
-    getCurrentGame({ db }).then((game) => setCurrentGame(game));
-  }, [db]);
+  const {
+    state: { game },
+  } = useCurrentGame();
 
   return (
     <div
@@ -30,9 +23,9 @@ export const AppLayout = (): JSX.Element => {
             <div className="bg-cyber-secondary mb-1.5 h-0.5 w-6 shadow-lg"></div>
             <div className="bg-cyber-secondary h-0.5 w-6 shadow-lg"></div>
           </button>
-          {currentGame && (
+          {game && (
             <div className="text-cyber-text-secondary text-xs">
-              партия началась {getFormattedDateString(new Date(currentGame.started))}
+              партия началась {getFormattedDateString(new Date(game.started))}
             </div>
           )}
         </header>

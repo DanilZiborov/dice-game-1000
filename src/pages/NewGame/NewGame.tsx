@@ -11,6 +11,7 @@ import { addGame } from 'db/operations/addGame';
 import { addPlayers } from 'db/operations/addPlayers';
 import { useNavigate } from 'react-router-dom';
 import { getCurrentGame } from 'db/operations';
+import { findDuplicates } from 'shared/utils/findDuplicates';
 
 const formContainerTitle = [
   '',
@@ -38,6 +39,10 @@ export const NewGame = (): JSX.Element => {
     return newPlayers;
   }, [newPlayers]);
 
+  const isPlayerDupes = useMemo(() => !!findDuplicates(newPlayers), [newPlayers]);
+
+  const notEnoughPlayers = useMemo(() => newPlayers.filter((p) => !!p).length < 2, [newPlayers]);
+
   // Обработчики шагов
   const handleStepForward = useCallback((): void => setStep((prev) => prev + 1), []);
   const handleStepBack = useCallback((): void => setStep((prev) => (prev <= 0 ? 0 : prev - 1)), []);
@@ -47,6 +52,7 @@ export const NewGame = (): JSX.Element => {
   }, []);
 
   const handleStartGame = useCallback(async (): Promise<void> => {
+    if (notEnoughPlayers || isPlayerDupes) return;
     const filteredPlayers = newPlayers.filter((p) => !!p);
     if (filteredPlayers.length < 2) return;
 
@@ -91,6 +97,8 @@ export const NewGame = (): JSX.Element => {
     void checkGameStarted();
   }, [db, navigate]);
 
+  const isButtonDisabled = isPlayerDupes || notEnoughPlayers;
+
   return (
     <div className="flex h-full flex-col justify-center p-4">
       {step > 0 && step < 5 ? (
@@ -105,7 +113,7 @@ export const NewGame = (): JSX.Element => {
         <div className="flex items-center justify-between">
           <SecondaryButton onClick={handleStepBack}>Назад</SecondaryButton>
           {step !== 5 && (
-            <PrimaryButton disabled={newPlayers.filter((p) => !!p).length < 2} onClick={handleStepForward}>
+            <PrimaryButton disabled={isButtonDisabled} onClick={handleStepForward}>
               Далее
             </PrimaryButton>
           )}

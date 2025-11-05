@@ -1,5 +1,5 @@
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
-import { getUpdatedPlayer } from 'pages/CurrentGame/Record/getUpdatedPlayer';
+import { getUpdatedPlayer } from 'pages/CurrentGame/Record/coreLogic/getUpdatedPlayer';
 import { updatePlayer } from 'db/operations';
 import type { Player } from 'shared/types';
 import { useDb } from 'db/DbContext';

@@ -35,7 +35,7 @@ export const SecondaryButton = ({
         'text-cyber-secondary border-cyber-secondary',
         'active:bg-cyber-secondary active:border-black active:text-black',
         'disabled:text-cyber-disabled disabled:border-cyber-disabled',
-        className,
+        className || '',
       )}
     >
       {withDelay && !disabled && (

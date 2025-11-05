@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { updatePlayer } from 'db/operations';
 import { useDb } from 'db/DbContext';
 import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
-import { getUpdatedPlayer } from 'pages/CurrentGame/Record/getUpdatedPlayer';
+import { getUpdatedPlayer } from 'pages/CurrentGame/Record/coreLogic/getUpdatedPlayer';
 import type { Player } from 'shared/types';
 
 type Props = {

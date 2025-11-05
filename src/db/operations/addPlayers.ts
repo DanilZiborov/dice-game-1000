@@ -11,6 +11,21 @@ type AddPlayersArgs = {
 };
 
 export const addPlayers = async ({ db, gameId, playerNames }: AddPlayersArgs): Promise<IDBValidKey[]> => {
+  // защищем БД от дублей
+  const duplicates = [
+    ...playerNames.reduce(
+      (acc, item) => {
+        if (acc.seen.has(item)) acc.dupes.add(item);
+        acc.seen.add(item);
+
+        return acc;
+      },
+      { seen: new Set<string>(), dupes: new Set<string>() },
+    ).dupes,
+  ].join(', ');
+
+  if (duplicates.length) throw new Error(`Ошибка при записи в базу. Имена игроков дублируются. Имена: ${duplicates}`);
+
   playerNames.forEach((n) => assertSchemaMatch(playerNameSchema, n));
 
   const store = getObjectStore(db, STORE_PLAYERS, 'readwrite');

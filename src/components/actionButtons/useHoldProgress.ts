@@ -9,6 +9,8 @@ type UseHoldProgressParams = {
 
 const DURATION = 350; // ms
 
+// TODO: изучить код тут подробнее
+
 /**
  * Универсальный хук для кнопок с режимом удержания.
  * - При `withDelay = false` срабатывает обычный клик.
@@ -46,6 +48,14 @@ export const useHoldProgress = ({ onClick, disabled, withDelay, svgSize = 120 }:
         if (next === 1) onClickRef.current?.();
       } else if (targetProgress.current < prev) {
         next = Math.max(prev - speed * delta, targetProgress.current);
+      }
+
+      // останавливаем RAF, если достигли цели
+      if (next === targetProgress.current) {
+        if (rafRef.current) {
+          cancelAnimationFrame(rafRef.current);
+          rafRef.current = null;
+        }
       }
 
       return next;
