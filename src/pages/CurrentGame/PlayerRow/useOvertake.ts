@@ -37,8 +37,6 @@ export const useOvertake = ({ selectedPlayer, currentPlayer }: Props): void => {
     // считаем, что игрока обогнали, если предыдущий счёт внешнего игрока был меньше текущего счёта игрока, а стал больше
     const needPenalty = currentPlayerScore > selectedPlayerPrevScore && currentPlayerScore < selectedPlayerNewScore;
 
-    if (needPenalty) console.log('штраф', currentPlayer.name);
-
     // записываем новые данные в контекст и базу
     // TODO: запись игрока, возможно, стоит зарефакторить
     if (needPenalty) {
@@ -46,8 +44,6 @@ export const useOvertake = ({ selectedPlayer, currentPlayer }: Props): void => {
 
       updatePlayer({ db, playerId: currentPlayer.id, gameId: game.id, playerConfig: newPlayer }).then(() => {
         dispatch({ type: 'UPDATE_PLAYER', payload: { id: newPlayer.id, data: newPlayer } });
-
-        console.log('обгон записан');
       });
     }
     // TODO: разобраться, почему тут с другими зависимостями не работает

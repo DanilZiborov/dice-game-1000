@@ -55,7 +55,6 @@ export const Record = ({ player }: Props): JSX.Element => {
           withDelay
           onClick={() => {
             handleRecord();
-            console.log('игра записана');
           }}
         >
           Записать

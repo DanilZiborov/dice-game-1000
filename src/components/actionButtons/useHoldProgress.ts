@@ -7,6 +7,26 @@ type UseHoldProgressParams = {
   svgSize?: number; // размер SVG (для Primary/Secondary)
 };
 
+type Returns = {
+  progress: number;
+  bind: {
+    onClick: () => void;
+    onMouseDown?: () => void;
+    onMouseUp?: () => void;
+    onMouseLeave?: () => void;
+    onTouchStart?: () => void;
+    onTouchEnd?: () => void;
+  };
+  circleProps: {
+    cx: number;
+    cy: number;
+    r: number;
+    strokeDasharray: number;
+    strokeDashoffset: number;
+    transform: string;
+  };
+};
+
 const DURATION = 350; // ms
 
 // TODO: изучить код тут подробнее
@@ -21,7 +41,7 @@ const DURATION = 350; // ms
  * - `bind` — объект с обработчиками событий (привязывается к кнопке)
  * - `circleProps` — рассчитанные атрибуты SVG-круга для визуализации прогресса
  */
-export const useHoldProgress = ({ onClick, disabled, withDelay, svgSize = 120 }: UseHoldProgressParams) => {
+export const useHoldProgress = ({ onClick, disabled, withDelay, svgSize = 120 }: UseHoldProgressParams): Returns => {
   const [progress, setProgress] = useState(0);
   const targetProgress = useRef(0);
   const rafRef = useRef<number | null>(null);

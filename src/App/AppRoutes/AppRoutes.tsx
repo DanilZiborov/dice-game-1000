@@ -42,7 +42,9 @@ const routes: RouteObject[] = [
   },
 ];
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes, {
+  basename: import.meta.env.DEV ? '/' : '/dice-game-1000/',
+});
 
 export const AppRoutes = (): JSX.Element => {
   return <RouterProvider router={router} />;
