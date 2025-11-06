@@ -32,3 +32,15 @@ input[type="number"]:focus {
   appearance: none;       /* Safari/Chrome */
   -moz-appearance: textfield; /* Firefox */
 }
+
+@layer utilities {
+  @keyframes float-diff {
+    0% { transform: translateY(1.2rem); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translateY(-1.8rem); opacity: 0; }
+  }
+
+  .animate-float-diff {
+    animation: float-diff 2.5s ease-out forwards;
+  }
+}

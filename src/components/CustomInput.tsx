@@ -8,13 +8,23 @@ type CustomInputProps = {
   placeholder?: string;
   className?: string;
   ref: RefObject<HTMLInputElement | null> | null;
+  maxLength?: number;
 };
 
-export const CustomInput = ({ value, onChange, label, placeholder, className, ref }: CustomInputProps): JSX.Element => {
+export const CustomInput = ({
+  value,
+  onChange,
+  label,
+  placeholder,
+  className,
+  ref,
+  maxLength,
+}: CustomInputProps): JSX.Element => {
   return (
     <div className="flex grow flex-col">
       <label className="text-cyber-primary mb-1 text-sm">{label}</label>
       <input
+        maxLength={maxLength}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
