@@ -1,21 +1,28 @@
-import { useState, useRef, useEffect, useCallback } from 'react';
+import {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  type MouseEvent as ReactMouseEvent,
+  type TouchEvent as ReactTouchEvent,
+} from 'react';
 
 type UseHoldProgressParams = {
   onClick?: () => void;
   disabled?: boolean;
   withDelay?: boolean;
-  svgSize?: number; // размер SVG (для Primary/Secondary)
+  svgSize?: number;
 };
 
 type Returns = {
   progress: number;
   bind: {
-    onClick: () => void;
-    onMouseDown?: () => void;
-    onMouseUp?: () => void;
-    onMouseLeave?: () => void;
-    onTouchStart?: () => void;
-    onTouchEnd?: () => void;
+    onClick: (e: ReactMouseEvent<HTMLButtonElement>) => void;
+    onMouseDown?: (e: ReactMouseEvent<HTMLButtonElement>) => void;
+    onMouseUp?: (e: ReactMouseEvent<HTMLButtonElement>) => void;
+    onMouseLeave?: (e: ReactMouseEvent<HTMLButtonElement>) => void;
+    onTouchStart?: (e: ReactTouchEvent<HTMLButtonElement>) => void;
+    onTouchEnd?: (e: ReactTouchEvent<HTMLButtonElement>) => void;
   };
   circleProps: {
     cx: number;
@@ -29,18 +36,6 @@ type Returns = {
 
 const DURATION = 350; // ms
 
-// TODO: изучить код тут подробнее
-
-/**
- * Универсальный хук для кнопок с режимом удержания.
- * - При `withDelay = false` срабатывает обычный клик.
- * - При `withDelay = true` выполняет `onClick` только после полного заполнения круга.
- *
- * Возвращает:
- * - `progress` — текущий прогресс от 0 до 1
- * - `bind` — объект с обработчиками событий (привязывается к кнопке)
- * - `circleProps` — рассчитанные атрибуты SVG-круга для визуализации прогресса
- */
 export const useHoldProgress = ({ onClick, disabled, withDelay, svgSize = 120 }: UseHoldProgressParams): Returns => {
   const [progress, setProgress] = useState(0);
   const targetProgress = useRef(0);
@@ -48,7 +43,6 @@ export const useHoldProgress = ({ onClick, disabled, withDelay, svgSize = 120 }:
   const lastTimeRef = useRef<number | null>(null);
   const onClickRef = useRef(onClick);
 
-  // держим актуальный onClick
   useEffect(() => {
     onClickRef.current = onClick;
   }, [onClick]);
@@ -70,7 +64,6 @@ export const useHoldProgress = ({ onClick, disabled, withDelay, svgSize = 120 }:
         next = Math.max(prev - speed * delta, targetProgress.current);
       }
 
-      // останавливаем RAF, если достигли цели
       if (next === targetProgress.current) {
         if (rafRef.current) {
           cancelAnimationFrame(rafRef.current);
@@ -85,33 +78,72 @@ export const useHoldProgress = ({ onClick, disabled, withDelay, svgSize = 120 }:
   }, []);
 
   /** Начало удержания */
-  const startHold = useCallback(() => {
-    if (disabled || !withDelay) return;
-    targetProgress.current = 1;
+  const startHoldMouse = useCallback(
+    (e: ReactMouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      if (disabled || !withDelay) return;
+      targetProgress.current = 1;
 
-    if (!rafRef.current) {
-      lastTimeRef.current = null;
-      rafRef.current = requestAnimationFrame(animate);
-    }
-  }, [disabled, withDelay, animate]);
+      if (!rafRef.current) {
+        lastTimeRef.current = null;
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    },
+    [disabled, withDelay, animate],
+  );
+
+  const startHoldTouch = useCallback(
+    (e: ReactTouchEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      if (disabled || !withDelay) return;
+      targetProgress.current = 1;
+
+      if (!rafRef.current) {
+        lastTimeRef.current = null;
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    },
+    [disabled, withDelay, animate],
+  );
 
   /** Завершение удержания */
-  const stopHold = useCallback(() => {
-    if (!withDelay) return;
-    targetProgress.current = 0;
+  const stopHoldMouse = useCallback(
+    (e: ReactMouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      if (!withDelay) return;
+      targetProgress.current = 0;
 
-    if (!rafRef.current) {
-      lastTimeRef.current = null;
-      rafRef.current = requestAnimationFrame(animate);
-    }
-  }, [withDelay, animate]);
+      if (!rafRef.current) {
+        lastTimeRef.current = null;
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    },
+    [withDelay, animate],
+  );
 
-  /** Обычный клик (без задержки) */
-  const handleClick = useCallback(() => {
-    if (!withDelay && !disabled) onClickRef.current?.();
-  }, [disabled, withDelay]);
+  const stopHoldTouch = useCallback(
+    (e: ReactTouchEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      if (!withDelay) return;
+      targetProgress.current = 0;
 
-  // Очистка
+      if (!rafRef.current) {
+        lastTimeRef.current = null;
+        rafRef.current = requestAnimationFrame(animate);
+      }
+    },
+    [withDelay, animate],
+  );
+
+  /** Обычный клик */
+  const handleClick = useCallback(
+    (e: ReactMouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation();
+      if (!withDelay && !disabled) onClickRef.current?.();
+    },
+    [disabled, withDelay],
+  );
+
   useEffect(() => {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
@@ -134,14 +166,14 @@ export const useHoldProgress = ({ onClick, disabled, withDelay, svgSize = 120 }:
     transform: `rotate(-90 ${cx} ${cy})`,
   };
 
-  /** Обработчики событий для кнопки */
+  /** Обработчики событий */
   const bind = {
     onClick: handleClick,
-    onMouseDown: withDelay ? startHold : undefined,
-    onMouseUp: withDelay ? stopHold : undefined,
-    onMouseLeave: withDelay ? stopHold : undefined,
-    onTouchStart: withDelay ? startHold : undefined,
-    onTouchEnd: withDelay ? stopHold : undefined,
+    onMouseDown: withDelay ? startHoldMouse : undefined,
+    onMouseUp: withDelay ? stopHoldMouse : undefined,
+    onMouseLeave: withDelay ? stopHoldMouse : undefined,
+    onTouchStart: withDelay ? startHoldTouch : undefined,
+    onTouchEnd: withDelay ? stopHoldTouch : undefined,
   };
 
   return { progress, bind, circleProps };

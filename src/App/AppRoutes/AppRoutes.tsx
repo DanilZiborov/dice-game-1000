@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
 import type { JSX } from 'react';
 import { AppLayout } from 'App/AppLayout';
-import { Temporal } from 'pages/Temporal/Temporal';
 import { CurrentGame, NewGame, StartPage } from 'pages';
 import { RequireCurrentGame } from 'App/AppRoutes/RequireCurrentGame';
 
@@ -29,10 +28,6 @@ const routes: RouteObject[] = [
       {
         path: 'new-game',
         element: <NewGame />,
-      },
-      {
-        path: 'temp',
-        element: <Temporal />,
       },
       {
         path: '*',
