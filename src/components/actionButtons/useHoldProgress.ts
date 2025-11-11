@@ -59,7 +59,17 @@ export const useHoldProgress = ({ onClick, disabled, withDelay, svgSize = 120 }:
 
       if (targetProgress.current > prev) {
         next = Math.min(prev + speed * delta, targetProgress.current);
-        if (next === 1) onClickRef.current?.();
+
+        // когда прогресс достиг 1, выполняем действие
+        if (next === 1) {
+          // временная блокировка pointer-events на body чтобы предотвратить паразитный клик на элементе, который появится под пальцем
+
+          document.body.style.pointerEvents = 'none';
+          onClickRef.current?.();
+          setTimeout(() => {
+            document.body.style.pointerEvents = 'auto';
+          }, 200); // 200ms достаточно, чтобы браузер не сгенерировал лишний клик
+        }
       } else if (targetProgress.current < prev) {
         next = Math.max(prev - speed * delta, targetProgress.current);
       }
