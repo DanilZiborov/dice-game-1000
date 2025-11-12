@@ -3,7 +3,7 @@ import { Record } from 'pages/CurrentGame/Record/Record';
 import { type JSX, useState } from 'react';
 import { PlayerRow } from 'pages/CurrentGame/PlayerRow';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import type { Player } from 'shared/types';
 import { SecondaryButton } from 'components';
 import { endGame } from 'db/operations';
@@ -17,21 +17,24 @@ export const CurrentGame = (): JSX.Element => {
     dispatch,
   } = useCurrentGame();
 
-  const { recordMode } = useParams();
+  const { playerId } = useParams();
 
-  const isRecordMode = !!recordMode;
+  const isRecordMode = !!playerId;
 
+  // Храним последнего записанного игрока. Нужно для логики обгонов
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   const handleSelectPlayer = (player: Player): void => {
     setSelectedPlayer(player);
-    navigate('/game/record');
+    navigate(`/app/game/current/${player.id}`);
   };
 
   const handleEndGame = (): void => {
     if (!game) return;
     endGame({ db, gameId: game.id }).then(() => dispatch({ type: 'SET_GAME', payload: null }));
   };
+
+  if (!game) return <Navigate to="/app/game/new" />;
 
   return (
     <div className="flex h-full w-full flex-col justify-center">
@@ -47,7 +50,7 @@ export const CurrentGame = (): JSX.Element => {
           Завершить партию
         </SecondaryButton>
       </div>
-      {selectedPlayer && isRecordMode && <Record player={selectedPlayer} />}
+      {isRecordMode && <Record />}
     </div>
   );
 };

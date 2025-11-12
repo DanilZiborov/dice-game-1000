@@ -45,7 +45,7 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
     <div className="w-full">
       {/*Кнопка назад, имя игрока и счётчик фейлов*/}
       <div className="flex items-center justify-between">
-        <div onClick={() => navigate('/game', { replace: true })}>
+        <div onClick={() => navigate('/app/game/current', { replace: true })}>
           <ArrowIcon direction="left" />
         </div>
         <h1 className="text-[24px]">{player.name}</h1>

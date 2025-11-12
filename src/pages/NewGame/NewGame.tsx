@@ -1,17 +1,18 @@
 import type { JSX } from 'react';
 import { AddPlayerForm } from 'pages/NewGame/newGameForms/AddPlayersForm';
 import { PrimaryButton, SecondaryButton } from 'components';
-import { useCallback, useLayoutEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { NewGameButton } from 'pages/NewGame/newGameForms/NewGameButton';
 import { AddLimitsForm, AddRulesForm, AddWinRuleForm, StartGameForm } from 'pages/NewGame/newGameForms';
 import { NEW_GAME_DEFAULT_CONFIG } from 'pages/NewGame/constants';
-import type { NewGameConfig } from 'shared/types';
+import type { NewGameConfig, Player } from 'shared/types';
 import { useDb } from 'db/DbContext';
 import { addGame } from 'db/operations/addGame';
 import { addPlayers } from 'db/operations/addPlayers';
-import { useNavigate } from 'react-router-dom';
-import { getCurrentGame } from 'db/operations';
+import { Navigate, useNavigate } from 'react-router-dom';
+import { getCurrentGame, getPlayersByGameId } from 'db/operations';
 import { findDuplicates } from 'shared/utils/findDuplicates';
+import { useCurrentGame } from '../../context/currentGame/CurrentGameContext';
 
 const formContainerTitle = [
   '',
@@ -26,6 +27,11 @@ export const NewGame = (): JSX.Element => {
   const db = useDb();
 
   const navigate = useNavigate();
+
+  const {
+    dispatch,
+    state: { game },
+  } = useCurrentGame();
 
   const [step, setStep] = useState<number>(0);
   const [newPlayers, setNewPlayers] = useState<string[]>(['', '']);
@@ -56,10 +62,17 @@ export const NewGame = (): JSX.Element => {
     const filteredPlayers = newPlayers.filter((p) => !!p);
     if (filteredPlayers.length < 2) return;
 
-    const gameId = await addGame({ db, gameConfig: newGameConfig });
-    await addPlayers({ db, gameId: Number(gameId), playerNames: filteredPlayers });
+    await addGame({ db, gameConfig: newGameConfig }).then((gameId) => {
+      getCurrentGame({ db }).then((g) => {
+        dispatch({ type: 'SET_GAME', payload: g });
+        addPlayers({ db, gameId: Number(gameId), playerNames: filteredPlayers }).then(() => {
+          getPlayersByGameId({ db, gameId }).then((players: Player[]) => {
+            dispatch({ type: 'SET_PLAYERS', payload: players });
+          });
+        });
+      });
+    });
 
-    navigate('/', { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, navigate, newGameConfig, newPlayers]);
 
@@ -83,22 +96,11 @@ export const NewGame = (): JSX.Element => {
     }
   }, [step, initialPlayers, newGameConfig, handleConfigChange, handleStartGame]);
 
-  // protect against manual url navigation
-  useLayoutEffect(() => {
-    const checkGameStarted = async (): Promise<void> => {
-      const currentGame = await getCurrentGame({ db });
-
-      if (currentGame) {
-        navigate('/game', { replace: true });
-
-        return;
-      }
-    };
-
-    void checkGameStarted();
-  }, [db, navigate]);
-
   const isButtonDisabled = isPlayerDupes || notEnoughPlayers;
+
+  if (game) {
+    return <Navigate to="/app/game/current" replace />;
+  }
 
   return (
     <div className="flex h-full flex-col justify-center p-4">

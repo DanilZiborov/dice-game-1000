@@ -4,28 +4,29 @@ import { RecordHeader } from 'pages/CurrentGame/Record/RecordHeader';
 import { RecordScore } from 'pages/CurrentGame/Record/RecordScore';
 import { RecordButtons } from 'pages/CurrentGame/Record/RecordButtons';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useState } from 'react';
 import { updatePlayer } from 'db/operations';
 import { useDb } from 'db/DbContext';
 import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
 import { getUpdatedPlayer } from 'pages/CurrentGame/Record/coreLogic/getUpdatedPlayer';
-import type { Player } from 'shared/types';
 
-type Props = {
-  player: Player;
-};
-
-export const Record = ({ player }: Props): JSX.Element => {
+export const Record = (): JSX.Element => {
   const db = useDb();
+
+  const { playerId } = useParams();
 
   const navigate = useNavigate();
 
   const {
-    state: { game },
+    state: { game, players },
     dispatch,
   } = useCurrentGame();
-  if (!game) throw new Error('Игра не найдена');
+
+  const player = playerId ? players.find(({ id }) => id === Number(playerId)) : null;
+
+  if (!game || !playerId || !player)
+    throw new Error('Ошибка интерфейса записи игрока. Не найдено: game и/или player и/или playerId');
 
   const status = usePlayerStatus({ player });
 
@@ -37,7 +38,7 @@ export const Record = ({ player }: Props): JSX.Element => {
     updatePlayer({ db, playerId: Number(player.id), gameId: game.id, playerConfig: newPlayer }).then(() => {
       dispatch({ type: 'UPDATE_PLAYER', payload: { id: newPlayer.id, data: newPlayer } });
       setPoints(0);
-      navigate('/game');
+      navigate('/app/game/current');
     });
   };
 

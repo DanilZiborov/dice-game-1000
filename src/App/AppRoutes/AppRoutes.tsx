@@ -1,8 +1,10 @@
 import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
 import type { JSX } from 'react';
 import { AppLayout } from 'App/AppLayout';
-import { CurrentGame, NewGame, StartPage } from 'pages';
-import { RequireCurrentGame } from 'App/AppRoutes/RequireCurrentGame';
+import { CurrentGame, NewGame } from 'pages';
+import { EnsureContext } from 'App/AppRoutes/EnsureContext';
+import { GameNav } from './GameNav';
+import { StartPage } from './StartPage';
 
 const routes: RouteObject[] = [
   {
@@ -15,20 +17,24 @@ const routes: RouteObject[] = [
       },
 
       {
-        path: 'game',
-        element: <RequireCurrentGame />,
+        path: 'app/game',
+        element: <EnsureContext />,
         children: [
           {
-            path: '/game/:recordMode?',
+            index: true,
+            element: <GameNav />,
+          },
+          {
+            path: 'current/:playerId?',
             element: <CurrentGame />,
+          },
+          {
+            path: 'new',
+            element: <NewGame />,
           },
         ],
       },
 
-      {
-        path: 'new-game',
-        element: <NewGame />,
-      },
       {
         path: '*',
         element: <div>404 – Страница не найдена</div>,
