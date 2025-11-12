@@ -1,0 +1,21 @@
+import type { NewGameConfig } from 'shared/types';
+
+export const MIN_MAX_GAME_CONFIGS = {
+  enterLimit: { min: 0, max: 100 },
+  barrelLimit: { min: 850, max: 900 },
+  boltsLimit: { min: 25, max: 100 },
+  overtakeLimit: { min: 25, max: 100 },
+} as const;
+
+export const NEW_GAME_DEFAULT_CONFIG: NewGameConfig = {
+  enterLimit: 75,
+  barrelLimit: 900,
+  withBolts: false,
+  boltsLimit: 50,
+  withOvertake: false,
+  overtakeLimit: 50,
+  withEasyWin: false,
+  pit200: false,
+  pit700: false,
+  truck: false,
+} as const;

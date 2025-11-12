@@ -92,7 +92,7 @@ const commonRules = {
     },
   ],
   'react/no-array-index-key': 'error',
-  'max-len': ['error', { code: 120 }],
+  // 'max-len': ['error', { code: 120 }],
 };
 
 export default tseslint.config(

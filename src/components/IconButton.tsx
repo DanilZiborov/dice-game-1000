@@ -18,7 +18,6 @@ export const IconButton = ({ children, onClick, className }: IconButtonProps): J
         'font-cyber',
         'transition-colors duration-50 ease-in-out',
         'active:bg-cyber-secondary active:text-black',
-        'focus:outline-none',
         className || '',
       )}
     >
