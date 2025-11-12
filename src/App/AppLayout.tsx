@@ -3,17 +3,30 @@ import { Outlet } from 'react-router-dom';
 import { clsx } from 'clsx';
 import { getFormattedDateString } from 'shared/utils/getFormattedDateString';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
+import { useEffect } from 'react';
 
 export const AppLayout = (): JSX.Element => {
   const {
     state: { game },
   } = useCurrentGame();
 
+  // Устанавливаем CSS-переменную --app-height на реальную высоту окна
+  useEffect(() => {
+    const setAppHeight = (): void => {
+      document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
+    };
+
+    setAppHeight();
+    window.addEventListener('resize', setAppHeight);
+
+    return () => window.removeEventListener('resize', setAppHeight);
+  }, []);
+
   return (
     <div
       className={clsx(
-        'font-cyber bg-cyber-background text-cyber-text flex h-screen flex-col',
-        'items-center overflow-hidden',
+        'font-cyber bg-cyber-background text-cyber-text flex flex-col items-center overflow-hidden',
+        'h-[var(--app-height)]',
       )}
     >
       <div className="h-full w-full max-w-[600px] text-white">
@@ -32,7 +45,10 @@ export const AppLayout = (): JSX.Element => {
 
         <div className="border-cyber-secondary border-1"></div>
 
-        <main className="align-center flex h-[calc(100vh_-_58px)] flex-col justify-center select-none">
+        <main
+          className="align-center flex flex-col justify-center select-none"
+          style={{ height: 'calc(var(--app-height) - 58px)' }}
+        >
           <Outlet />
         </main>
       </div>
