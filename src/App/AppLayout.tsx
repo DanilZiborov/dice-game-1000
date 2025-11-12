@@ -1,15 +1,9 @@
 import type { JSX } from 'react';
 import { Outlet } from 'react-router-dom';
 import { clsx } from 'clsx';
-import { getFormattedDateString } from 'shared/utils/getFormattedDateString';
-import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
 import { useEffect } from 'react';
 
 export const AppLayout = (): JSX.Element => {
-  const {
-    state: { game },
-  } = useCurrentGame();
-
   // Устанавливаем CSS-переменную --app-height на реальную высоту окна
   useEffect(() => {
     const setAppHeight = (): void => {
@@ -36,11 +30,11 @@ export const AppLayout = (): JSX.Element => {
             <div className="bg-cyber-secondary mb-1.5 h-0.5 w-6 shadow-lg"></div>
             <div className="bg-cyber-secondary h-0.5 w-6 shadow-lg"></div>
           </button>
-          {game && (
-            <div className="text-cyber-text-secondary text-xs">
-              партия началась {getFormattedDateString(new Date(game.started))}
-            </div>
-          )}
+          {/*{game && (*/}
+          {/*  <div className="text-cyber-text-secondary text-xs">*/}
+          {/*    партия началась {getFormattedDateString(new Date(game.started))}*/}
+          {/*  </div>*/}
+          {/*)}*/}
         </header>
 
         <div className="border-cyber-secondary border-1"></div>

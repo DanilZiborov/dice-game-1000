@@ -13,7 +13,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
-    base: './',
+    base: mode === 'development' ? '/' : '/dice-game-1000/',
     plugins: [
       react(),
       tsconfigPaths(),

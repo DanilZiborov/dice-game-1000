@@ -5,6 +5,9 @@ import { CurrentGame, NewGame } from 'pages';
 import { EnsureContext } from 'App/AppRoutes/EnsureContext';
 import { GameNav } from './GameNav';
 import { StartPage } from './StartPage';
+import { DbProvider } from '../../db/DbContext';
+import { CurrentGameProvider } from '../../context/currentGame/CurrentGameContext';
+import { Landing } from '../../pages/Landing/Landing';
 
 const routes: RouteObject[] = [
   {
@@ -17,8 +20,34 @@ const routes: RouteObject[] = [
       },
 
       {
+        path: 'landing',
+        element: <Landing />,
+      },
+
+      {
+        path: 'about',
+        element: <p>о проекте</p>,
+      },
+
+      {
+        path: 'howto',
+        element: <p>правила игры</p>,
+      },
+
+      {
+        path: 'combos',
+        element: <p>комбинации кубиков</p>,
+      },
+
+      {
         path: 'app/game',
-        element: <EnsureContext />,
+        element: (
+          <DbProvider>
+            <CurrentGameProvider>
+              <EnsureContext />
+            </CurrentGameProvider>
+          </DbProvider>
+        ),
         children: [
           {
             index: true,
