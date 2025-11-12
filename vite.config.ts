@@ -3,6 +3,8 @@ import { defineConfig, loadEnv } from 'vite';
 import checker from 'vite-plugin-checker';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import tailwindcss from '@tailwindcss/vite';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { VitePWA } from 'vite-plugin-pwa';
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
@@ -11,6 +13,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
+    base: './',
     plugins: [
       react(),
       tsconfigPaths(),
@@ -30,6 +33,42 @@ export default defineConfig(({ mode }) => {
           },
         }),
       }),
+      viteStaticCopy({
+        targets: [
+          {
+            src: 'dist/index.html',
+            dest: '',
+            rename: '404.html',
+          },
+        ],
+      }),
+      VitePWA({
+        registerType: 'autoUpdate',
+        includeAssets: ['favicon.svg', 'favicon.ico', 'robots.txt', 'apple-touch-icon.png'],
+        manifest: {
+          name: 'Roll 1000',
+          short_name: 'Roll 1000',
+          description: 'Приложение для записи бросков костей в игре «Тысяча»',
+          // цвет tailwind-slate-900
+          theme_color: '#0f172a',
+          background_color: '#0f172a',
+          display: 'standalone',
+          scope: '/',
+          start_url: './',
+          icons: [
+            {
+              src: 'pwa-192x192.png',
+              sizes: '192x192',
+              type: 'image/png',
+            },
+            {
+              src: 'pwa-512x512.png',
+              sizes: '512x512',
+              type: 'image/png',
+            },
+          ],
+        },
+      }),
     ],
     server: {
       port: 3777,
@@ -38,21 +77,6 @@ export default defineConfig(({ mode }) => {
           target: env.VITE_PROXY,
           changeOrigin: true,
         },
-      },
-      watch: {
-        /**
-         * Для устранения бага "Uncaught SyntaxError: The requested
-         * module '/src/SomeComponent.ts?t=1684657356454' does not provide
-         * an export named 'SomeComponent'" нужно включить polling, это
-         * касается только Ubuntu. Проблема может быть решена как после
-         * очередного обновления VSCode или vite. В других редакторах на
-         * Ubuntu этот баг не проявляется. Проблема кроется в модуле
-         * chokidar (зависимость vite).
-         * https://vitejs.dev/config/server-options.html#server-watch
-         * Влияет на загрузку процессора, поэтому после обновлений VSCode или
-         * vite пробовать отключать этот параметр.
-         */
-        usePolling: !!env.XDG_SESSION_DESKTOP?.includes('ubuntu'),
       },
     },
     preview: {
@@ -65,10 +89,6 @@ export default defineConfig(({ mode }) => {
           changeOrigin: true,
         },
       },
-    },
-    build: {
-      outDir: 'build',
-      chunkSizeWarningLimit: 1000,
     },
   };
 });

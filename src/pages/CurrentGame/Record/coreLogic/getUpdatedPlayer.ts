@@ -19,26 +19,30 @@ export const getUpdatedPlayer = ({
   game: Game;
   status: PlayerStatus;
 }): Player => {
-  const playerCopy = structuredClone(player);
+  const base = structuredClone(player);
 
   // 1. Обновляем базовый счёт
-  playerCopy.score = calculateScore(player, points, game, status);
-  playerCopy.log.push(playerCopy.score);
+  const updatedScore = calculateScore(base, points, game, status);
+  let updated: Player = {
+    ...base,
+    score: updatedScore,
+    log: [...base.log, updatedScore],
+  };
 
   // 2. Победа
-  updateWinner(playerCopy);
+  updated = updateWinner(updated);
 
   // 3. Обработка болтов
-  handleBolts(playerCopy, points, status, game);
+  updated = handleBolts(updated, points, status, game);
 
   // 4. Падения с бочки
-  handleBarrelAttempt(playerCopy, points, game, status);
+  updated = handleBarrelAttempt(updated, points, game, status);
 
   // 5. Вход в игру
-  handleEnterGame(playerCopy, game);
+  updated = handleEnterGame(updated, game);
 
   // 6. Спецслучай: самосвал
-  handleTruck(playerCopy, game);
+  updated = handleTruck(updated, game);
 
-  return playerCopy;
+  return updated;
 };

@@ -60,6 +60,7 @@ export const NewGame = (): JSX.Element => {
     await addPlayers({ db, gameId: Number(gameId), playerNames: filteredPlayers });
 
     navigate('/', { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [db, navigate, newGameConfig, newPlayers]);
 
   // Функция рендера формы по шагу

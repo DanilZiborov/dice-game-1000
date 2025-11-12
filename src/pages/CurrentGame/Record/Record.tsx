@@ -41,9 +41,6 @@ export const Record = ({ player }: Props): JSX.Element => {
     });
   };
 
-  // console.log(player);
-  // console.log(game);
-
   return (
     <div className="flex h-full flex-col items-center justify-between px-4 pt-4 pb-25">
       <RecordHeader player={player} />
@@ -55,7 +52,6 @@ export const Record = ({ player }: Props): JSX.Element => {
           withDelay
           onClick={() => {
             handleRecord();
-            console.log('игра записана');
           }}
         >
           Записать

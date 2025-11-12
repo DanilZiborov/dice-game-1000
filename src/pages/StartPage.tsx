@@ -35,5 +35,5 @@ export const StartPage = (): JSX.Element => {
     void init();
   }, [db, dispatch, navigate]);
 
-  return <p>Стартовая страница, загрузка</p>;
+  return <p>Загрузка базы данных...</p>;
 };

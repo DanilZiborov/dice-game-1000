@@ -8,14 +8,12 @@ export const GlobalErrorBoundary = ({ children }: GlobalErrorBoundaryProps): JSX
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    const handleError = (event: ErrorEvent) => {
+    const handleError = (event: ErrorEvent): void => {
       setError(event.error?.message || String(event.message));
-      console.error(event.error || event.message);
     };
 
-    const handleRejection = (event: PromiseRejectionEvent) => {
+    const handleRejection = (event: PromiseRejectionEvent): void => {
       setError(event.reason?.message || String(event.reason));
-      console.error(event.reason);
     };
 
     window.addEventListener('error', handleError);

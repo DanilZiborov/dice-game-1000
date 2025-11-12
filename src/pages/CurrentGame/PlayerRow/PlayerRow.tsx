@@ -18,7 +18,7 @@ export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JS
   const [diff, setDiff] = useState<number | null>(null);
 
   // шаг для плавного изменения очков
-  const getStep = (delta: number) => {
+  const getStep = (delta: number): number => {
     if (delta > 100) return 10;
     if (delta > 50) return 5;
     if (delta > 20) return 2;
@@ -35,7 +35,7 @@ export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JS
 
     let current = prev;
 
-    const animate = () => {
+    const animate = (): void => {
       if (current === next) return;
 
       const delta = next - current;

@@ -1,7 +1,6 @@
 import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
 import type { JSX } from 'react';
 import { AppLayout } from 'App/AppLayout';
-import { Temporal } from 'pages/Temporal/Temporal';
 import { CurrentGame, NewGame, StartPage } from 'pages';
 import { RequireCurrentGame } from 'App/AppRoutes/RequireCurrentGame';
 
@@ -31,10 +30,6 @@ const routes: RouteObject[] = [
         element: <NewGame />,
       },
       {
-        path: 'temp',
-        element: <Temporal />,
-      },
-      {
         path: '*',
         element: <div>404 – Страница не найдена</div>,
       },
@@ -42,7 +37,9 @@ const routes: RouteObject[] = [
   },
 ];
 
-const router = createBrowserRouter(routes);
+const router = createBrowserRouter(routes, {
+  basename: import.meta.env.DEV ? '/' : '/dice-game-1000/',
+});
 
 export const AppRoutes = (): JSX.Element => {
   return <RouterProvider router={router} />;

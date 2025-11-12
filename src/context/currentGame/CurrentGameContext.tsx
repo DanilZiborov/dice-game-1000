@@ -18,7 +18,7 @@ export const CurrentGameProvider = ({ children }: { children: JSX.Element }): JS
   return <CurrentGameContext.Provider value={{ state, dispatch }}>{children}</CurrentGameContext.Provider>;
 };
 
-export const useCurrentGame = () => {
+export const useCurrentGame = (): { state: CurrentGameState; dispatch: Dispatch<CurrentGameAction> } => {
   const context = useContext(CurrentGameContext);
   if (!context) throw new Error('редьюсер useCurrentGame должен быть использован только с провайдером контекста');
 
