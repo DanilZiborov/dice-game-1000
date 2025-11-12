@@ -66,7 +66,10 @@ export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JS
   return (
     <div
       onClick={() => onSelectPlayer(player)}
-      className="border-cyber-secondary relative flex h-20 flex-col justify-center overflow-hidden border-b px-3"
+      className={clsx(
+        'border-cyber-secondary relative flex h-20 flex-col justify-center overflow-hidden border-b px-3',
+        !player.isEnterGame && 'text-cyber-disabled',
+      )}
     >
       <div className="flex items-center justify-between">
         <span className="relative flex items-center gap-2">

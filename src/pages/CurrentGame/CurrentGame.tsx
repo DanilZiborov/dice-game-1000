@@ -8,6 +8,7 @@ import type { Player } from 'shared/types';
 import { SecondaryButton } from 'components';
 import { endGame } from 'db/operations';
 import { useDb } from 'db/DbContext';
+import { getFormattedDateString } from '../../shared/utils/getFormattedDateString';
 
 export const CurrentGame = (): JSX.Element => {
   const db = useDb();
@@ -37,9 +38,9 @@ export const CurrentGame = (): JSX.Element => {
   if (!game) return <Navigate to="/app/game/new" />;
 
   return (
-    <div className="flex h-full w-full flex-col justify-center">
+    <div className="flex h-full w-full flex-col items-center justify-center">
       <div className={clsx(isRecordMode && 'hidden', 'flex h-full w-full flex-col items-center justify-center')}>
-        <ul className={clsx('border-cyber-secondary my-10 w-full border-y')}>
+        <ul className={clsx('border-cyber-secondary my-10 max-h-[70%] w-full overflow-auto')}>
           {players.map((player) => (
             <li key={player.id}>
               <PlayerRow player={player} onSelectPlayer={handleSelectPlayer} selectedPlayer={selectedPlayer} />
@@ -49,6 +50,11 @@ export const CurrentGame = (): JSX.Element => {
         <SecondaryButton onClick={handleEndGame} withDelay>
           Завершить партию
         </SecondaryButton>
+        {game && (
+          <div className="text-cyber-text-secondary pt-5 text-xs">
+            партия началась {getFormattedDateString(new Date(game.started))}
+          </div>
+        )}
       </div>
       {isRecordMode && <Record />}
     </div>

@@ -43,7 +43,7 @@ export const Record = (): JSX.Element => {
   };
 
   return (
-    <div className="flex h-full flex-col items-center justify-between px-4 pt-4 pb-25">
+    <div className="flex h-full w-full flex-col items-center justify-between px-4 pt-4 pb-25">
       <RecordHeader player={player} />
       <RecordScore points={points} player={player} truck={game.truck} />
 
