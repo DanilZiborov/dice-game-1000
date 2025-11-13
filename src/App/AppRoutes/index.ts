@@ -1,2 +1,2 @@
 export { AppRoutes } from 'App/AppRoutes/AppRoutes';
-export { EnsureContext } from 'App/AppRoutes/EnsureContext';
+export { GameAppWrapper } from 'App/GameAppWrapper';

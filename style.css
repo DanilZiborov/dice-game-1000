@@ -1,12 +1,18 @@
 @import 'tailwindcss';
 
-@font-face {
-  font-family: "Russo One";
-  src: url("./src/assets/fonts/RussoOne-Regular.ttf") format("truetype");
+@import '@fontsource/russo-one';
+@import '@fontsource-variable/inter';
+
+@theme {
+    --font-app: "Russo One", sans-serif;
+    --font-info: "Inter Variable", monospace;
 }
 
 body {
-  font-family: "Russo One", sans-serif;
+    font-weight: 400;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 @theme inline {

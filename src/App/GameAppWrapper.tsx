@@ -1,10 +1,10 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { type JSX, useEffect, useState } from 'react';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
-import { useDb } from '../../db/DbContext';
-import { getCurrentGame, getPlayersByGameId } from '../../db/operations';
+import { useDb } from '../db/DbContext';
+import { getCurrentGame, getPlayersByGameId } from '../db/operations';
 
-export const EnsureContext = (): JSX.Element => {
+export const GameAppWrapper = (): JSX.Element => {
   const db = useDb();
 
   const navigate = useNavigate();
@@ -37,7 +37,12 @@ export const EnsureContext = (): JSX.Element => {
     void init();
   }, [db, dispatch, navigate]);
 
-  if (isLoading) return <p>Загрузка...</p>;
+  if (isLoading) return <p className="font-app">Загрузка...</p>;
 
-  return <Outlet />;
+  return (
+    <div className="h-full font-app">
+      {' '}
+      <Outlet />
+    </div>
+  );
 };

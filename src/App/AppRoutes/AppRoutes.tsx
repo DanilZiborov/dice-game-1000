@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-rou
 import type { JSX } from 'react';
 import { AppLayout } from 'App/AppLayout';
 import { CurrentGame, NewGame } from 'pages';
-import { EnsureContext } from 'App/AppRoutes/EnsureContext';
+import { GameAppWrapper } from 'App/GameAppWrapper';
 import { GameNav } from './GameNav';
 import { StartPage } from './StartPage';
 import { DbProvider } from '../../db/DbContext';
@@ -44,7 +44,7 @@ const routes: RouteObject[] = [
         element: (
           <DbProvider>
             <CurrentGameProvider>
-              <EnsureContext />
+              <GameAppWrapper />
             </CurrentGameProvider>
           </DbProvider>
         ),

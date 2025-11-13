@@ -40,7 +40,7 @@ export const CurrentGame = (): JSX.Element => {
   return (
     <div className="flex h-full w-full flex-col items-center justify-center">
       <div className={clsx(isRecordMode && 'hidden', 'flex h-full w-full flex-col items-center justify-center')}>
-        <ul className={clsx('border-cyber-secondary my-10 max-h-[70%] w-full overflow-auto')}>
+        <ul className={clsx('my-10 max-h-[70%] w-full border-cyber-secondary')}>
           {players.map((player) => (
             <li key={player.id}>
               <PlayerRow player={player} onSelectPlayer={handleSelectPlayer} selectedPlayer={selectedPlayer} />
@@ -51,7 +51,7 @@ export const CurrentGame = (): JSX.Element => {
           Завершить партию
         </SecondaryButton>
         {game && (
-          <div className="text-cyber-text-secondary pt-5 text-xs">
+          <div className="pt-5 text-xs text-cyber-text-secondary">
             партия началась {getFormattedDateString(new Date(game.started))}
           </div>
         )}

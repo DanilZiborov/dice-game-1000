@@ -9,26 +9,29 @@ export const Landing = (): JSX.Element => {
   };
 
   return (
-    <div>
+    <div className="h-full px-4">
       {/* Первый экран */}
-      <section className="h-screen p-4">
-        <h1 className="mb-4 text-3xl">Запись счёта 1000</h1>
-        <p className="mb-8 text-lg leading-relaxed">
-          Приложение помогает вести счёт в игре «Тысяча». Вы можете задавать правила, включать или выключать особые
-          условия — например, учитывать «болты» или изменять количество очков для входа в игру. Система автоматически
-          подсчитает результаты и сохранит историю ваших партий.
-        </p>
+      <section className="flex h-full flex-col justify-between pt-4 pb-30">
+        <div>
+          <h1 className="mb-4 text-3xl">Трекер 1000</h1>
+          <p className="mb-8 text-lg leading-relaxed">
+            Приложение позволяет вести счёт в игре на костях «Тысяча». Программа автоматически рассчитывает очки и
+            учитывает все вводные (болты, ямы, обгон и т.д.). Есть возможность настроить правила партии под себя.
+          </p>
+        </div>
 
-        <div className="leading-relaxed">
-          Чтобы установить приложение:
-          <ul className="mt-2 list-inside list-disc space-y-1 text-left">
-            <li>
-              <strong>На iPhone (Safari):</strong> нажмите «Поделиться» → «На экран Домой».
-            </li>
-            <li>
-              <strong>На Android (Chrome):</strong> откройте меню «⋮» → «Добавить на главный экран».
-            </li>
-          </ul>
+        <div className="flex justify-center">
+          <div className="rounded-md border border-cyber-secondary p-6 leading-relaxed">
+            Чтобы установить приложение:
+            <ul className="mt-2 list-inside list-disc space-y-1 text-left">
+              <li>
+                <strong>На iPhone (Safari):</strong> нажмите «Поделиться» → «На экран Домой».
+              </li>
+              <li>
+                <strong>На Android (Chrome):</strong> откройте меню «⋮» → «Добавить на главный экран».
+              </li>
+            </ul>
+          </div>
         </div>
 
         <button onClick={handleScrollDown} className="transition" aria-label="Подробнее">
@@ -37,8 +40,8 @@ export const Landing = (): JSX.Element => {
       </section>
 
       {/* Второй экран */}
-      <section ref={detailsRef} className="h-screen">
-        <div className="space-y-6">
+      <section className="h-full pt-4">
+        <div ref={detailsRef} className="space-y-6">
           <h2 className="mb-2 text-2xl">Подробнее о приложении</h2>
           <p className="leading-relaxed">
             «Запись счёта 1000» создана для тех, кто любит настольные игры и ценит порядок. Приложение хранит ваши
