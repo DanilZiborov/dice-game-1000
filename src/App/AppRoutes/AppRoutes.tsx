@@ -8,6 +8,8 @@ import { StartPage } from './StartPage';
 import { DbProvider } from '../../db/DbContext';
 import { CurrentGameProvider } from '../../context/currentGame/CurrentGameContext';
 import { Landing } from '../../pages/Landing/Landing';
+import { DataTransfer } from '../../pages/DataTransfer';
+import { Combos } from '../../pages/Combos';
 
 const routes: RouteObject[] = [
   {
@@ -36,11 +38,11 @@ const routes: RouteObject[] = [
 
       {
         path: 'combos',
-        element: <p>комбинации кубиков</p>,
+        element: <Combos/>,
       },
 
       {
-        path: 'app/game',
+        path: 'app',
         element: (
           <DbProvider>
             <CurrentGameProvider>
@@ -50,16 +52,20 @@ const routes: RouteObject[] = [
         ),
         children: [
           {
-            index: true,
+            path: 'game',
             element: <GameNav />,
           },
           {
-            path: 'current/:playerId?',
+            path: 'game/current/:playerId?',
             element: <CurrentGame />,
           },
           {
-            path: 'new',
+            path: 'game/new',
             element: <NewGame />,
+          },
+          {
+            path: 'data-transfer',
+            element: <DataTransfer />,
           },
         ],
       },

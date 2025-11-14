@@ -1,7 +1,7 @@
-import { assertSchemaMatch, throwAssertedError } from '../shared/utils';
-import { type Game, gameSchema, type Player, playerSchema } from '../shared/types';
-import { addAllGames } from '../db/operations/addAllGames';
-import { addAllPlayers } from '../db/operations/addAllPlayers';
+import { assertSchemaMatch, throwAssertedError } from '../../shared/utils';
+import { type Game, gameSchema, type Player, playerSchema } from '../../shared/types';
+import { addAllGames } from '../../db/operations/addAllGames';
+import { addAllPlayers } from '../../db/operations/addAllPlayers';
 import { backupDBShema } from './types';
 
 type ImportDBArgs = {
