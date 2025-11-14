@@ -9,6 +9,8 @@ import { SecondaryButton } from 'components';
 import { endGame } from 'db/operations';
 import { useDb } from 'db/DbContext';
 import { getFormattedDateString } from '../../shared/utils/getFormattedDateString';
+import { exportDBToFile } from '../../dataTransfer/exportDBToFile';
+import { importDBFromFile } from '../../dataTransfer/importDBFromFile';
 
 export const CurrentGame = (): JSX.Element => {
   const db = useDb();
@@ -47,6 +49,20 @@ export const CurrentGame = (): JSX.Element => {
             </li>
           ))}
         </ul>
+
+        <button className="mb-4" onClick={() => exportDBToFile({ db })}>
+          экспорт тест
+        </button>
+        <button
+          className="mb-4"
+          onClick={() =>
+            importDBFromFile({ db }).then((data) => {
+              console.log(data);
+            })
+          }
+        >
+          импорт тест
+        </button>
         <SecondaryButton onClick={handleEndGame} withDelay>
           Завершить партию
         </SecondaryButton>
