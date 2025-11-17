@@ -24,7 +24,7 @@ export const Header = ({ maxWidth }: Props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="fixed top-0 left-0 z-10 flex w-full items-center justify-center">
+    <div className="fixed top-0 left-0 z-100 flex w-full items-center justify-center">
       <div className={clsx(maxWidth, 'w-full transition-[max-width] duration-500')}>
         <header className="flex items-center justify-between bg-cyber-background p-4">
           <button

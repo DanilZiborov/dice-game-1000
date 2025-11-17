@@ -3,13 +3,14 @@ import type { JSX } from 'react';
 import { AppLayout } from 'App/AppLayout';
 import { CurrentGame, NewGame } from 'pages';
 import { GameAppWrapper } from 'App/GameAppWrapper';
+import { DbProvider } from 'db/DbContext';
+import { CurrentGameProvider } from 'context/currentGame/CurrentGameContext';
+import { Landing } from 'pages/Landing';
+import { DataTransfer } from 'pages/DataTransfer';
+import { Combos } from 'pages/Combos';
+import Rules from 'pages/Rules/Rules';
 import { GameNav } from './GameNav';
 import { StartPage } from './StartPage';
-import { DbProvider } from '../../db/DbContext';
-import { CurrentGameProvider } from '../../context/currentGame/CurrentGameContext';
-import { Landing } from '../../pages/Landing/Landing';
-import { DataTransfer } from '../../pages/DataTransfer';
-import { Combos } from '../../pages/Combos';
 
 const routes: RouteObject[] = [
   {
@@ -32,13 +33,13 @@ const routes: RouteObject[] = [
       },
 
       {
-        path: 'howto',
-        element: <p>правила игры</p>,
+        path: 'rules',
+        element: <Rules/>,
       },
 
       {
         path: 'combos',
-        element: <Combos/>,
+        element: <Combos />,
       },
 
       {

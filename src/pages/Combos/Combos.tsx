@@ -1,12 +1,12 @@
 import type { JSX } from 'react';
-import { Dice1, Dice2, Dice3, Dice4, Dice5, Dice6 } from '../../components/icons/dices';
+import { Dice1, Dice2, Dice3, Dice4, Dice5, Dice6 } from 'components/icons/dices';
 
 type ComboRowProps = {
   label: string;
   dice: number[];
 };
 
-const diceComponents: Record<number, () => JSX.Element> = {
+const diceComponents: Record<number, ({ className }: { className?: string }) => JSX.Element> = {
   1: Dice1,
   2: Dice2,
   3: Dice3,
@@ -17,7 +17,7 @@ const diceComponents: Record<number, () => JSX.Element> = {
 
 const ComboRow = ({ label, dice }: ComboRowProps): JSX.Element => {
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-1.5">
       <div className="leading-tight">{label}</div>
 
       <div className="flex flex-nowrap items-center gap-2">
@@ -25,7 +25,8 @@ const ComboRow = ({ label, dice }: ComboRowProps): JSX.Element => {
           const Icon = diceComponents[d];
 
           return (
-            <div key={i} className="h-10 w-10 flex-shrink-0">
+            // eslint-disable-next-line react/no-array-index-key
+            <div key={`dice-${i}`} className="h-10 w-10 flex-shrink-0">
               <Icon />
             </div>
           );
@@ -103,15 +104,18 @@ export const Combos = (): JSX.Element => {
       {/* --- TOP --- */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {top.map((c, i) => (
-          <ComboRow key={`top-${i}`} label={c.label} dice={c.dice} />
+          // eslint-disable-next-line react/no-array-index-key
+          <ComboRow key={`top-row-${i}`} label={c.label} dice={c.dice} />
         ))}
       </div>
 
       {/* --- GROUPS --- */}
-      <div className="grid grid-cols-1 gap-12 md:grid-cols-2">
+      <div className="grid grid-cols-1 gap-8 md:grid-cols-2">
         {groups.map((group, gi) => (
-          <div key={`group-${gi}`} className="flex flex-col gap-4">
+          // eslint-disable-next-line react/no-array-index-key
+          <div key={`group-${gi}`} className="flex flex-col gap-2">
             {group.rows.map((row, ri) => (
+              // eslint-disable-next-line react/no-array-index-key
               <ComboRow key={`row-${gi}-${ri}`} label={row.label} dice={row.dice} />
             ))}
           </div>

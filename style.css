@@ -49,4 +49,15 @@ input[type="number"]:focus {
   .animate-float-diff {
     animation: float-diff 2.5s ease-out forwards;
   }
+
+    @keyframes pulse-arrow {
+        0%   { transform: translateY(0); }
+        50%  { transform: translateY(4px); }
+        100% { transform: translateY(0); }
+    }
+
+    .animate-pulse-arrow {
+        animation: pulse-arrow 1.5s ease-in-out infinite;
+        display: inline-block;
+    }
 }

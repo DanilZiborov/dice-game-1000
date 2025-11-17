@@ -9,9 +9,7 @@ export const AppLayout = (): JSX.Element => {
 
   const isGame = pathname.includes('game');
 
-  const maxWidth = useMemo(() => (isGame ? 'max-w-[600px]' : 'max-w-[1200px]'), [isGame]);
-
-  console.log('рендер')
+  const maxWidth = useMemo(() => (isGame ? 'max-w-[600px]' : 'max-w-[1000px]'), [isGame]);
 
   // CSS переменная для полной высоты окна
   useEffect(() => {
@@ -28,7 +26,7 @@ export const AppLayout = (): JSX.Element => {
   return (
     <div className={clsx('flex flex-col items-center bg-cyber-background text-cyber-text', 'h-[var(--app-height)]')}>
       <Header maxWidth={maxWidth} />
-      <main className={clsx('h-full w-full pt-[50px] transition-all duration-500', maxWidth)}>
+      <main className={clsx('mt-[50px] h-full w-full transition-all duration-500', !isGame && 'p-2', maxWidth)}>
         <Outlet />
       </main>
     </div>

@@ -6,7 +6,7 @@ type Props = {
 
 export const Dice1 = ({ className }: Props): JSX.Element => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 16 16" className={className}>
+    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 16 16" className={className}>
       <title>Dice-1 SVG Icon</title>
       <g>
         <circle className="fill-red-500" cx="8" cy="8" r="1.5" />
