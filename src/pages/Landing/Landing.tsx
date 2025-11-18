@@ -14,7 +14,7 @@ export const Landing = (): JSX.Element => {
       {/* Первый экран */}
       <section className="flex min-h-full flex-col justify-between pb-20">
         <div>
-          <h1 className="my-5 text-3xl">1К Журнал</h1>
+          <h1 className="mb-5 text-3xl">1К Журнал</h1>
           <p className="mb-8 text-lg leading-relaxed">
             Приложение для игры в «Тысячу» на костях. Автоматически считает очки, полностью избавляя от ручного
             подсчёта. Программа учитывает все правила: болты, ямы, обгон и другие нюансы. Перед игрой можно настроить

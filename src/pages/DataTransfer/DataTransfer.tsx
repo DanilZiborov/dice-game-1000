@@ -8,7 +8,7 @@ export const DataTransfer = (): JSX.Element => {
   const db = useDb();
 
   return (
-    <div className="mx-auto mt-10 flex h-full flex-col font-info">
+    <div className="mx-auto flex flex-col font-info">
       <div className="mb-10">
         <p className="mb-4">
           Данные о партиях надежно хранятся вас на устройстве, но при очистке кеша браузера они будут удалены. Поэтому

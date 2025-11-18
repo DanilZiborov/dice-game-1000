@@ -12,7 +12,7 @@ import { addPlayers } from 'db/operations/addPlayers';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { getCurrentGame, getPlayersByGameId } from 'db/operations';
 import { findDuplicates } from 'shared/utils/findDuplicates';
-import { useCurrentGame } from '../../context/currentGame/CurrentGameContext';
+import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
 
 const formContainerTitle = [
   '',

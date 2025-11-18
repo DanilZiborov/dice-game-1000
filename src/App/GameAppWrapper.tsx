@@ -1,8 +1,8 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { type JSX, useEffect, useState } from 'react';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
-import { useDb } from '../db/DbContext';
-import { getCurrentGame, getPlayersByGameId } from '../db/operations';
+import { useDb } from 'db/DbContext';
+import { getCurrentGame, getPlayersByGameId } from 'db/operations';
 
 export const GameAppWrapper = (): JSX.Element => {
   const db = useDb();

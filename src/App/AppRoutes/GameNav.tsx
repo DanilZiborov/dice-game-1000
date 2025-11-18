@@ -1,6 +1,6 @@
 import { type JSX } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useCurrentGame } from '../../context/currentGame/CurrentGameContext';
+import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
 
 export const GameNav = (): JSX.Element => {
   const {

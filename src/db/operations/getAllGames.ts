@@ -1,6 +1,6 @@
+import type { Game } from 'shared/types';
 import { awaitRequest, getObjectStore } from '../utils';
 import { STORE_GAMES } from '../constants';
-import type { Game } from '../../shared/types';
 
 /**
  * Получаем все игры

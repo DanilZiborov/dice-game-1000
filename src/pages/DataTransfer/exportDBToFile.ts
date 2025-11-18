@@ -1,6 +1,6 @@
-import { getAllGames } from '../../db/operations/getAllGames';
-import { getAllPlayers } from '../../db/operations/getAllPlayers';
-import { throwAssertedError } from '../../shared/utils';
+import { getAllGames } from 'db/operations/getAllGames';
+import { getAllPlayers } from 'db/operations/getAllPlayers';
+import { throwAssertedError } from 'shared/utils';
 
 /** Аргументы для экспорта */
 type ExportDBArgs = {

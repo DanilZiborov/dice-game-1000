@@ -1,7 +1,6 @@
-import { type JSX, useMemo } from 'react';
+import { type JSX, useEffect, useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { clsx } from 'clsx';
-import { useEffect } from 'react';
 import { Header } from './AppLayout/Header';
 
 export const AppLayout = (): JSX.Element => {
@@ -26,7 +25,13 @@ export const AppLayout = (): JSX.Element => {
   return (
     <div className={clsx('flex flex-col items-center bg-cyber-background text-cyber-text', 'h-[var(--app-height)]')}>
       <Header maxWidth={maxWidth} />
-      <main className={clsx('mt-[50px] h-full w-full transition-all duration-500', !isGame && 'p-2', maxWidth)}>
+      <main
+        className={clsx(
+          'h-full w-full pt-[70px] transition-all duration-500',
+          !isGame && 'h-auto min-h-full p-4',
+          maxWidth,
+        )}
+      >
         <Outlet />
       </main>
     </div>

@@ -1,24 +1,31 @@
-// Rules.tsx (часть 1)
-import React from 'react';
 import { Link } from 'react-router-dom';
+import { type JSX } from 'react';
 
-const Rules: React.FC = () => {
+export const Rules = (): JSX.Element => {
   return (
-    <div className="mx-auto px-4 py-8 font-sans leading-relaxed">
+    <div className="mx-auto py-10 leading-relaxed">
       <h1 className="mb-12 text-center text-3xl font-bold">Правила игры «Тысяча» на костях</h1>
+
+      <div className="mb-8 border-l-4 py-2 pl-4 text-lg">
+        <p className="font-medium">Важно:</p>
+        <p>
+          Правила игры могут отличаться в разных регионах и даже семьях. Ниже — классический и самый распространённый
+          вариант (по мнению автора приложения). Именно по этим правилам работает подсчёт очков в приложении.
+        </p>
+      </div>
 
       {/* 1. Общие правила и цель игры */}
       <section className="mb-12">
         <h2 className="mb-6 text-2xl font-semibold">1. Общие правила и цель игры</h2>
-        <p className="mb-4">Цель игры — первым набрать 1000 очков.</p>
+        <p className="mb-4 underline">Цель игры — первым набрать&nbsp;1000&nbsp;очков</p>
         <p className="mb-4">
-          <span className="font-medium">Инвентарь:</span> 5 шестигранных игральных костей.
+          <span className="font-medium">Инвентарь:</span>&nbsp;5&nbsp;шестигранных игральных костей.
         </p>
         <p className="mb-4">
-          <span className="font-medium">Количество игроков:</span> от 2 и более.
+          <span className="font-medium">Количество игроков:</span>&nbsp;от&nbsp;2&nbsp;и более.
         </p>
         <p className="mb-4">
-          <span className="font-medium">Порядок хода:</span> игроки ходят по очереди, определяя очерёдность бросков
+          <span className="font-medium">Порядок хода:</span>&nbsp;игроки ходят по очереди, определяя очерёдность бросков
           любым удобным способом.
         </p>
       </section>
@@ -28,19 +35,21 @@ const Rules: React.FC = () => {
         <h2 className="mb-6 text-2xl font-semibold">2. Ход игрока: последовательность действий</h2>
         <ol className="list-decimal space-y-6 pl-8">
           <li>
-            <span className="font-medium">Первый бросок:</span> в начале своего хода игрок бросает{' '}
-            <span className="font-medium">все 5 костей</span> одновременно.
+            <span className="font-medium">Первый бросок:</span>&nbsp;в начале своего хода игрок бросает{' '}
+            <span className="font-medium">все&nbsp;5&nbsp;костей</span> одновременно.
           </li>
           <li>
-            <span className="font-medium">Анализ результата:</span> после броска игрок проверяет, выпали ли
+            <span className="font-medium">Анализ результата:</span>&nbsp;после броска игрок проверяет, выпали ли
             результативные комбинации.
             <ul className="mt-3 list-disc space-y-2 pl-6">
               <li>
-                <span className="font-medium">Результативные кости:</span> единица (1) — 10 очков; пятёрка (5) — 5
-                очков и специальные комбинации. <Link to="/combos">Подробнее о комбинациях тут.</Link>
+                <span className="font-medium">Результативные кости:</span>&nbsp;единица&nbsp;—&nbsp;10&nbsp;очков;
+                пятёрка&nbsp;—&nbsp;5&nbsp;очков и специальные комбинации.{' '}
+                <Link to="/combos">Все комбинации подробно описаны здесь.</Link>
               </li>
               <li>
-                <span className="font-medium">Пять единиц на любой стадии игры приносят игроку 1000 очков и дают мгновенную победу.</span>
+                <u>Пять единиц всегда приносят игроку мгновенную победу</u>&nbsp;— никакие условия не могут этому
+                помешать.
               </li>
             </ul>
           </li>
@@ -48,47 +57,45 @@ const Rules: React.FC = () => {
             <span className="font-medium">Решение игрока:</span>
             <ul className="mt-3 list-disc space-y-2 pl-6">
               <li>
-                <span className="font-medium">Остановить ход:</span> зафиксировать набранные очки, записать их в общий
-                счёт и передать ход следующему игроку.
+                <span className="font-medium">Остановить ход:</span>&nbsp;зафиксировать набранные очки, добавить их к
+                своему общему счёту и передать ход следующему игроку.
               </li>
               <li>
-                <span className="font-medium">Продолжить броски:</span> бросить только невыпавшие (нерезультативные)
-                кости, пытаясь набрать дополнительные очки.
+                <span className="font-medium">Или рискнуть и продолжить бросать:</span>&nbsp;бросить можно только
+                невыпавшие (нерезультативные) кости.
               </li>
             </ul>
           </li>
           <li>
-            <span className="font-medium">Свободный бросок:</span> если в результате одного или нескольких бросков{' '}
-            <span className="font-medium">все 5 костей оказались результативными</span>, игрок{' '}
-            <span className="font-medium">обязан</span> бросить все 5 костей снова.
+            <span className="font-medium">Свободный бросок:</span>&nbsp;если в результате одного или нескольких бросков{' '}
+            <span className="font-medium">все&nbsp;5&nbsp;костей оказались результативными</span>, игрок
+            <span className="font-medium underline"> обязан</span>&nbsp;бросить все&nbsp;5&nbsp;костей снова.
           </li>
           <li>
-            <span className="font-medium">Нулевой результат:</span> если в очередном броске не выпадает ни одной
+            <span className="font-medium">Нулевой результат:</span>&nbsp;если в очередном броске не выпадает ни одной
             результативной комбинации, все набранные в этом ходу очки «сгорают» (не записываются), а ход переходит к
-            следующему игроку. При этом игроку записывается <span className="font-medium">«болт»</span> (см. раздел
-            «Болты»).
+            следующему игроку. При этом игроку записывается <span className="font-medium">«болт»</span> (см.&nbsp;раздел
+            «Болты» ниже).
           </li>
         </ol>
       </section>
 
-      {/* 4. Вход в игру */}
+      {/* 3. Вход в игру */}
+
       <section className="mb-12">
-        <h2 className="mb-6 pb-2 text-2xl font-semibold">4. Вход в игру</h2>
+        <h2 className="mb-6 pb-2 text-2xl font-semibold">3. Вход в игру (паспорт)</h2>
         <p className="mb-6">
-          Чтобы начать записывать очки, игрок должен в <span className="font-medium">одном ходе</span> набрать{' '}
-          <span className="font-medium">минимум 75 очков</span>. До этого все набранные очки не учитываются.
+          Чтобы войти в игру и начать записывать очки, игрок должен в <span className="font-medium">одном ходе</span>{' '}
+          набрать <span className="font-medium">определённое количество очков (в классическом варианте — 75)</span>.
         </p>
         <p className="mb-4 font-medium">Важные уточнения:</p>
         <ul className="list-disc space-y-3 pl-8">
           <li>
-            Вход в игру возможен <span className="font-medium">только один раз за партию</span>.
+            Вход в игру возможен <span className="font-medium">только один раз за партию</span>. Повторно входить в игру
+            не нужно, даже если счёт опустится до&nbsp;0.
           </li>
           <li>
-            После входа в игру игрок <span className="font-medium">не может «выйти» из неё</span> (т. е. даже если его
-            счёт упадёт до 0, повторно набирать 75 очков для входа не требуется).
-          </li>
-          <li>
-            Игрокам, ещё не вошедшим в игру, <span className="font-medium">«болты» не записываются</span>.
+            Игрокам, ещё не вошедшим в игру, <span className="font-medium">болты не записываются</span>.
           </li>
         </ul>
       </section>
@@ -96,135 +103,151 @@ const Rules: React.FC = () => {
       {/* 5. Бочка */}
       <section className="mb-12">
         <h2 className="mb-6 pb-2 text-2xl font-semibold">5. «Бочка» (этап финального рывка)</h2>
+
         <p className="mb-6">
-          Когда игрок набирает <span className="font-medium">1 000 очков</span>. При этом:
-          <ul className="mt-3 list-disc space-y-2 pl-6">
-            <li>
-              Игрок <span className="font-medium">не может остановиться</span> — он обязан продолжать броски.
-            </li>
-            <li>
-              Если в очередном броске нет результативных комбинаций, игрок{' '}
-              <span className="font-medium">теряет все очки, набранные за ход</span>, и сходит с «бочки».
-            </li>
-            <li>
-              Чтобы сойти с «бочки», нужно <span className="font-medium">набрать хотя бы 1 очко</span> (например,
-              выбросить единицу или пятёрку).
-            </li>
-          </ul>
+          Когда игрок набирает <span className="font-medium">определённое количество очков (обычно 900)</span>, он
+          <span className="font-medium">«садится на бочку»</span>. Теперь ему нужно выбросить недостающие до 1000 очков
+          за один ход.
         </p>
+
+        <ul className="list-disc space-y-4 pl-8">
+          <li>
+            <span className="font-medium">Ограничение максимума очков, когда игрок «забирается на бочку»:</span> если
+            игрок набрал больше лимита, позволяющего «сесть на бочку», его сумма не может превышать этот лимит.
+            <div className="mt-2 ml-6 italic">
+              Пример: чтобы сесть на бочку, нужно 900 очков. У игрока до хода было 880 очков, он выкидывает 50. Его
+              итоговый результат составит не 930, а 900.
+            </div>
+          </li>
+
+          <li>
+            <span className="font-medium">Падение с бочки:</span> если игроку не удалось выбросить недостающие до
+            победной тысячи очки, «падает с бочки», откатываясь на 800 очков.
+          </li>
+
+          <li>
+            <span className="font-medium">Третье падение с бочки:</span> если игрок сидел на бочке 3 раза и не победил,
+            при третьем падении его результат откатывается до 0.
+          </li>
+        </ul>
+
+        <h3 className="mt-8 mb-4 text-xl font-semibold">Вариант «облегчённая бочка»</h3>
+        <p className="mb-4">
+          В этом варианте игроку, забравшемуся на бочку, даётся не один, а три хода, чтобы выбросить победные 1000
+          очков. Очки, набранные в предыдущих попытках, не сгорают. Все остальные правила остаются прежними. Подробнее
+          на примере:
+        </p>
+
+        <ol className="list-decimal space-y-4 pl-8">
+          <li>Игрок набирает 900 очков и «садится на бочку». Начинается первая из трёх попыток.</li>
+          <li>В первом ходе он выбрасывает 25 очков и передаёт ход дальше.</li>
+          <li>Когда очередь снова доходит до игрока, он выбрасывает 60 очков и снова передаёт ход.</li>
+          <li>
+            В третьем ходе у игрока уже накоплено 85 очков (60 + 25), и теперь ему нужно не меньше 15 очков, чтобы
+            достичь 1000 и победить.
+          </li>
+        </ol>
+
+        <div className="mt-6 border-l-4 border-gray-200 pl-6">
+          <p className="italic">
+            В приложении этот вариант называется «Режим быстрой победы». Он уменьшает общую длительность партии, но
+            снижает вероятность драматичных взлётов и падений.
+          </p>
+        </div>
       </section>
 
       {/* 6. Болты */}
       <section className="mb-12">
         <h2 className="mb-6 pb-2 text-2xl font-semibold">6. «Болты»</h2>
         <p className="mb-4">
-          «Болт» записывается игроку, если в ходе у него{' '}
-          <span className="font-medium">нет ни одной результативной комбинации</span> (все броски дали 0 очков).
+          «Болт» записывается игроку, если по итогам его хода (в результате одного или нескольких бросков) у него
+          <span className="font-medium">выпало 0&nbsp;очков</span>.
         </p>
         <p className="mb-6">
-          <span className="font-medium">Последствия:</span>
-          <ul className="mt-3 list-disc space-y-2 pl-6">
-            <li>
-              При <span className="font-medium">первом болте</span> игрок теряет право на запись очков в текущем ходу
-              (очки «сгорают»).
-            </li>
-            <li>
-              При <span className="font-medium">втором болте подряд</span> дополнительно списывается{' '}
-              <span className="font-medium">50 очков</span> из общего счёта.
-            </li>
-            <li>
-              При <span className="font-medium">третьем болте подряд</span> списывается{' '}
-              <span className="font-medium">100 очков</span>.
-            </li>
-          </ul>
+          Если игрок накопил три болта, с него списывается заранее оговорённое количество очков (обычно&nbsp;50).
         </p>
-        <p>
-          <span className="font-medium">Важно:</span> болты не накапливаются между ходами — серия прерывается, если в
-          следующем ходу игрок набрал хотя бы 1 очко.
-        </p>
-      </section>
-
-      {/* 7. Обгон */}
-      <section className="mb-12">
-        <h2 className="0 mb-6 pb-2 text-2xl font-semibold">7. Правило обгона</h2>
-        <p className="mb-6">
-          Если игрок в своём ходу <span className="font-medium">обгоняет соперника по очкам</span>, то:
-        </p>
-        <ul className="list-disc space-y-3 pl-8">
+        <ul className="list-disc space-y-2 pl-8">
           <li>
-            Обгоняемый игрок <span className="font-medium">теряет 50 очков</span> из своего счёта.
+            Если игрок не вошёл в игру, болты <span className="font-medium">не записываются</span>.
           </li>
           <li>
-            Правило действует <span className="font-medium">только один раз за партию</span> для каждой пары игроков.
+            Игроку, сидящему на бочке, болты <span className="font-medium">не записываются</span>.
           </li>
           <li>
-            Обгон учитывается <span className="font-medium">только при завершении хода</span> (после фиксации очков).
+            Игроку, сидящему в яме, болты <span className="font-medium">не записываются</span>
           </li>
         </ul>
+      </section>
+
+      <section className="mb-12">
+        <h2 className="mb-6 pb-2 text-2xl font-semibold">7. Правило обгона</h2>
+        <p className="mb-6">
+          Обгон — это ситуация, когда у игрока А до его хода было меньше очков, чем у игрока Б, а после хода игрока А у
+          него стало больше очков, чем у игрока Б. Если по итогу хода игрока А количество очков у игроков А и Б равное,
+          это <span className="font-medium">не считается обгоном</span>.
+        </p>
+        <ul className="mb- list-disc space-y-3 pl-8">
+          <li>
+            Обогнанный игрок{' '}
+            <span className="font-medium">теряет заранее оговорённое количество очков (обычно&nbsp;50)</span>.
+          </li>
+          <li>
+            Можно обогнать <span className="font-medium">несколько игроков одновременно</span>.
+          </li>
+          <li>
+            Обгон действует для всех:
+            <ul className="mt-2 list-disc space-y-1 pl-6">
+              <li>для игроков, сидящих в яме;</li>
+              <li>для игроков, сидящих на бочке.</li>
+            </ul>
+          </li>
+        </ul>
+        <p>Таким образом, обогнав соперника, можно сбросить его с бочки или вытолкнуть из ямы вниз.</p>
       </section>
 
       {/* 8. Ямы */}
       <section className="mb-12">
-        <h2 className="mb-6 pb-2 text-2xl font-semibold">8. «Ямы»</h2>
-        <p className="mb-4">Некоторые пороги очков считаются «ямами»:</p>
-        <ul className="list-disc space-y-2 pl-8">
+        <h2 className="mb-6 pb-2 text-2xl font-semibold">8. Ямы</h2>
+        <p className="mb-4">
+          Яма — это заранее определённый промежуток очков. В классическом варианте игры есть две ямы: 200–300&nbsp;очков
+          и 700–800&nbsp;очков.
+        </p>
+        <p className="mb-4">
+          Если итоговый счёт игрока становится больше или равен начальной точке ямы и меньше или равен конечной точке
+          ямы, то игрок за один ход должен выбросить очков не меньше, чем разница между его текущим счётом и краем ямы.
+        </p>
+        <div className="mt-4 ml-4 border-l-4 border-gray-200 pl-4 italic">
+          <p>
+            Пример: игрок&nbsp;А после своего хода имеет счёт&nbsp;720. Он попал в яму. Теперь ему нужно выбросить не
+            менее&nbsp;81&nbsp;очка за один ход, чтобы выбраться из ямы. Если он выбросил меньше, очки не начисляются и
+            он остаётся в яме.
+          </p>
+        </div>
+        <ul className="mt-4 list-disc space-y-2 pl-8">
+          <li>Болты в ямах не записываются.</li>
           <li>
-            <span className="font-medium">250 очков</span> — при попадании в этот порог игрок теряет 50 очков.
-          </li>
-          <li>
-            <span className="font-medium">550 очков</span> — при попадании в этот порог игрок теряет 100 очков.
-          </li>
-          <li>
-            <span className="font-medium">750 очков</span> — при попадании в этот порог игрок теряет 150 очков.
+            В яму можно попасть не только по результату своего хода, но и в результате:
+            <ul className="mt-2 list-disc space-y-1 pl-6">
+              <li>штрафа после обгона;</li>
+              <li>третьего записанного болта.</li>
+            </ul>
           </li>
         </ul>
-        <p className="mt-4">
-          <span className="font-medium">Важно:</span> штраф применяется{' '}
-          <span className="font-medium">только при точном попадании</span> в порог (например, если игрок набрал 251
-          очко, штраф не действует).
-        </p>
       </section>
 
-      {/* 9. Самосвал */}
       <section className="mb-12">
         <h2 className="mb-6 pb-2 text-2xl font-semibold">9. «Самосвал»</h2>
-        <p className="mb-6">
-          Если игрок набирает <span className="font-medium">более 1 000 очков</span> (например, 1 050), то:
-        </p>
+        <p className="mb-6">Если игрок набирает ровно&nbsp;555&nbsp;очков, его итоговый счёт обнуляется.</p>
         <ul className="list-disc space-y-3 pl-8">
-          <li>
-            Его счёт <span className="font-medium">обнуляется</span> (становится 0 очков).
-          </li>
-          <li>
-            Игрок <span className="font-medium">продолжает игру с нуля</span>, но уже вошёл в игру (повторно набирать 75
-            очков не нужно).
-          </li>
-          <li>
-            Все записанные ранее болты <span className="font-medium">сохраняются</span>.
-          </li>
+          <li>Попасть на самосвал можно и в результате штрафов после обгона или болтов.</li>
+          <li>После самосвала входить в игру заново не нужно, хоть это и слабое утешение для игрока.</li>
         </ul>
       </section>
 
-      {/* 10. Конец игры */}
       <section>
         <h2 className="mb-6 pb-2 text-2xl font-semibold">10. Завершение игры</h2>
-        <p>
-          Игра заканчивается, когда <span className="font-medium">один из игроков набирает ровно 1 000 очков</span> (не
-          более!). При этом:
-        </p>
-        <ul className="mt-4 list-disc space-y-3 pl-8">
-          <li>
-            Игрок должен <span className="font-medium">точно попасть в 1 000</span> (например, имея 980 очков, набрать
-            ровно 20 очков за ход).
-          </li>
-          <li>Если игрок набирает больше 1 000 очков, срабатывает правило «Самосвала» (см. раздел 9).</li>
-          <li>
-            Победа фиксируется <span className="font-medium">только после завершения хода</span> и записи очков.
-          </li>
-        </ul>
+        <p>Игра заканчивается, когда один из игроков набирает&nbsp;1000&nbsp;и более очков.</p>
       </section>
     </div>
   );
 };
-
-export default Rules;

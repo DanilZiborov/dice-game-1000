@@ -8,7 +8,7 @@ import type { Player } from 'shared/types';
 import { SecondaryButton } from 'components';
 import { endGame } from 'db/operations';
 import { useDb } from 'db/DbContext';
-import { getFormattedDateString } from '../../shared/utils/getFormattedDateString';
+import { getFormattedDateString } from 'shared/utils/getFormattedDateString';
 
 export const CurrentGame = (): JSX.Element => {
   const db = useDb();

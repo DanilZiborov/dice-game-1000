@@ -1,4 +1,4 @@
-import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
+import { createBrowserRouter, type RouteObject, RouterProvider } from 'react-router-dom';
 import type { JSX } from 'react';
 import { AppLayout } from 'App/AppLayout';
 import { CurrentGame, NewGame } from 'pages';
@@ -8,7 +8,7 @@ import { CurrentGameProvider } from 'context/currentGame/CurrentGameContext';
 import { Landing } from 'pages/Landing';
 import { DataTransfer } from 'pages/DataTransfer';
 import { Combos } from 'pages/Combos';
-import Rules from 'pages/Rules/Rules';
+import { Rules } from 'pages/Rules';
 import { GameNav } from './GameNav';
 import { StartPage } from './StartPage';
 
@@ -34,7 +34,7 @@ const routes: RouteObject[] = [
 
       {
         path: 'rules',
-        element: <Rules/>,
+        element: <Rules />,
       },
 
       {

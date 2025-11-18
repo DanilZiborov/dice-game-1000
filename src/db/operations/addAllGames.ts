@@ -1,7 +1,7 @@
+import { type Game, gameSchema } from 'shared/types';
+import { assertSchemaMatch } from 'shared/utils';
 import { STORE_GAMES } from '../constants';
 import { awaitRequest } from '../utils';
-import { type Game, gameSchema } from '../../shared/types';
-import { assertSchemaMatch } from '../../shared/utils';
 
 export const addAllGames = async (db: IDBDatabase, games: Game[]): Promise<void> => {
   games.forEach((game) => assertSchemaMatch(gameSchema, game));

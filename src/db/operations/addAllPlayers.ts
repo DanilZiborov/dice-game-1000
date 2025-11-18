@@ -1,7 +1,7 @@
+import { assertSchemaMatch } from 'shared/utils';
+import { type Player, playerSchema } from 'shared/types';
 import { STORE_PLAYERS } from '../constants';
 import { awaitRequest } from '../utils';
-import { assertSchemaMatch } from '../../shared/utils';
-import { type Player, playerSchema } from '../../shared/types';
 
 /**
  * Полностью перезаписывает таблицу players
