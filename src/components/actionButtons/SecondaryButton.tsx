@@ -25,22 +25,10 @@ export const SecondaryButton = ({
   });
 
   return (
-    <button
-      type="button"
-      disabled={disabled}
-      {...bind}
-      className={clsx(
-        'font-cyber relative inline-block px-4 py-2 tracking-wider uppercase',
-        'h-[42px] min-w-[150px] border-2 transition select-none',
-        'text-cyber-secondary border-cyber-secondary',
-        'active:bg-cyber-secondary active:border-black active:text-black',
-        'disabled:text-cyber-disabled disabled:border-cyber-disabled',
-        className || '',
-      )}
-    >
+    <div className="relative">
       {withDelay && !disabled && (
         <svg
-          className="pointer-events-none absolute top-1/2 left-1/2 h-[100px] w-[100px] -translate-x-1/2 -translate-y-1/2"
+          className="pointer-events-none absolute top-1/2 left-1/2 z-0 h-[100px] w-[100px] -translate-x-1/2 -translate-y-1/2"
           viewBox="0 0 100 100"
         >
           <circle
@@ -52,7 +40,25 @@ export const SecondaryButton = ({
           />
         </svg>
       )}
-      <span className="relative z-10">{children}</span>
-    </button>
+
+      <button
+        type="button"
+        disabled={disabled}
+        {...bind}
+        className={clsx(
+          'font-cyber relative z-10 px-4 py-2 tracking-wider uppercase',
+          'min-h-[42px] min-w-[150px] border-2 transition select-none',
+          'border-cyber-secondary text-cyber-secondary',
+          'active:border-black active:bg-cyber-secondary active:text-black',
+          'disabled:border-cyber-disabled disabled:text-cyber-disabled',
+          'block',
+          'absolute',
+          withDelay && 'bg-cyber-background',
+          className || '',
+        )}
+      >
+        <span className="relative z-10">{children}</span>
+      </button>
+    </div>
   );
 };

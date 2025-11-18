@@ -1,8 +1,16 @@
-import { createBrowserRouter, RouterProvider, type RouteObject } from 'react-router-dom';
+import { createBrowserRouter, type RouteObject, RouterProvider } from 'react-router-dom';
 import type { JSX } from 'react';
 import { AppLayout } from 'App/AppLayout';
-import { CurrentGame, NewGame, StartPage } from 'pages';
-import { RequireCurrentGame } from 'App/AppRoutes/RequireCurrentGame';
+import { CurrentGame, NewGame } from 'pages';
+import { GameAppWrapper } from 'App/GameAppWrapper';
+import { DbProvider } from 'db/DbContext';
+import { CurrentGameProvider } from 'context/currentGame/CurrentGameContext';
+import { Landing } from 'pages/Landing';
+import { DataTransfer } from 'pages/DataTransfer';
+import { Combos } from 'pages/Combos';
+import { Rules } from 'pages/Rules';
+import { GameNav } from './GameNav';
+import { StartPage } from './StartPage';
 
 const routes: RouteObject[] = [
   {
@@ -15,20 +23,54 @@ const routes: RouteObject[] = [
       },
 
       {
-        path: 'game',
-        element: <RequireCurrentGame />,
+        path: 'landing',
+        element: <Landing />,
+      },
+
+      {
+        path: 'about',
+        element: <p>о проекте</p>,
+      },
+
+      {
+        path: 'rules',
+        element: <Rules />,
+      },
+
+      {
+        path: 'combos',
+        element: <Combos />,
+      },
+
+      {
+        path: 'app',
+        element: (
+          <DbProvider>
+            <CurrentGameProvider>
+              <GameAppWrapper />
+            </CurrentGameProvider>
+          </DbProvider>
+        ),
         children: [
           {
-            path: '/game/:recordMode?',
+            path: 'game',
+            element: <GameNav />,
+          },
+          {
+            path: 'game/current/:playerId?',
             element: <CurrentGame />,
+          },
+          {
+            path: 'game/new',
+            element: <NewGame />,
+          },
+          {
+            path: 'data-transfer',
+            element: <DataTransfer />,
           },
         ],
       },
 
-      {
-        path: 'new-game',
-        element: <NewGame />,
-      },
       {
         path: '*',
         element: <div>404 – Страница не найдена</div>,

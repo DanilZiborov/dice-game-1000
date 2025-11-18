@@ -13,6 +13,8 @@
   },
   "homepage": "https://DanilZiborov.github.io/dice-game-1000",
   "dependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource/russo-one": "^5.2.7",
     "clsx": "^2.1.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

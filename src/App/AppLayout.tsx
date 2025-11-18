@@ -1,16 +1,16 @@
-import type { JSX } from 'react';
-import { Outlet } from 'react-router-dom';
+import { type JSX, useEffect, useMemo } from 'react';
+import { Outlet, useLocation } from 'react-router-dom';
 import { clsx } from 'clsx';
-import { getFormattedDateString } from 'shared/utils/getFormattedDateString';
-import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
-import { useEffect } from 'react';
+import { Header } from './AppLayout/Header';
 
 export const AppLayout = (): JSX.Element => {
-  const {
-    state: { game },
-  } = useCurrentGame();
+  const { pathname } = useLocation();
 
-  // Устанавливаем CSS-переменную --app-height на реальную высоту окна
+  const isGame = pathname.includes('game');
+
+  const maxWidth = useMemo(() => (isGame ? 'max-w-[600px]' : 'max-w-[1000px]'), [isGame]);
+
+  // CSS переменная для полной высоты окна
   useEffect(() => {
     const setAppHeight = (): void => {
       document.documentElement.style.setProperty('--app-height', `${window.innerHeight}px`);
@@ -23,35 +23,17 @@ export const AppLayout = (): JSX.Element => {
   }, []);
 
   return (
-    <div
-      className={clsx(
-        'font-cyber bg-cyber-background text-cyber-text flex flex-col items-center overflow-hidden',
-        'h-[var(--app-height)]',
-      )}
-    >
-      <div className="h-full w-full max-w-[600px] text-white">
-        <header className="flex flex-row justify-between p-4">
-          <button className="focus:outline-none">
-            <div className="bg-cyber-secondary mb-1.5 h-0.5 w-6 shadow-lg"></div>
-            <div className="bg-cyber-secondary mb-1.5 h-0.5 w-6 shadow-lg"></div>
-            <div className="bg-cyber-secondary h-0.5 w-6 shadow-lg"></div>
-          </button>
-          {game && (
-            <div className="text-cyber-text-secondary text-xs">
-              партия началась {getFormattedDateString(new Date(game.started))}
-            </div>
-          )}
-        </header>
-
-        <div className="border-cyber-secondary border-1"></div>
-
-        <main
-          className="align-center flex flex-col justify-center select-none"
-          style={{ height: 'calc(var(--app-height) - 58px)' }}
-        >
-          <Outlet />
-        </main>
-      </div>
+    <div className={clsx('flex flex-col items-center bg-cyber-background text-cyber-text', 'h-[var(--app-height)]')}>
+      <Header maxWidth={maxWidth} />
+      <main
+        className={clsx(
+          'h-full w-full pt-[70px] transition-all duration-500',
+          !isGame && 'h-auto min-h-full p-4',
+          maxWidth,
+        )}
+      >
+        <Outlet />
+      </main>
     </div>
   );
 };

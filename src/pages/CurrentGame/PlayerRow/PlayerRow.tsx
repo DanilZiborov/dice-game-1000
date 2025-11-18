@@ -1,10 +1,10 @@
 import type { JSX } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Player } from 'shared/types';
 import { RepeatComponent } from 'shared/utils/RepeatComponent';
 import { clsx } from 'clsx';
 import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
 import { BoltIcon, FailIcon, ShovelIcon } from 'components';
-import { useEffect, useRef, useState } from 'react';
 import { useOvertake } from 'pages/CurrentGame/PlayerRow/useOvertake';
 
 type Props = { player: Player; selectedPlayer: Player | null; onSelectPlayer: (player: Player) => void };
@@ -66,7 +66,10 @@ export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JS
   return (
     <div
       onClick={() => onSelectPlayer(player)}
-      className="border-cyber-secondary relative flex h-20 flex-col justify-center overflow-hidden border-b px-3"
+      className={clsx(
+        'relative flex h-20 flex-col justify-center overflow-hidden border-b border-cyber-secondary px-3',
+        !player.isEnterGame && 'text-cyber-disabled',
+      )}
     >
       <div className="flex items-center justify-between">
         <span className="relative flex items-center gap-2">

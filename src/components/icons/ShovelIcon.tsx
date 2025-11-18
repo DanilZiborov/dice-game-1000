@@ -1,7 +1,7 @@
 import type { JSX } from 'react';
 
 export const ShovelIcon = (): JSX.Element => (
-  <svg width="22" height="22" viewBox="0 0 100 100" className="fill-cyber-primary stroke-cyber-secondary block">
+  <svg width="22" height="22" viewBox="0 0 100 100" className="block fill-cyber-primary stroke-cyber-secondary">
     <path
       stroke="white"
       strokeWidth={4}

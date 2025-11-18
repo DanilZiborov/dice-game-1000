@@ -1,4 +1,5 @@
 import type { JSX } from 'react';
+import { useMemo } from 'react';
 import { ArrowIcon } from 'components/icons';
 import { clsx } from 'clsx';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +9,6 @@ import { RepeatComponent } from 'shared/utils/RepeatComponent';
 import { BoltIcon, FailIcon, ShovelIcon } from 'components';
 import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
 import { MAX_EASY_WIN_ATTEMPTS } from 'shared/constants';
-import { useMemo } from 'react';
 
 type Props = {
   player: Player;
@@ -45,7 +45,7 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
     <div className="w-full">
       {/*Кнопка назад, имя игрока и счётчик фейлов*/}
       <div className="flex items-center justify-between">
-        <div onClick={() => navigate('/game', { replace: true })}>
+        <div onClick={() => navigate('/app/game/current', { replace: true })}>
           <ArrowIcon direction="left" />
         </div>
         <h1 className="text-[24px]">{player.name}</h1>
@@ -70,7 +70,7 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
         </div>
 
         {/*Доп. инфо*/}
-        <p className="text-cyber-text-secondary text-center font-mono text-xs">{additionalText}</p>
+        <p className="text-center font-mono text-xs text-cyber-text-secondary">{additionalText}</p>
 
         {/*Сетка для easyWin*/}
         {game?.withEasyWin && isOnBarrel && (
@@ -80,7 +80,7 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
                 /* eslint-disable-next-line react/no-array-index-key */
                 key={`easy-win-grid-${index}`}
                 className={clsx(
-                  'border-cyber-text-secondary flex h-[16px] w-[36px] items-center justify-center border border-r font-mono text-[10px] leading-none tracking-widest',
+                  'flex h-[16px] w-[36px] items-center justify-center border border-r border-cyber-text-secondary font-mono text-[10px] leading-none tracking-widest',
                   index === arr.length - 1 && 'border-r-1',
                 )}
               >
