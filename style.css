@@ -61,3 +61,24 @@ input[type="number"]:focus {
         display: inline-block;
     }
 }
+
+
+@keyframes pulse-border {
+    0% {
+        border-color: var(--color-cyber-primary);
+        box-shadow: 0 0 10px rgba(249, 115, 115, 0.3);
+    }
+    50% {
+        border-color: var(--color-cyber-secondary);
+        box-shadow: 0 0 15px rgba(16, 185, 128, 0.4);
+    }
+    100% {
+        border-color: var(--color-cyber-primary);
+        box-shadow: 0 0 10px rgba(249, 115, 115, 0.3);
+    }
+}
+
+.animate-pulse-border {
+    animation: pulse-border 2.5s ease-in-out infinite;
+    border-width: 2px;
+}

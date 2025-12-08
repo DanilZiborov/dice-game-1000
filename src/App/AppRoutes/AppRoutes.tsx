@@ -11,6 +11,7 @@ import { Combos } from 'pages/Combos';
 import { Rules } from 'pages/Rules';
 import { GameNav } from './GameNav';
 import { StartPage } from './StartPage';
+import { FinishedGames } from '../../pages/FinishedGames/FinishedGames';
 
 const routes: RouteObject[] = [
   {
@@ -40,6 +41,15 @@ const routes: RouteObject[] = [
       {
         path: 'combos',
         element: <Combos />,
+      },
+
+      {
+        path: 'finished',
+        element: (
+          <DbProvider>
+            <FinishedGames />
+          </DbProvider>
+        ),
       },
 
       {

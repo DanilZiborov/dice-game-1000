@@ -11,6 +11,7 @@ type MenuItem = {
 const MENU_ITEMS: MenuItem[] = [
   { label: 'Инфо', link: '/landing', icon: null },
   { label: 'Игра', link: '/app/game', icon: null },
+  { label: 'Журнал игр', link: '/finished', icon: null },
   { label: 'Правила', link: '/rules', icon: null },
   { label: 'Комбинации', link: '/combos', icon: null },
   { label: 'Импорт и экспорт', link: '/app/data-transfer', icon: null },
