@@ -1,9 +1,16 @@
+// src/pages/FinishedGames/index.tsx
+import { useParams, useNavigate } from 'react-router-dom';
 import { type JSX, useEffect, useState } from 'react';
 import { useDb } from '../../db/DbContext';
 import type { Game, Player } from '../../shared/types';
 import { getAllGames } from '../../db/operations/getAllGames';
 import { getAllPlayers } from '../../db/operations/getAllPlayers';
 import { getFormattedDateString } from '../../shared/utils/getFormattedDateString';
+import { DeleteIcon } from '../../components/icons/DeleteIcon';
+import { IconButton } from '../../components';
+import { deleteGamesAndPlayers } from '../../db/operations/deleteGamesAndPlayers';
+import { ConfirmationDialog } from '../../components/ConfirmationDialog';
+import { FinishedGameDetails } from './FinishedGameDetails';
 
 type GameWithPlayers = {
   game: Game;
@@ -12,8 +19,12 @@ type GameWithPlayers = {
 
 export const FinishedGames = (): JSX.Element => {
   const db = useDb();
+  const navigate = useNavigate();
+  const { gameId } = useParams();
 
+  const isItemMode = !!gameId;
   const [gamesWithPlayers, setGamesWithPlayers] = useState<GameWithPlayers[]>([]);
+  const [gameToDelete, setGameToDelete] = useState<null | number>(null);
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
@@ -51,7 +62,29 @@ export const FinishedGames = (): JSX.Element => {
   }, [db]);
 
   const handleCardClick = (gameId: number) => {
-    console.log('Открыть детали игры:', gameId);
+    navigate(`/finished/${gameId}`);
+  };
+
+  const handleBack = () => {
+    navigate('/finished');
+  };
+
+  const handleDelete = async (gameId: number) => {
+    try {
+      await deleteGamesAndPlayers({
+        db,
+        gameIds: [gameId],
+      });
+      setGamesWithPlayers((prev) => prev.filter((item) => item.game.id !== gameId));
+
+      if (Number(gameId) === Number(gameToDelete)) {
+        handleBack();
+      }
+    } catch (err) {
+      console.error('Ошибка при удалении игры и игроков:', err);
+    }
+
+    setGameToDelete(null);
   };
 
   if (isLoading) {
@@ -62,8 +95,33 @@ export const FinishedGames = (): JSX.Element => {
     );
   }
 
+  // Режим отображения одной игры
+  if (isItemMode) {
+    const selectedGame = gamesWithPlayers.find((g) => g.game.id === Number(gameId));
+
+    if (!selectedGame) {
+      return (
+        <div className="p-6">
+          <p className="text-red-500">Игра не найдена</p>
+          <button onClick={handleBack} className="mt-4 text-cyber-primary hover:underline">
+            Вернуться к списку
+          </button>
+        </div>
+      );
+    }
+
+    return (
+      <FinishedGameDetails
+        game={selectedGame.game}
+        players={selectedGame.players}
+        onBack={handleBack}
+      />
+    );
+  }
+
+  // Режим списка игр
   return (
-    <div className="space-y-4 p-4">
+    <div className="space-y-4 p-2">
       {gamesWithPlayers.map(({ game, players }) => {
         const isFinished = !!game.ended;
         const startDate = new Date(game.started);
@@ -104,12 +162,16 @@ export const FinishedGames = (): JSX.Element => {
               isFinished
                 ? 'border border-cyber-secondary/30 bg-cyber-background'
                 : 'animate-pulse-border bg-cyber-background/95'
-            } p-6 transition-all duration-300 hover:border-cyber-primary/60 hover:shadow-lg hover:shadow-cyber-primary/20`}
+            } p-4 transition-all duration-300 hover:border-cyber-primary/60 hover:shadow-lg hover:shadow-cyber-primary/20`}
           >
-            {/* Заголовок — только дата начала */}
-            <h3 className={`mb-4 font-app text-2xl font-bold tracking-tight text-cyber-text`}>
-              {getFormattedDateString(startDate).split(', ')[0]}
-            </h3>
+            <div className="flex flex-row items-center justify-between">
+              <h3 className={`font-app text-lg font-bold tracking-wider text-cyber-text`}>
+                {getFormattedDateString(startDate).split(', ')[0]}
+              </h3>
+              <IconButton className="border-none" onClick={() => setGameToDelete(game.id)}>
+                <DeleteIcon />
+              </IconButton>
+            </div>
 
             {/* Список участников */}
             <p className={`truncate font-info text-sm text-cyber-text-secondary`} title={playersNames}>
@@ -117,10 +179,10 @@ export const FinishedGames = (): JSX.Element => {
             </p>
 
             {/* Декоративная линия */}
-            <div className={`mt-4 h-px bg-gradient-to-r from-transparent via-cyber-primary/30 to-transparent`} />
+            <div className={`my-4 h-px bg-gradient-to-r from-transparent via-cyber-primary/30 to-transparent`} />
 
             {/* Подвал с временем игры */}
-            <div className={`mt-3 flex justify-between font-info text-xs text-cyber-text-secondary/70`}>
+            <div className={`flex justify-between font-info text-xs text-cyber-text-secondary/70`}>
               <span>{timeInfo}</span>
               <span>ID: {game.id.toString().padStart(4, '0')}</span>
             </div>
@@ -134,6 +196,18 @@ export const FinishedGames = (): JSX.Element => {
           <p className="text-cyber-text-secondary/80">Нет завершённых игр</p>
         </div>
       )}
+
+      {/* Диалог подтверждения удаления */}
+      <ConfirmationDialog
+        open={!!gameToDelete}
+        onClose={() => setGameToDelete(null)}
+        text="Вы уверены, что хотите удалить эту игру? Восстановить её будет невозможно."
+        action={() => {
+          if (gameToDelete) {
+            void handleDelete(gameToDelete);
+          }
+        }}
+      />
     </div>
   );
 };

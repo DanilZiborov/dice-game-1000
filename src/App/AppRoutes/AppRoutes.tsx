@@ -44,7 +44,7 @@ const routes: RouteObject[] = [
       },
 
       {
-        path: 'finished',
+        path: 'finished/:gameId?',
         element: (
           <DbProvider>
             <FinishedGames />

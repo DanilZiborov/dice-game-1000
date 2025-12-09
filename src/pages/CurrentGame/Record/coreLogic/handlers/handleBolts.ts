@@ -10,7 +10,7 @@ export const handleBolts = (player: Player, points: number, status: PlayerStatus
 
   if (!needBolt) return player;
 
-  let updated = { ...player };
+  let updated = { ...player, totalBolts: player.totalBolts + 1 };
 
   if (player.boltsNumber < MAX_BOLTS - 1) {
     // если количество болтов не превысило лимит, добавляем болт

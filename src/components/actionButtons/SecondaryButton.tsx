@@ -53,6 +53,7 @@ export const SecondaryButton = ({
           'disabled:border-cyber-disabled disabled:text-cyber-disabled',
           'block',
           'absolute',
+          'hover:bg-cyber-disabled',
           withDelay && 'bg-cyber-background',
           className || '',
         )}
