@@ -14,7 +14,7 @@ export const Landing = (): JSX.Element => {
       {/* Первый экран */}
       <section className="flex min-h-full flex-col justify-between pb-20">
         <div>
-          <h1 className="mb-5 text-3xl">1К Журнал</h1>
+          <h1 className="mb-5 text-3xl">Журнал Партий 1000</h1>
           <p className="mb-8 text-lg leading-relaxed">
             Приложение для игры в «Тысячу» на костях. Автоматически считает очки, полностью избавляя от ручного
             подсчёта. Программа учитывает все правила: болты, ямы, обгон и другие нюансы. Перед игрой можно настроить
@@ -60,7 +60,7 @@ export const Landing = (): JSX.Element => {
       {/* Второй экран */}
       <section className="min-h-full pt-12">
         <section className="flex h-full flex-col items-center">
-          <div ref={detailsRef} className="w-full max-w-2xl space-y-8">
+          <div ref={detailsRef} className="w-full max-w-2xl space-y-4">
             <h3 className="mb-4 pb-2 text-2xl font-bold">Подробнее о приложении</h3>
             <ul className="list-disc space-y-3 pl-5">
               <li className="leading-relaxed">Работает без интернета — играйте где угодно.</li>
@@ -69,7 +69,7 @@ export const Landing = (): JSX.Element => {
               <li className="leading-relaxed">Правила и комбинации всегда у вас под рукой.</li>
             </ul>
 
-            <div className="mt-8">
+            <div className="mt-8 mb-15">
               <h3 className="mb-4 pb-2 text-xl font-bold">Технологии</h3>
               <ul className="list-disc space-y-3 pl-5">
                 <li className="leading-relaxed">Фронтенд: React + TypeScript.</li>
@@ -78,16 +78,18 @@ export const Landing = (): JSX.Element => {
                 <li className="leading-relaxed">Сборка: Vite + плагины.</li>
               </ul>
             </div>
-
-            <div className="mt-8">
-              <h3 className="mb-4 pb-2 text-xl font-bold">Планы</h3>
-              <ul className="list-disc space-y-3 pl-5">
-                <li className="leading-relaxed">Журнал завершённых партий</li>
-                <li className="leading-relaxed">История набора очков в течение партии и график прогресса.</li>
-                <li className="leading-relaxed">Забавные игровые титулы по итогам партии.</li>
-                <li className="leading-relaxed">Светлая тема.</li>
-              </ul>
-            </div>
+            <p className="self-start">
+              Спасибо сайту{' '}
+              <a className="text-cyber-secondary underline" href="https://selosovetov.ru/2016/11/25/igra-v-1000/">
+                {' '}
+                «Село советов»
+              </a>{' '}
+              за подробные правила игры.{' '}
+            </p>
+            <p>Приложение создал Данил Зиборов в 2025 году.</p>
+            <a href="https://github.com/DanilZiborov/dice-game-1000" className="text-cyber-secondary underline">
+              Проект на Github
+            </a>
           </div>
         </section>
       </section>

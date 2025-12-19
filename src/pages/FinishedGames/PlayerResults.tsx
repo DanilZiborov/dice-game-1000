@@ -1,5 +1,6 @@
 // src/components/PlayerResults.tsx
-import { memo } from 'react';
+import {memo, useEffect} from 'react';
+import {useLocation} from "react-router-dom";
 
 type Props = {
   name: string;
@@ -8,6 +9,20 @@ type Props = {
 };
 
 export const PlayerResults = memo(({ name, scores, totalBolts }: Props) => {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (!hash) return;
+
+    const el = document.querySelector(hash);
+
+    if (el) {
+      setTimeout(() => {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }, 0);
+    }
+  }, [hash]);
+
   if (scores.length < 2) {
     return (
       <div className="rounded-xl bg-cyber-background/50 p-6">
@@ -39,11 +54,11 @@ export const PlayerResults = memo(({ name, scores, totalBolts }: Props) => {
       <div className="grid grid-cols-1 gap-4 text-sm sm:grid-cols-2">
         <div>
           <p className="flex justify-between">
-            <span className="text-cyber-text-secondary">Сумма заработанных очков:</span>
+            <span className="text-cyber-text-secondary">Всего набрано очков:</span>
             <span className="font-medium text-green-400">+{totalGain}</span>
           </p>
           <p className="flex justify-between">
-            <span className="text-cyber-text-secondary">Сумма потерянных очков:</span>
+            <span className="text-cyber-text-secondary">Всего потеряно очков:</span>
             <span className="font-medium text-red-400">-{totalLoss}</span>
           </p>
           <p className="flex justify-between">
@@ -58,7 +73,7 @@ export const PlayerResults = memo(({ name, scores, totalBolts }: Props) => {
             <span className="font-medium">+{maxDelta}</span>
           </p>
           <p className="flex justify-between">
-            <span className="text-cyber-text-secondary">Наименьшая положительная запись:</span>
+            <span className="text-cyber-text-secondary">Наименьшая запись:</span>
             <span className="font-medium">+{minPositiveDelta}</span>
           </p>
           <p className="flex justify-between">

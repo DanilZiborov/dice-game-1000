@@ -1,5 +1,5 @@
 import type { Game, Player } from '../../shared/types';
-import {PlayerResults} from "./PlayerResults";
+import { PlayerResults } from './PlayerResults';
 
 type Props = {
   game: Game;
@@ -46,7 +46,7 @@ export const FinishedGameDetails = ({ game, players, onBack }: Props) => {
   const playersNames = players.map((p) => p.name).join(', ');
 
   return (
-    <div className="min-h-screen bg-cyber-background p-6">
+    <div className="min-h-screen bg-cyber-background">
       {/* Фиксированная кнопка "Назад" */}
       <div className="sticky top-0 z-10 bg-cyber-background pb-6">
         <button
@@ -138,7 +138,7 @@ export const FinishedGameDetails = ({ game, players, onBack }: Props) => {
       </div>
 
       {/* Секция "Результаты игроков" с якорем */}
-      <div id="player-results" className="mt-8 scroll-mt-20">
+      <div id="player-results" className="min-h-screen pt-[100px]">
         <h3 className="mb-6 font-app text-xl font-semibold text-cyber-text">Результаты игроков</h3>
         <div className="space-y-6">
           {players.map((player) => (

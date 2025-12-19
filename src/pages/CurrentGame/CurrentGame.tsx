@@ -34,7 +34,7 @@ export const CurrentGame = (): JSX.Element => {
     if (!game) return;
     endGame({ db, gameId: game.id }).then(() => {
       dispatch({ type: 'SET_GAME', payload: null });
-      navigate(`/finished/${game.id}/#player-results`);
+      navigate(`/finished/${game.id}#player-results`);
     });
   };
 
