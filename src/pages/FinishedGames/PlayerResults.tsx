@@ -1,6 +1,6 @@
 // src/components/PlayerResults.tsx
-import {memo, useEffect} from 'react';
-import {useLocation} from "react-router-dom";
+import { memo, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 type Props = {
   name: string;

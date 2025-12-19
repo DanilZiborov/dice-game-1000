@@ -13,7 +13,7 @@ export const IconButton = ({ children, onClick, className }: IconButtonProps): J
       type="button"
       onClick={(e) => {
         e.stopPropagation();
-        onClick();
+        if (onClick) onClick();
       }}
       className={clsx(
         'flex h-10 w-10 items-center justify-center',

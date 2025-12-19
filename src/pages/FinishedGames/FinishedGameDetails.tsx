@@ -1,3 +1,4 @@
+import { type JSX } from 'react';
 import type { Game, Player } from '../../shared/types';
 import { PlayerResults } from './PlayerResults';
 
@@ -7,8 +8,8 @@ type Props = {
   onBack: () => void;
 };
 
-export const FinishedGameDetails = ({ game, players, onBack }: Props) => {
-  const formatDateTime = (date: string | undefined) => {
+export const FinishedGameDetails = ({ game, players, onBack }: Props): JSX.Element => {
+  const formatDateTime = (date: string | undefined): string => {
     if (!date) return '—';
     const dateObj = new Date(date);
 
@@ -21,7 +22,7 @@ export const FinishedGameDetails = ({ game, players, onBack }: Props) => {
     });
   };
 
-  const calculateDuration = () => {
+  const calculateDuration = (): string => {
     if (!game.started || !game.ended) return '—';
 
     const start = new Date(game.started);
@@ -34,7 +35,7 @@ export const FinishedGameDetails = ({ game, players, onBack }: Props) => {
     return `${hours} ч ${minutes} мин`;
   };
 
-  const getPitInfo = () => {
+  const getPitInfo = (): string => {
     if (game.pit200 && game.pit700) return '200–300, 700–800';
     if (game.pit200) return '200–300';
     if (game.pit700) return '700–800';

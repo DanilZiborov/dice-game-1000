@@ -10,7 +10,7 @@ type ConfirmationDialogProps = {
 };
 
 export const ConfirmationDialog = ({ open, onClose, text, action }: ConfirmationDialogProps): JSX.Element | null => {
-  const handleOverlayClick = (e: React.MouseEvent) => {
+  const handleOverlayClick = (e: React.MouseEvent): void => {
     const overlay = e.currentTarget as HTMLElement;
     const target = e.target as HTMLElement;
 
@@ -29,7 +29,7 @@ export const ConfirmationDialog = ({ open, onClose, text, action }: Confirmation
       tabIndex={-1}
     >
       {/* Оверлей */}
-      <div className={clsx('absolute inset-0 bg-black transition-opacity duration-200 opacity-50')} />
+      <div className={clsx('absolute inset-0 bg-black opacity-50 transition-opacity duration-200')} />
 
       {/* Диалог */}
       <div

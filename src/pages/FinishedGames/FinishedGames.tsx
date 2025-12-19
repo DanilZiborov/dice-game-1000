@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 // src/pages/FinishedGames/index.tsx
 import { useParams, useNavigate } from 'react-router-dom';
 import { type JSX, useEffect, useState } from 'react';
@@ -28,7 +29,7 @@ export const FinishedGames = (): JSX.Element => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
       setIsLoading(true);
 
       try {
@@ -58,24 +59,24 @@ export const FinishedGames = (): JSX.Element => {
       }
     };
 
-    fetchData();
+    void fetchData();
   }, [db]);
 
-  const handleCardClick = (gameId: number) => {
-    navigate(`/finished/${gameId}`);
+  const handleCardClick = (finishedGameId: number): void => {
+    navigate(`/finished/${finishedGameId}`);
   };
 
-  const handleBack = () => {
+  const handleBack = (): void => {
     navigate('/finished');
   };
 
-  const handleDelete = async (gameId: number) => {
+  const handleDelete = async (gameIdToDelete: number): Promise<void> => {
     try {
       await deleteGamesAndPlayers({
         db,
-        gameIds: [gameId],
+        gameIds: [gameIdToDelete],
       });
-      setGamesWithPlayers((prev) => prev.filter((item) => item.game.id !== gameId));
+      setGamesWithPlayers((prev) => prev.filter((item) => item.game.id.toString() !== gameId));
 
       if (Number(gameId) === Number(gameToDelete)) {
         handleBack();
@@ -110,13 +111,7 @@ export const FinishedGames = (): JSX.Element => {
       );
     }
 
-    return (
-      <FinishedGameDetails
-        game={selectedGame.game}
-        players={selectedGame.players}
-        onBack={handleBack}
-      />
-    );
+    return <FinishedGameDetails game={selectedGame.game} players={selectedGame.players} onBack={handleBack} />;
   }
 
   // Режим списка игр
@@ -128,7 +123,7 @@ export const FinishedGames = (): JSX.Element => {
         const endDate = game.ended ? new Date(game.ended) : null;
 
         // Форматируем время начала (ЧЧ:ММ)
-        const formatTime = (date: Date) => {
+        const formatTime = (date: Date): string => {
           return date.toLocaleTimeString('ru-RU', {
             hour: '2-digit',
             minute: '2-digit',
