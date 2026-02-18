@@ -1,6 +1,8 @@
 import { type JSX, useEffect, useState } from 'react';
 import { clsx } from 'clsx';
 import { Link } from 'react-router-dom';
+import { IconButton } from '../../components';
+import { Dice5 } from '../../components/icons/dices';
 
 type MenuItem = {
   label: string;
@@ -40,7 +42,7 @@ export const Header = ({ maxWidth }: Props): JSX.Element => {
   return (
     <div className="fixed top-0 left-0 z-100 w-full bg-cyber-background">
       <div className={clsx(maxWidth, 'relative mx-auto w-full transition-[max-width] duration-500')}>
-        <header className="flex items-center justify-between p-4">
+        <header className="flex items-center justify-between px-4 py-2.5">
           <button
             className="flex cursor-pointer flex-col items-center justify-center gap-1"
             onClick={() => setIsOpen(!isOpen)}
@@ -49,6 +51,9 @@ export const Header = ({ maxWidth }: Props): JSX.Element => {
             <div className="h-0.5 w-6 bg-cyber-secondary shadow-lg" />
             <div className="h-0.5 w-6 bg-cyber-secondary shadow-lg" />
           </button>
+          <IconButton className="h-[25px] w-[25px] border-none">
+            <Dice5 className="h-[25px] w-[25px] fill-cyber-primary" />
+          </IconButton>
         </header>
 
         {/* Меню */}

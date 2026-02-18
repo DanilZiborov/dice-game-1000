@@ -27,7 +27,7 @@ export const usePlayerStatus = ({ player }: Props): PlayerStatus => {
     };
 
     const countPit = (start: number, end: number): void => {
-      const isInPit = score >= start && score < end;
+      const isInPit = score >= start && score <= end;
       status.isInPit = isInPit;
       status.pitPointsLeft = isInPit ? end - score : null;
     };

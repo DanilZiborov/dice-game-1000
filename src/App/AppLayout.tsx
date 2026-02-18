@@ -23,7 +23,13 @@ export const AppLayout = (): JSX.Element => {
   }, []);
 
   return (
-    <div className={clsx('flex flex-col items-center bg-cyber-background text-cyber-text', 'h-[var(--app-height)]')}>
+    <div
+      className={clsx(
+        'flex flex-col items-center bg-cyber-background text-cyber-text',
+        'h-[var(--app-height)]',
+        'user-select-none',
+      )}
+    >
       <Header maxWidth={maxWidth} />
       <main
         className={clsx(
