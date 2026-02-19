@@ -1,7 +1,7 @@
 import { type JSX, useEffect, useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { clsx } from 'clsx';
-import { Header } from './AppLayout/Header';
+import { Header } from './AppLayout/Header/Header';
 
 export const AppLayout = (): JSX.Element => {
   const { pathname } = useLocation();

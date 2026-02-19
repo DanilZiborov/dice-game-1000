@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-// src/pages/FinishedGames/index.tsx
 import { useParams, useNavigate } from 'react-router-dom';
 import { type JSX, useEffect, useState } from 'react';
 import { useDb } from '../../db/DbContext';
@@ -7,7 +5,6 @@ import type { Game, Player } from '../../shared/types';
 import { getAllGames } from '../../db/operations/getAllGames';
 import { getAllPlayers } from '../../db/operations/getAllPlayers';
 import { getFormattedDateString } from '../../shared/utils/getFormattedDateString';
-import { DeleteIcon } from '../../components/icons/DeleteIcon';
 import { IconButton } from '../../components';
 import { deleteGamesAndPlayers } from '../../db/operations/deleteGamesAndPlayers';
 import { ConfirmationDialog } from '../../components/ConfirmationDialog';
