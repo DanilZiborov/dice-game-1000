@@ -4,8 +4,8 @@ import type { Player } from 'shared/types';
 import { RepeatComponent } from 'shared/utils/RepeatComponent';
 import { clsx } from 'clsx';
 import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
-import { BoltIcon, FailIcon, ShovelIcon } from 'components';
 import { useOvertake } from 'pages/CurrentGame/PlayerRow/useOvertake';
+import { BoltIcon, ShovelIcon, FailIcon } from 'components/icons';
 
 type Props = { player: Player; selectedPlayer: Player | null; onSelectPlayer: (player: Player) => void };
 

@@ -1,13 +1,14 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { type JSX, useEffect, useState } from 'react';
-import { useDb } from '../../db/DbContext';
-import type { Game, Player } from '../../shared/types';
-import { getAllGames } from '../../db/operations/getAllGames';
-import { getAllPlayers } from '../../db/operations/getAllPlayers';
-import { getFormattedDateString } from '../../shared/utils/getFormattedDateString';
-import { IconButton } from '../../components';
-import { deleteGamesAndPlayers } from '../../db/operations/deleteGamesAndPlayers';
-import { ConfirmationDialog } from '../../components/ConfirmationDialog';
+import { useDb } from 'db/DbContext';
+import type { Game, Player } from 'shared/types';
+import { getAllGames } from 'db/operations/getAllGames';
+import { getAllPlayers } from 'db/operations/getAllPlayers';
+import { getFormattedDateString } from 'shared/utils/getFormattedDateString';
+import { IconButton } from 'components';
+import { deleteGamesAndPlayers } from 'db/operations/deleteGamesAndPlayers';
+import { ConfirmationDialog } from 'components/ConfirmationDialog';
+import { DeleteIcon } from 'components/icons';
 import { FinishedGameDetails } from './FinishedGameDetails';
 
 type GameWithPlayers = {

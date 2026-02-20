@@ -1,12 +1,11 @@
 import type { JSX } from 'react';
 import { useMemo } from 'react';
-import { ArrowIcon } from 'components/icons';
+import { ArrowIcon, BoltIcon, FailIcon, ShovelIcon } from 'components/icons';
 import { clsx } from 'clsx';
 import { useNavigate } from 'react-router-dom';
 import type { Player } from 'shared/types';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
 import { RepeatComponent } from 'shared/utils/RepeatComponent';
-import { BoltIcon, FailIcon, ShovelIcon } from 'components';
 import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
 import { MAX_EASY_WIN_ATTEMPTS } from 'shared/constants';
 
