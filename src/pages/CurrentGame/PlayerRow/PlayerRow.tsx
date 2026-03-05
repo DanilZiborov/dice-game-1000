@@ -67,7 +67,7 @@ export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JS
     <div
       onClick={() => onSelectPlayer(player)}
       className={clsx(
-        'relative flex h-20 flex-col justify-center overflow-hidden border-b border-cyber-secondary px-3',
+        'relative flex h-20 flex-col justify-center border-b border-cyber-secondary px-3',
         !player.isEnterGame && 'text-cyber-disabled',
       )}
     >
