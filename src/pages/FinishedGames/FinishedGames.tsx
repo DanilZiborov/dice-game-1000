@@ -1,5 +1,5 @@
 import { useParams, useNavigate } from 'react-router-dom';
-import { type JSX, useEffect, useState } from 'react';
+import { type JSX, useCallback, useEffect, useState } from 'react';
 import { useDb } from 'db/DbContext';
 import type { Game, Player } from 'shared/types';
 import { getAllGames } from 'db/operations/getAllGames';
@@ -16,6 +16,8 @@ type GameWithPlayers = {
   players: Player[];
 };
 
+// TODO: большую часть комопнента FinishedGames писала нейронка. Требуется жёсткий рефакторинг всего раздела FinishedGames
+
 export const FinishedGames = (): JSX.Element => {
   const db = useDb();
   const navigate = useNavigate();
@@ -26,39 +28,39 @@ export const FinishedGames = (): JSX.Element => {
   const [gameToDelete, setGameToDelete] = useState<null | number>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const fetchData = useCallback(async (): Promise<void> => {
+    setIsLoading(true);
+
+    try {
+      const [allGames, allPlayers] = await Promise.all([getAllGames(db), getAllPlayers(db)]);
+
+      const mappedGames: GameWithPlayers[] = allGames.map((game) => {
+        const playersForGame = allPlayers.filter((player) => player.gameId === game.id);
+
+        return {
+          game,
+          players: playersForGame,
+        };
+      });
+
+      mappedGames.sort((a, b) => {
+        const dateA = new Date(a.game.started);
+        const dateB = new Date(b.game.started);
+
+        return dateB.getTime() - dateA.getTime();
+      });
+
+      setGamesWithPlayers(mappedGames);
+    } catch (error) {
+      console.error('Ошибка при загрузке игр и игроков:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  }, [db, setGamesWithPlayers, setIsLoading]);
+
   useEffect(() => {
-    const fetchData = async (): Promise<void> => {
-      setIsLoading(true);
-
-      try {
-        const [allGames, allPlayers] = await Promise.all([getAllGames(db), getAllPlayers(db)]);
-
-        const mappedGames: GameWithPlayers[] = allGames.map((game) => {
-          const playersForGame = allPlayers.filter((player) => player.gameId === game.id);
-
-          return {
-            game,
-            players: playersForGame,
-          };
-        });
-
-        mappedGames.sort((a, b) => {
-          const dateA = new Date(a.game.started);
-          const dateB = new Date(b.game.started);
-
-          return dateB.getTime() - dateA.getTime();
-        });
-
-        setGamesWithPlayers(mappedGames);
-      } catch (error) {
-        console.error('Ошибка при загрузке игр и игроков:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
     void fetchData();
-  }, [db]);
+  }, [fetchData]);
 
   const handleCardClick = (finishedGameId: number): void => {
     navigate(`/finished/${finishedGameId}`);
@@ -74,7 +76,7 @@ export const FinishedGames = (): JSX.Element => {
         db,
         gameIds: [gameIdToDelete],
       });
-      setGamesWithPlayers((prev) => prev.filter((item) => item.game.id.toString() !== gameId));
+      void fetchData();
 
       if (Number(gameId) === Number(gameToDelete)) {
         handleBack();

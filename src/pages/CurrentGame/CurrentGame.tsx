@@ -3,7 +3,7 @@ import { Record } from 'pages/CurrentGame/Record/Record';
 import { type JSX, useState } from 'react';
 import { PlayerRow } from 'pages/CurrentGame/PlayerRow';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import type { Player } from 'shared/types';
 import { useDb } from 'db/DbContext';
 import { endGame } from 'db/operations';
@@ -31,15 +31,15 @@ export const CurrentGame = (): JSX.Element => {
   const handleEndGame = (): void => {
     if (!game) return;
     endGame({ db, gameId: game.id }).then(() => {
-      navigate(`/finished/${game.id}#player-results`);
+      navigate(`/finished/${game.id}`);
       dispatch({ type: 'SET_GAME', payload: null });
     });
   };
 
-  // if (!game) return <Navigate to="/app/game/new" />;
+  if (!game && location.pathname.includes('current')) return <Navigate to="/app/game/new" replace/>;
 
   return (
-    <div>
+    <div className="h-full w-full">
       <div className="flex justify-end">
         <div
           onClick={() => setIsConfirmationOpen(true)}
@@ -47,23 +47,23 @@ export const CurrentGame = (): JSX.Element => {
         />
       </div>
 
-      <div className="flex h-full w-full flex-col">
+      <div className="flex h-[calc(100%-20px)] w-full flex-col">
         {/* Основной контент (скрывается в режиме записи) */}
         <div className={clsx(isRecordMode && 'hidden', 'flex h-full w-full flex-col')}>
           {/* Контейнер для списка игроков – занимает всё свободное место и центрирует содержимое */}
           <div className="flex flex-grow flex-col items-center justify-center">
             <ul className="max-h-[80%] w-full overflow-y-auto border-cyber-secondary">
-              {players.map((player) => (
-                <li key={player.id}>
-                  <PlayerRow player={player} onSelectPlayer={handleSelectPlayer} selectedPlayer={selectedPlayer} />
-                </li>
-              ))}
+              {!!game &&
+                players.map((player) => (
+                  <li key={player.id}>
+                    <PlayerRow player={player} onSelectPlayer={handleSelectPlayer} selectedPlayer={selectedPlayer} />
+                  </li>
+                ))}
             </ul>
           </div>
         </div>
 
-        {/* Режим записи (занимает весь экран) */}
-        {isRecordMode && <Record />}
+        {isRecordMode && game && <Record />}
       </div>
       <ConfirmationDialog
         open={isConfirmationOpen}

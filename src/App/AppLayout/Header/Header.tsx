@@ -23,7 +23,7 @@ export const Header = ({ maxWidth }: Props): JSX.Element => {
 
   return (
     <div className="fixed top-0 left-0 z-100 w-full bg-cyber-background">
-      <div className={clsx(maxWidth, 'relative mx-auto w-full transition-[max-width] duration-500')}>
+      <div className={clsx(maxWidth, 'relative mx-auto w-full')}>
         <header className="flex h-[40px] items-center justify-between px-4 py-2.5">
           <button className="flex cursor-pointer items-center justify-center" onClick={() => setIsOpen(!isOpen)}>
             <BurgerIcon className="h-3.5 w-6 text-cyber-secondary drop-shadow-lg" />

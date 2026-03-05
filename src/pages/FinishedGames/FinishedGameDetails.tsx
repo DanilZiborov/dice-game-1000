@@ -1,5 +1,5 @@
 import { type JSX } from 'react';
-import type { Game, Player } from '../../shared/types';
+import type { Game, Player } from 'shared/types';
 import { PlayerResults } from './PlayerResults';
 
 type Props = {
@@ -21,6 +21,12 @@ export const FinishedGameDetails = ({ game, players, onBack }: Props): JSX.Eleme
       minute: '2-digit',
     });
   };
+
+  const headerDate = new Date(game.started).toLocaleString('ru-RU', {
+    day: '2-digit',
+    month: '2-digit',
+    year: '2-digit',
+  });
 
   const calculateDuration = (): string => {
     if (!game.started || !game.ended) return '—';
@@ -49,7 +55,7 @@ export const FinishedGameDetails = ({ game, players, onBack }: Props): JSX.Eleme
   return (
     <div className="min-h-screen bg-cyber-background">
       {/* Фиксированная кнопка "Назад" */}
-      <div className="sticky top-0 z-10 bg-cyber-background pb-6">
+      <div className="sticky top-0 z-10 bg-cyber-background pb-8">
         <button
           onClick={onBack}
           className="flex items-center gap-2 text-cyber-primary transition-colors hover:underline"
@@ -67,6 +73,10 @@ export const FinishedGameDetails = ({ game, players, onBack }: Props): JSX.Eleme
           Назад к списку игр
         </button>
       </div>
+
+      <p className="mb-2 text-center text-lg font-bold underline">
+        Партия № {game.id} от {headerDate}{' '}
+      </p>
 
       {/* Основной контент: две колонки */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">

@@ -1,4 +1,3 @@
-// src/components/PlayerResults.tsx
 import { memo, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
@@ -45,7 +44,6 @@ export const PlayerResults = memo(({ name, scores, totalBolts }: Props) => {
 
   const maxDelta = Math.max(...deltas); // Максимальная дельта
   const minPositiveDelta = positiveDeltas.length > 0 ? Math.min(...positiveDeltas) : 0; // Если положительных приростов не было — показываем 0
-  const avgDelta = deltas.reduce((sum, d) => sum + d, 0) / deltas.length;
 
   return (
     <div className="space-y-4 rounded-xl bg-cyber-background/50 p-6">
@@ -76,14 +74,8 @@ export const PlayerResults = memo(({ name, scores, totalBolts }: Props) => {
             <span className="text-cyber-text-secondary">Наименьшая запись:</span>
             <span className="font-medium">+{minPositiveDelta}</span>
           </p>
-          <p className="flex justify-between">
-            <span className="text-cyber-text-secondary">Средняя запись:</span>
-            <span className="font-medium">{avgDelta.toFixed(1)}</span>
-          </p>
         </div>
       </div>
     </div>
   );
 });
-
-PlayerResults.displayName = 'PlayerResults';

@@ -1,4 +1,4 @@
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { type JSX, useEffect, useState } from 'react';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
 import { useDb } from 'db/DbContext';
@@ -6,8 +6,6 @@ import { getCurrentGame, getPlayersByGameId } from 'db/operations';
 
 export const GameAppWrapper = (): JSX.Element => {
   const db = useDb();
-
-  const navigate = useNavigate();
 
   const { dispatch } = useCurrentGame();
 
@@ -35,13 +33,12 @@ export const GameAppWrapper = (): JSX.Element => {
     };
 
     void init();
-  }, [db, dispatch, navigate]);
+  }, [db, dispatch]);
 
   if (isLoading) return <p className="font-app">Загрузка...</p>;
 
   return (
     <div className="h-full font-app">
-      {' '}
       <Outlet />
     </div>
   );
