@@ -3,7 +3,7 @@ import qrCode from 'assets/qr_link.svg';
 
 export const Landing = (): JSX.Element => {
   return (
-    <div>
+    <div className="py-4">
       {/* Первый экран */}
       <section className="flex min-h-full flex-col">
         <div>

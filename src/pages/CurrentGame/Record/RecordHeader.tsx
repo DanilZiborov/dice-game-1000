@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import type { Player } from 'shared/types';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
 import { RepeatComponent } from 'shared/utils/RepeatComponent';
-import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
+import { usePlayerStatus } from 'shared/playerStatus/usePlayerStatus';
 import { MAX_EASY_WIN_ATTEMPTS } from 'shared/constants';
 
 type Props = {
@@ -22,7 +22,7 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
 
   if (!game) throw new Error('Игра не существует!');
 
-  const { isInPit, isOnBarrel, barrelPointsLeft, pitPointsLeft } = usePlayerStatus({ player });
+  const playerStauts = usePlayerStatus({ player });
 
   // Если в массиве не хватает значений, дополняем до 3
   const stableEasyWinLog =
@@ -33,12 +33,20 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
   const additionalText = useMemo(() => {
     if (!player.isEnterGame) return `паспорт: ${game.enterLimit} очков`;
 
-    if (isInPit) return `выбраться из ямы: ${pitPointsLeft} очков`;
+    if (playerStauts?.isInPit) return `выбраться из ямы: ${playerStauts?.pitPointsLeft} очков`;
 
-    if (isOnBarrel && game.withEasyWin) return `для победы нужно ${barrelPointsLeft} очков`;
+    if (playerStauts?.isOnBarrel && game.withEasyWin) return `для победы нужно ${playerStauts?.barrelPointsLeft} очков`;
 
     return '';
-  }, [barrelPointsLeft, game.enterLimit, game.withEasyWin, isInPit, isOnBarrel, pitPointsLeft, player.isEnterGame]);
+  }, [
+    game.enterLimit,
+    game.withEasyWin,
+    player.isEnterGame,
+    playerStauts?.barrelPointsLeft,
+    playerStauts?.isInPit,
+    playerStauts?.isOnBarrel,
+    playerStauts?.pitPointsLeft,
+  ]);
 
   return (
     <div className="w-full">
@@ -59,20 +67,19 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
         )}
       </div>
 
-      {/*Болты*/}
-      <div className="flex flex-col items-center gap-1">
+      <div className="flex h-[45px] flex-col items-center gap-1">
         <div className="flex gap-1">
           <RepeatComponent count={player.boltsNumber}>
             <BoltIcon />
           </RepeatComponent>
-          {isInPit && <ShovelIcon />}
+          {playerStauts?.isInPit && <ShovelIcon />}
         </div>
 
         {/*Доп. инфо*/}
         <p className="text-center font-mono text-xs text-cyber-text-secondary">{additionalText}</p>
 
         {/*Сетка для easyWin*/}
-        {game?.withEasyWin && isOnBarrel && (
+        {game?.withEasyWin && playerStauts?.isOnBarrel && (
           <div className="mb-2 flex">
             {stableEasyWinLog.map((value, index, arr) => (
               <div

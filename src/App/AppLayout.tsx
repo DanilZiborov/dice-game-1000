@@ -31,7 +31,7 @@ export const AppLayout = (): JSX.Element => {
       )}
     >
       <Header maxWidth={maxWidth} />
-      <main className={clsx('h-full w-full pt-[70px]', !isGame && 'h-auto min-h-full p-4', maxWidth)}>
+      <main className={clsx('h-full w-full pt-[40px]', !isGame && 'h-auto min-h-full p-4', maxWidth)}>
         <Outlet />
       </main>
     </div>

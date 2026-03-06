@@ -38,7 +38,7 @@ export const GameAppWrapper = (): JSX.Element => {
   if (isLoading) return <p className="font-app">Загрузка...</p>;
 
   return (
-    <div className="h-full font-app">
+    <div className="select-none h-full font-app">
       <Outlet />
     </div>
   );

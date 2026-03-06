@@ -51,7 +51,7 @@ export const AddPlayerForm = ({ onPlayersChange, initialPlayers }: Props): JSX.E
   return (
     <div className="flex h-full flex-col items-center justify-center">
       <form
-        className="w-full overflow-auto pb-10"
+        className="mb-8 w-full overflow-auto pb-4"
         onSubmit={(e) => {
           e.preventDefault();
           // TODO: тут надо понаблюдать, какое поведение лучше

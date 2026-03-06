@@ -43,7 +43,7 @@ export const CurrentGame = (): JSX.Element => {
       <div className="flex justify-end">
         <div
           onClick={() => setIsConfirmationOpen(true)}
-          className="relative top-[-60px] right-[20px] z-101 h-[20px] w-[20px] rounded-xs bg-red-700"
+          className="relative top-[-30px] right-[20px] z-101 h-[20px] w-[20px] rounded-xs bg-red-700"
         />
       </div>
 

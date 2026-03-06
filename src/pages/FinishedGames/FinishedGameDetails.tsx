@@ -53,7 +53,7 @@ export const FinishedGameDetails = ({ game, players, onBack }: Props): JSX.Eleme
   const playersNames = players.map((p) => p.name).join(', ');
 
   return (
-    <div className="min-h-screen bg-cyber-background">
+    <div className="min-h-screen bg-cyber-background py-4">
       {/* Фиксированная кнопка "Назад" */}
       <div className="sticky top-0 z-10 bg-cyber-background pb-8">
         <button

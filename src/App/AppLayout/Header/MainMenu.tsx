@@ -5,16 +5,16 @@ import { Link } from 'react-router-dom';
 type MenuItem = {
   label: string;
   link: string;
-  icon: JSX.Element | null;
 };
 
 const MENU_ITEMS: MenuItem[] = [
-  { label: 'Инфо', link: '/landing', icon: null },
-  { label: 'Играть', link: '/app/game', icon: null },
-  { label: 'Завершённые партии', link: '/finished', icon: null },
-  { label: 'Правила', link: '/rules', icon: null },
-  { label: 'Комбинации', link: '/combos', icon: null },
-  { label: 'Импорт и экспорт', link: '/app/data-transfer', icon: null },
+  { label: 'Инфо', link: '/landing' },
+  { label: 'Играть', link: '/app/game' },
+  { label: 'Завершённые партии', link: '/finished' },
+  { label: 'Правила', link: '/rules' },
+  { label: 'Комбинации', link: '/combos' },
+  { label: 'Импорт и экспорт', link: '/app/data-transfer' },
+  { label: 'Настройки', link: '/app/settings' },
 ];
 
 type MainMenuProps = {
@@ -38,7 +38,6 @@ export const MainMenu = ({ isOpen, onClose }: MainMenuProps): JSX.Element => {
             className="flex items-center gap-2 rounded px-4 py-2 text-cyber-secondary transition-colors hover:bg-cyber-secondary/10"
             onClick={onClose}
           >
-            {item.icon && <span>{item.icon}</span>}
             {item.label}
           </Link>
         ))}

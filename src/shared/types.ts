@@ -83,3 +83,10 @@ export type PlayerStatus = {
   isOnBarrel: boolean;
   barrelPointsLeft: number | null;
 };
+
+// настройки приложения
+export const settingsSchema = object({
+  playerAutoChange: boolean(),
+});
+
+export type TSettings = InferOutput<typeof settingsSchema>;
