@@ -36,7 +36,7 @@ export const CurrentGame = (): JSX.Element => {
     });
   };
 
-  if (!game && location.pathname.includes('current')) return <Navigate to="/app/game/new" replace/>;
+  if (!game && location.pathname.includes('current')) return <Navigate to="/app/game/new" replace />;
 
   return (
     <div className="h-full w-full">

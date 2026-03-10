@@ -51,8 +51,6 @@ export const FinishedGames = (): JSX.Element => {
       });
 
       setGamesWithPlayers(mappedGames);
-    } catch (error) {
-      console.error('Ошибка при загрузке игр и игроков:', error);
     } finally {
       setIsLoading(false);
     }
@@ -71,18 +69,14 @@ export const FinishedGames = (): JSX.Element => {
   };
 
   const handleDelete = async (gameIdToDelete: number): Promise<void> => {
-    try {
-      await deleteGamesAndPlayers({
-        db,
-        gameIds: [gameIdToDelete],
-      });
-      void fetchData();
+    await deleteGamesAndPlayers({
+      db,
+      gameIds: [gameIdToDelete],
+    });
+    void fetchData();
 
-      if (Number(gameId) === Number(gameToDelete)) {
-        handleBack();
-      }
-    } catch (err) {
-      console.error('Ошибка при удалении игры и игроков:', err);
+    if (Number(gameId) === Number(gameToDelete)) {
+      handleBack();
     }
 
     setGameToDelete(null);

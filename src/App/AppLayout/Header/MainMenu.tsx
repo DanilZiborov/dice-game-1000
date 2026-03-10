@@ -26,7 +26,7 @@ export const MainMenu = ({ isOpen, onClose }: MainMenuProps): JSX.Element => {
   return (
     <div
       className={clsx(
-        'absolute top-full left-0 z-[120] w-full overflow-hidden border-b border-cyber-secondary bg-cyber-background transition-[max-height] duration-500',
+        'absolute top-full left-0 z-[120] w-full overflow-hidden border-b border-cyber-secondary bg-cyber-background duration-500',
         isOpen ? 'max-h-[500px]' : 'max-h-0',
       )}
     >
@@ -35,7 +35,7 @@ export const MainMenu = ({ isOpen, onClose }: MainMenuProps): JSX.Element => {
           <Link
             key={item.link}
             to={item.link}
-            className="flex items-center gap-2 rounded px-4 py-2 text-cyber-secondary transition-colors hover:bg-cyber-secondary/10"
+            className="flex items-center gap-2 rounded px-4 py-2 text-cyber-secondary hover:bg-cyber-secondary/10"
             onClick={onClose}
           >
             {item.label}
