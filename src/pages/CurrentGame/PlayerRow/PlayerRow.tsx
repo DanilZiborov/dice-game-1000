@@ -3,14 +3,14 @@ import { useEffect, useRef, useState } from 'react';
 import type { Player } from 'shared/types';
 import { RepeatComponent } from 'shared/utils/RepeatComponent';
 import { clsx } from 'clsx';
-import { usePlayerStatus } from 'shared/hooks/usePlayerStatus';
-import { BoltIcon, FailIcon, ShovelIcon } from 'components';
+import { usePlayerStatus } from 'shared/playerStatus/usePlayerStatus';
 import { useOvertake } from 'pages/CurrentGame/PlayerRow/useOvertake';
+import { BoltIcon, ShovelIcon, FailIcon } from 'components/icons';
 
 type Props = { player: Player; selectedPlayer: Player | null; onSelectPlayer: (player: Player) => void };
 
 export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JSX.Element => {
-  const { isOnBarrel, isInPit } = usePlayerStatus({ player });
+  const playerStatus = usePlayerStatus({ player });
 
   const [displayScore, setDisplayScore] = useState(player.score);
   const prevScoreRef = useRef(player.score);
@@ -67,7 +67,7 @@ export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JS
     <div
       onClick={() => onSelectPlayer(player)}
       className={clsx(
-        'relative flex h-20 flex-col justify-center overflow-hidden border-b border-cyber-secondary px-3',
+        'relative flex h-20 flex-col justify-center border-b border-cyber-secondary px-3',
         !player.isEnterGame && 'text-cyber-disabled',
       )}
     >
@@ -82,9 +82,12 @@ export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JS
         </span>
 
         <div className="flex items-center gap-1">
-          {isInPit && <ShovelIcon />}
+          {playerStatus?.isInPit && <ShovelIcon />}
           <span
-            className={clsx('text-lg tracking-wider transition-colors duration-300', isOnBarrel && 'text-yellow-500')}
+            className={clsx(
+              'text-lg tracking-wider transition-colors duration-300',
+              playerStatus?.isOnBarrel && 'text-yellow-500',
+            )}
           >
             {displayScore}
           </span>

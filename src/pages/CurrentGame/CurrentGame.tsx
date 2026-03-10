@@ -5,13 +5,13 @@ import { PlayerRow } from 'pages/CurrentGame/PlayerRow';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import type { Player } from 'shared/types';
-import { SecondaryButton } from 'components';
-import { endGame } from 'db/operations';
 import { useDb } from 'db/DbContext';
-import { getFormattedDateString } from 'shared/utils/getFormattedDateString';
+import { endGame } from 'db/operations';
+import { ConfirmationDialog } from 'components/ConfirmationDialog';
 
 export const CurrentGame = (): JSX.Element => {
   const db = useDb();
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false);
   const navigate = useNavigate();
   const {
     state: { players, game },
@@ -19,10 +19,8 @@ export const CurrentGame = (): JSX.Element => {
   } = useCurrentGame();
 
   const { playerId } = useParams();
-
   const isRecordMode = !!playerId;
 
-  // Храним последнего записанного игрока. Нужно для логики обгонов
   const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   const handleSelectPlayer = (player: Player): void => {
@@ -32,31 +30,47 @@ export const CurrentGame = (): JSX.Element => {
 
   const handleEndGame = (): void => {
     if (!game) return;
-    endGame({ db, gameId: game.id }).then(() => dispatch({ type: 'SET_GAME', payload: null }));
+    endGame({ db, gameId: game.id }).then(() => {
+      navigate(`/finished/${game.id}`);
+      dispatch({ type: 'SET_GAME', payload: null });
+    });
   };
 
-  if (!game) return <Navigate to="/app/game/new" />;
+  if (!game && location.pathname.includes('current')) return <Navigate to="/app/game/new" replace />;
 
   return (
-    <div className="flex h-full w-full flex-col items-center justify-center">
-      <div className={clsx(isRecordMode && 'hidden', 'flex h-full w-full flex-col items-center justify-center')}>
-        <ul className={clsx('my-10 max-h-[70%] w-full border-cyber-secondary')}>
-          {players.map((player) => (
-            <li key={player.id}>
-              <PlayerRow player={player} onSelectPlayer={handleSelectPlayer} selectedPlayer={selectedPlayer} />
-            </li>
-          ))}
-        </ul>
-        <SecondaryButton onClick={handleEndGame} withDelay>
-          Завершить партию
-        </SecondaryButton>
-        {game && (
-          <div className="pt-5 text-xs text-cyber-text-secondary">
-            партия началась {getFormattedDateString(new Date(game.started))}
-          </div>
-        )}
+    <div className="h-full w-full">
+      <div className="flex justify-end">
+        <div
+          onClick={() => setIsConfirmationOpen(true)}
+          className="relative top-[-30px] right-[20px] z-101 h-[20px] w-[20px] rounded-xs bg-red-700"
+        />
       </div>
-      {isRecordMode && <Record />}
+
+      <div className="flex h-[calc(100%-20px)] w-full flex-col">
+        {/* Основной контент (скрывается в режиме записи) */}
+        <div className={clsx(isRecordMode && 'hidden', 'flex h-full w-full flex-col')}>
+          {/* Контейнер для списка игроков – занимает всё свободное место и центрирует содержимое */}
+          <div className="flex flex-grow flex-col items-center justify-center">
+            <ul className="max-h-[80%] w-full overflow-y-auto border-cyber-secondary">
+              {!!game &&
+                players.map((player) => (
+                  <li key={player.id}>
+                    <PlayerRow player={player} onSelectPlayer={handleSelectPlayer} selectedPlayer={selectedPlayer} />
+                  </li>
+                ))}
+            </ul>
+          </div>
+        </div>
+
+        {isRecordMode && game && <Record />}
+      </div>
+      <ConfirmationDialog
+        open={isConfirmationOpen}
+        onClose={() => setIsConfirmationOpen(false)}
+        text="Завершить партию?"
+        action={handleEndGame}
+      />
     </div>
   );
 };

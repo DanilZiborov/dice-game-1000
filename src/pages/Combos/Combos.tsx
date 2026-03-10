@@ -100,7 +100,7 @@ export const Combos = (): JSX.Element => {
   ];
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-8 py-4">
       {/* --- TOP --- */}
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         {top.map((c, i) => (

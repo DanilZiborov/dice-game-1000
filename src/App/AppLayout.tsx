@@ -1,7 +1,7 @@
 import { type JSX, useEffect, useMemo } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
 import { clsx } from 'clsx';
-import { Header } from './AppLayout/Header';
+import { Header } from './AppLayout/Header/Header';
 
 export const AppLayout = (): JSX.Element => {
   const { pathname } = useLocation();
@@ -23,15 +23,15 @@ export const AppLayout = (): JSX.Element => {
   }, []);
 
   return (
-    <div className={clsx('flex flex-col items-center bg-cyber-background text-cyber-text', 'h-[var(--app-height)]')}>
+    <div
+      className={clsx(
+        'flex flex-col items-center bg-cyber-background text-cyber-text',
+        'h-[var(--app-height)]',
+        'user-select-none',
+      )}
+    >
       <Header maxWidth={maxWidth} />
-      <main
-        className={clsx(
-          'h-full w-full pt-[70px] transition-all duration-500',
-          !isGame && 'h-auto min-h-full p-4',
-          maxWidth,
-        )}
-      >
+      <main className={clsx('h-full w-full pt-[40px]', !isGame && 'h-auto min-h-full p-4', maxWidth)}>
         <Outlet />
       </main>
     </div>

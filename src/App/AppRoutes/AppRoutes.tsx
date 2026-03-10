@@ -9,6 +9,8 @@ import { Landing } from 'pages/Landing';
 import { DataTransfer } from 'pages/DataTransfer';
 import { Combos } from 'pages/Combos';
 import { Rules } from 'pages/Rules';
+import { FinishedGames } from 'pages/FinishedGames/FinishedGames';
+import { Settings } from 'pages/Settings';
 import { GameNav } from './GameNav';
 import { StartPage } from './StartPage';
 
@@ -28,11 +30,6 @@ const routes: RouteObject[] = [
       },
 
       {
-        path: 'about',
-        element: <p>о проекте</p>,
-      },
-
-      {
         path: 'rules',
         element: <Rules />,
       },
@@ -42,6 +39,14 @@ const routes: RouteObject[] = [
         element: <Combos />,
       },
 
+      {
+        path: 'finished/:gameId?',
+        element: (
+          <DbProvider>
+            <FinishedGames />
+          </DbProvider>
+        ),
+      },
       {
         path: 'app',
         element: (
@@ -67,6 +72,10 @@ const routes: RouteObject[] = [
           {
             path: 'data-transfer',
             element: <DataTransfer />,
+          },
+          {
+            path: 'settings',
+            element: <Settings />,
           },
         ],
       },

@@ -1,7 +1,22 @@
 @import 'tailwindcss';
 
-@import '@fontsource/russo-one';
-@import '@fontsource-variable/inter';
+/* Russo One */
+@font-face {
+    font-family: 'Russo One';
+    src: url('public/fonts/russo-one/RussoOneRegular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+}
+
+/* Inter Variable */
+@font-face {
+    font-family: 'Inter Variable';
+    src: url('public/fonts/inter/InterVariable.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: block;
+}
 
 @theme {
     --font-app: "Russo One", sans-serif;
@@ -60,4 +75,25 @@ input[type="number"]:focus {
         animation: pulse-arrow 1.5s ease-in-out infinite;
         display: inline-block;
     }
+}
+
+
+@keyframes pulse-border {
+    0% {
+        border-color: var(--color-cyber-primary);
+        box-shadow: 0 0 10px rgba(249, 115, 115, 0.3);
+    }
+    50% {
+        border-color: var(--color-cyber-secondary);
+        box-shadow: 0 0 15px rgba(16, 185, 128, 0.4);
+    }
+    100% {
+        border-color: var(--color-cyber-primary);
+        box-shadow: 0 0 10px rgba(249, 115, 115, 0.3);
+    }
+}
+
+.animate-pulse-border {
+    animation: pulse-border 2.5s ease-in-out infinite;
+    border-width: 2px;
 }

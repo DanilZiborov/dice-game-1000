@@ -27,8 +27,8 @@ export const GlobalErrorBoundary = ({ children }: GlobalErrorBoundaryProps): JSX
 
   if (error) {
     return (
-      <div className="flex h-screen w-screen flex-col items-center justify-center bg-cyber-background p-4 text-center">
-        <h1 className="mb-4 text-2xl text-red-500">{error}</h1>
+      <div className="flex h-screen w-screen flex-col items-center justify-center bg-cyber-background p-4 text-center break-all">
+        <h1 className="mb-4 h-[60%] overflow-y-scroll text-2xl text-red-500">{error}</h1>
         <SecondaryButton onClick={() => window.location.reload()}>Перезагрузить</SecondaryButton>
       </div>
     );

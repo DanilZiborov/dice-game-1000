@@ -103,7 +103,7 @@ export const NewGame = (): JSX.Element => {
   }
 
   return (
-    <div className="flex h-full flex-col justify-center p-4">
+    <div className="flex h-full flex-col justify-center px-4 py-6">
       {step > 0 && step < 5 ? (
         <div>
           <p className="mb-1 text-center">{`Шаг ${step}. ${formContainerTitle[step]}`}</p>
