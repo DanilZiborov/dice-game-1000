@@ -1,12 +1,33 @@
 @import 'tailwindcss';
 
+/* Russo One */
 @font-face {
-  font-family: "Russo One";
-  src: url("./src/assets/fonts/RussoOne-Regular.ttf") format("truetype");
+    font-family: 'Russo One';
+    src: url('public/fonts/russo-one/RussoOneRegular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: block;
+}
+
+/* Inter Variable */
+@font-face {
+    font-family: 'Inter Variable';
+    src: url('public/fonts/inter/InterVariable.woff2') format('woff2-variations');
+    font-weight: 100 900;
+    font-style: normal;
+    font-display: block;
+}
+
+@theme {
+    --font-app: "Russo One", sans-serif;
+    --font-info: "Inter Variable", monospace;
 }
 
 body {
-  font-family: "Russo One", sans-serif;
+    font-weight: 400;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
 }
 
 @theme inline {
@@ -43,4 +64,36 @@ input[type="number"]:focus {
   .animate-float-diff {
     animation: float-diff 2.5s ease-out forwards;
   }
+
+    @keyframes pulse-arrow {
+        0%   { transform: translateY(0); }
+        50%  { transform: translateY(4px); }
+        100% { transform: translateY(0); }
+    }
+
+    .animate-pulse-arrow {
+        animation: pulse-arrow 1.5s ease-in-out infinite;
+        display: inline-block;
+    }
+}
+
+
+@keyframes pulse-border {
+    0% {
+        border-color: var(--color-cyber-primary);
+        box-shadow: 0 0 10px rgba(249, 115, 115, 0.3);
+    }
+    50% {
+        border-color: var(--color-cyber-secondary);
+        box-shadow: 0 0 15px rgba(16, 185, 128, 0.4);
+    }
+    100% {
+        border-color: var(--color-cyber-primary);
+        box-shadow: 0 0 10px rgba(249, 115, 115, 0.3);
+    }
+}
+
+.animate-pulse-border {
+    animation: pulse-border 2.5s ease-in-out infinite;
+    border-width: 2px;
 }

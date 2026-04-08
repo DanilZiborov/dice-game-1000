@@ -94,7 +94,7 @@ export const CustomNumericInputWithSteps = ({
       className={clsx(
         'flex h-7 w-7 items-center justify-center rounded-full border-2 transition select-none',
         disabled
-          ? 'border-cyber-disabled text-cyber-disabled cursor-not-allowed'
+          ? 'cursor-not-allowed border-cyber-disabled text-cyber-disabled'
           : [
               'border-cyber-primary',
               'text-cyber-primary',

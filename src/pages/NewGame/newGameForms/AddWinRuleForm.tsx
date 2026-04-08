@@ -1,4 +1,4 @@
-import type { JSX, ChangeEvent } from 'react';
+import type { ChangeEvent, JSX } from 'react';
 import { CustomCheckbox } from 'components/CustomCheckbox';
 import type { NewGameConfig } from 'shared/types';
 import { useDb } from 'db/DbContext';
@@ -16,7 +16,7 @@ export const AddWinRuleForm = ({ onConfigChange, currentConfig }: Props): JSX.El
 
   return (
     <div className="h-full">
-      <div className="text-cyber-text-secondary mb-10 flex flex-col gap-4">
+      <div className="mb-10 flex flex-col gap-4 text-cyber-text-secondary">
         <p>
           В классическом варианте игры игроку, сидящему на бочке, даётся один ход, чтобы выбросить недостающие до 1000
           очки. Если не получилось - он падает с бочки.

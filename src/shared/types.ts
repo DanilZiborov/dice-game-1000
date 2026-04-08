@@ -50,6 +50,7 @@ export const playerConfigSchema = object({
   isEnterGame: boolean(),
   log: array(number()),
   easyWinLog: pipe(array(number()), minLength(0), maxLength(MAX_EASY_WIN_ATTEMPTS)),
+  totalBolts: number(),
 });
 
 export type PlayerConfig = InferOutput<typeof playerConfigSchema>;
@@ -82,3 +83,10 @@ export type PlayerStatus = {
   isOnBarrel: boolean;
   barrelPointsLeft: number | null;
 };
+
+// настройки приложения
+export const settingsSchema = object({
+  playerAutoChange: boolean(),
+});
+
+export type TSettings = InferOutput<typeof settingsSchema>;

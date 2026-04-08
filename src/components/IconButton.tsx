@@ -11,10 +11,13 @@ export const IconButton = ({ children, onClick, className }: IconButtonProps): J
   return (
     <button
       type="button"
-      onClick={onClick}
+      onClick={(e) => {
+        e.stopPropagation();
+        if (onClick) onClick();
+      }}
       className={clsx(
         'flex h-10 w-10 items-center justify-center',
-        'border-cyber-secondary border-2',
+        'border-2 border-cyber-secondary',
         'font-cyber',
         'transition-colors duration-50 ease-in-out',
         'active:bg-cyber-secondary active:text-black',

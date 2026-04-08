@@ -1,22 +1,22 @@
-import { type JSX, useEffect } from 'react';
-import { useDb } from 'db/DbContext';
-import { useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
+import { type JSX, useEffect, useState } from 'react';
 import { useCurrentGame } from 'context/currentGame/CurrentGameContext';
+import { useDb } from 'db/DbContext';
 import { getCurrentGame, getPlayersByGameId } from 'db/operations';
 
-export const StartPage = (): JSX.Element => {
+export const GameAppWrapper = (): JSX.Element => {
   const db = useDb();
 
-  const navigate = useNavigate();
-
   const { dispatch } = useCurrentGame();
+
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const init = async (): Promise<void> => {
       const currentGame = await getCurrentGame({ db });
 
       if (!currentGame) {
-        navigate('/new-game', { replace: true });
+        setIsLoading(false);
 
         return;
       }
@@ -29,11 +29,17 @@ export const StartPage = (): JSX.Element => {
       dispatch({ type: 'SET_GAME', payload: currentGame });
       dispatch({ type: 'SET_PLAYERS', payload: currentPlayers });
 
-      navigate('/game', { replace: true });
+      setIsLoading(false);
     };
 
     void init();
-  }, [db, dispatch, navigate]);
+  }, [db, dispatch]);
 
-  return <p>Загрузка базы данных...</p>;
+  if (isLoading) return <p className="font-app">Загрузка...</p>;
+
+  return (
+    <div className="h-full font-app select-none">
+      <Outlet />
+    </div>
+  );
 };

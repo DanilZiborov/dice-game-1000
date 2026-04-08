@@ -1,3 +1,5 @@
+import type { TSettings } from 'shared/types';
+
 export const HEADER_HEIGHT = 58;
 
 export const PLAYER_NAME_MAXLENGTH = 50;
@@ -18,3 +20,8 @@ export const TRUCK_POINTS = 555 as const;
 export const THOUSAND_WINNING_POINTS = 1000;
 
 export const ROLLBACK_POINTS = 100;
+
+// ключ настроек для local storage
+export const LS_SETTINGS_KEY = 'settings';
+
+export const DEFAULT_SETTINGS: TSettings = { playerAutoChange: false };

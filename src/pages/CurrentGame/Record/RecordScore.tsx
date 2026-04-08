@@ -13,7 +13,7 @@ export const RecordScore = ({ points, player, truck }: Props): JSX.Element => {
   return (
     <div className="flex flex-col items-center">
       <div className="text-center text-[64px] leading-none">{points}</div>
-      <p className="text-cyber-text-secondary mb-3 text-center font-mono text-xs tracking-wider">{additionalText}</p>
+      <p className="mb-3 text-center font-mono text-xs tracking-wider text-cyber-text-secondary">{additionalText}</p>
     </div>
   );
 };
