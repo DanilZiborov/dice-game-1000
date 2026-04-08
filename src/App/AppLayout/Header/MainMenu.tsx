@@ -8,9 +8,9 @@ type MenuItem = {
 };
 
 const MENU_ITEMS: MenuItem[] = [
-  { label: 'Инфо', link: '/landing' },
+  { label: 'Главная', link: '/landing' },
   { label: 'Играть', link: '/app/game' },
-  { label: 'Завершённые партии', link: '/finished' },
+  { label: 'История партий', link: '/finished' },
   { label: 'Правила', link: '/rules' },
   { label: 'Комбинации', link: '/combos' },
   { label: 'Импорт и экспорт', link: '/app/data-transfer' },
