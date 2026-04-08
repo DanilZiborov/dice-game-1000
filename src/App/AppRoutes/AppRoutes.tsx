@@ -11,6 +11,8 @@ import { Combos } from 'pages/Combos';
 import { Rules } from 'pages/Rules';
 import { FinishedGames } from 'pages/FinishedGames/FinishedGames';
 import { Settings } from 'pages/Settings';
+import { PageNotFound } from 'App/AppRoutes/PageNotFound';
+import { Info } from 'pages/Info';
 import { GameNav } from './GameNav';
 import { StartPage } from './StartPage';
 
@@ -37,6 +39,11 @@ const routes: RouteObject[] = [
       {
         path: 'combos',
         element: <Combos />,
+      },
+
+      {
+        path: 'info',
+        element: <Info />,
       },
 
       {
@@ -82,7 +89,7 @@ const routes: RouteObject[] = [
 
       {
         path: '*',
-        element: <div>404 – Страница не найдена</div>,
+        element: <PageNotFound />,
       },
     ],
   },

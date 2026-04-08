@@ -22,7 +22,7 @@ export const CustomInput = ({
 }: CustomInputProps): JSX.Element => {
   return (
     <div className="flex grow flex-col">
-      <label className="mb-1 text-sm text-cyber-primary">{label}</label>
+      <label className="text-cyber-primary mb-1 text-sm">{label}</label>
       <input
         maxLength={maxLength}
         value={value}
@@ -33,9 +33,9 @@ export const CustomInput = ({
           'transition-all placeholder:text-slate-300',
           'border-cyber-primary',
           'border-2',
-          'shadow-[0_0_10px_theme(colors.cyber-primary)]',
+          'shadow-[0_0_10px_var(--color-cyber-primary)]',
           'focus:border-pink-100 focus:outline-none',
-          'focus:shadow-[0_0_25px_theme(colors.cyber-primary)]',
+          'focus:shadow-[0_0_25px_var(--color-cyber-primary)]',
           'transition',
           className || '',
         )}

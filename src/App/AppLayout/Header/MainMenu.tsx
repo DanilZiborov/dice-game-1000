@@ -8,13 +8,14 @@ type MenuItem = {
 };
 
 const MENU_ITEMS: MenuItem[] = [
-  { label: 'Инфо', link: '/landing' },
+  { label: 'Главная', link: '/landing' },
   { label: 'Играть', link: '/app/game' },
-  { label: 'Завершённые партии', link: '/finished' },
+  { label: 'История партий', link: '/finished' },
   { label: 'Правила', link: '/rules' },
   { label: 'Комбинации', link: '/combos' },
   { label: 'Импорт и экспорт', link: '/app/data-transfer' },
   { label: 'Настройки', link: '/app/settings' },
+  { label: 'Инфо', link: '/info' },
 ];
 
 type MainMenuProps = {
@@ -26,8 +27,8 @@ export const MainMenu = ({ isOpen, onClose }: MainMenuProps): JSX.Element => {
   return (
     <div
       className={clsx(
-        'absolute top-full left-0 z-[120] w-full overflow-hidden border-b border-cyber-secondary bg-cyber-background duration-500',
-        isOpen ? 'max-h-[500px]' : 'max-h-0',
+        'absolute top-full left-0 z-120 w-full overflow-hidden border-b border-cyber-secondary bg-cyber-background duration-500',
+        isOpen ? 'max-h-125' : 'max-h-0',
       )}
     >
       <nav className="flex flex-col p-4">
