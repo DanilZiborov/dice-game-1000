@@ -12,9 +12,9 @@ import { Rules } from 'pages/Rules';
 import { FinishedGames } from 'pages/FinishedGames/FinishedGames';
 import { Settings } from 'pages/Settings';
 import { PageNotFound } from 'App/AppRoutes/PageNotFound';
+import { Info } from 'pages/Info';
 import { GameNav } from './GameNav';
 import { StartPage } from './StartPage';
-import { Info } from 'pages/Info';
 
 const routes: RouteObject[] = [
   {

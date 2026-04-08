@@ -19,15 +19,17 @@ export const Settings = (): JSX.Element => {
   }, []);
 
   return (
-    <div className="flex h-full items-center p-5 font-info">
-      <CustomCheckbox
-        checked={settings.playerAutoChange}
-        onChange={(e) => {
-          const newSettings: TSettings = { ...settings, playerAutoChange: e.target.checked };
-          handleUpdateSettings(newSettings);
-        }}
-        label="Автоматически переходить к следующему игроку после записи результата"
-      />
+    <div className="py-6 text-sm">
+      <div className="flex border border-cyber-secondary px-4 py-2 font-info">
+        <CustomCheckbox
+          checked={settings.playerAutoChange}
+          onChange={(e) => {
+            const newSettings: TSettings = { ...settings, playerAutoChange: e.target.checked };
+            handleUpdateSettings(newSettings);
+          }}
+          label="Автоматически переходить к следующему игроку после записи результата"
+        />
+      </div>
     </div>
   );
 };
