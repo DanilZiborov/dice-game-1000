@@ -8,7 +8,7 @@ export const DataTransfer = (): JSX.Element => {
   const db = useDb();
 
   return (
-    <div className="mx-auto flex flex-col font-info">
+    <div className="mx-auto flex flex-col py-4 font-info">
       <div className="mb-10">
         <p className="mb-4">
           Данные о партиях хранятся у вас на устройстве. Учитывайте, что при очистке данных браузера они будут удалены.
@@ -22,10 +22,10 @@ export const DataTransfer = (): JSX.Element => {
       </div>
 
       <div className="mx-auto">
-        <SecondaryButton onClick={() => exportDBToFile({ db })} withDelay={false} className="mb-8 w-[220px]">
+        <SecondaryButton onClick={() => exportDBToFile({ db })} withDelay={false} className="mb-8 w-55">
           Записать данные в файл
         </SecondaryButton>
-        <SecondaryButton onClick={() => importDBFromFile({ db })} withDelay={false} className="w-[220px]">
+        <SecondaryButton onClick={() => importDBFromFile({ db })} withDelay={false} className="w-55">
           Достать данные из файла
         </SecondaryButton>
       </div>

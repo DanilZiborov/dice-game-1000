@@ -19,8 +19,9 @@ export const Settings = (): JSX.Element => {
   }, []);
 
   return (
-    <div className="py-6 text-sm">
-      <div className="flex border border-cyber-secondary px-4 py-2 font-info">
+    <div className="py-6">
+      <p className="mb-4 text-center text-lg">Настройки</p>
+      <div className="flex border border-cyber-secondary px-4 py-2 font-info text-sm">
         <CustomCheckbox
           checked={settings.playerAutoChange}
           onChange={(e) => {

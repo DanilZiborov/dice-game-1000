@@ -26,12 +26,12 @@ export const AppLayout = (): JSX.Element => {
     <div
       className={clsx(
         'flex flex-col items-center bg-cyber-background text-cyber-text',
-        'h-[var(--app-height)]',
+        'h-(--app-height)',
         'user-select-none',
       )}
     >
-      <Header maxWidth={maxWidth} />
-      <main className={clsx('h-full w-full pt-[40px]', !isGame && 'h-auto min-h-full p-4', maxWidth)}>
+      <Header />
+      <main className={clsx('h-full w-full pt-10', !isGame && 'h-auto min-h-full p-4', maxWidth)}>
         <Outlet />
       </main>
     </div>

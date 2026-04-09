@@ -33,6 +33,7 @@ body {
 @theme inline {
   --color-cyber-primary: var(--color-pink-300);
   --color-cyber-secondary: var(--color-emerald-200);
+    --color-cyber-gold: var(--color-amber-400);
   --color-cyber-disabled: var(--color-slate-500);
   --color-cyber-text: var(--color-white);
   --color-cyber-text-secondary: var(--color-slate-300);
