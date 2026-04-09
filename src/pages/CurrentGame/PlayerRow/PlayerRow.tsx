@@ -86,7 +86,7 @@ export const PlayerRow = ({ player, selectedPlayer, onSelectPlayer }: Props): JS
           <span
             className={clsx(
               'text-lg tracking-wider transition-colors duration-300',
-              playerStatus?.isOnBarrel && 'text-yellow-500',
+              playerStatus?.isOnBarrel && 'text-cyber-gold',
             )}
           >
             {displayScore}
