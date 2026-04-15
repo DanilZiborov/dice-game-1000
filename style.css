@@ -6,16 +6,16 @@
     src: url('public/fonts/russo-one/RussoOneRegular.woff2') format('woff2');
     font-weight: 400;
     font-style: normal;
-    font-display: block;
+    font-display: swap;
 }
 
 /* Inter Variable */
 @font-face {
     font-family: 'Inter Variable';
-    src: url('public/fonts/inter/InterVariable.woff2') format('woff2-variations');
+    src: url('public/fonts/inter/InterVariable.woff2') format('woff2');
     font-weight: 100 900;
     font-style: normal;
-    font-display: block;
+    font-display: swap;
 }
 
 @theme {
