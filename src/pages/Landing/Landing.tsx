@@ -1,7 +1,9 @@
 import type { JSX } from 'react';
-import qrCode from 'assets/qr_link.svg';
 import { PrimaryButton } from 'components';
 import { useNavigate } from 'react-router-dom';
+import QRCode from 'react-qr-code';
+
+const GH_PAGES_URL = 'https://danilziborov.github.io/dice-game-1000/' as const;
 
 export const Landing = (): JSX.Element => {
   const navigate = useNavigate();
@@ -10,9 +12,9 @@ export const Landing = (): JSX.Element => {
     <div className="flex min-h-full flex-col items-center justify-around py-4">
       <div className="mb-8 flex flex-col items-center">
         <p className="mt-4 mb-5 text-center text-lg font-bold">Отсканируйте QR-код, чтобы поделиться приложением</p>
-        {/* Рамка вокруг QR-кода */}
-        <div className="border border-cyber-secondary p-2">
-          <img className="block h-37.5 w-37.5" src={qrCode} alt="qr-код для перехода на сайт" />
+
+        <div className="border border-cyber-secondary p-1">
+          <QRCode value={GH_PAGES_URL} size={150} bgColor="#ffffff" fgColor="#000000" />
         </div>
       </div>
 
