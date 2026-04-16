@@ -1,69 +1,147 @@
-# React + TypeScript + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+[![GitHub Pages](https://img.shields.io/badge/deployed-GH%20Pages-blue)](https://danilziborov.github.io/dice-game-1000/)
+[![PWA](https://img.shields.io/badge/PWA-enabled-brightgreen)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
+[![React](https://img.shields.io/badge/React-18.3-61dafb)](https://reactjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178c6)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-5.4-646cff)](https://vitejs.dev/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+> **Офлайн-трекер для игры в «Тысячу» (1000) на костях.**  
+> Записывайте результаты реальных бросков, следите за соблюдением всех правил (бочка, ямы, болты, обгоны) и анализируйте историю партий.  
+> Приложение полностью работает без интернета, не требует аккаунта и не собирает данные.
 
-## Expanding the ESLint configuration
+🔗 **Демо:** [https://danilziborov.github.io/dice-game-1000/](https://danilziborov.github.io/dice-game-1000/)
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📖 Оглавление
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+- [Особенности](#особенности)
+- [Скриншоты](#скриншоты)
+- [Технологии](#технологии)
+- [Установка и запуск](#установка-и-запуск)
+- [Структура проекта](#структура-проекта)
+- [Планы по развитию](#планы-по-развитию)
+- [Лицензия и контакты](#лицензия-и-контакты)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+---
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## ✨ Особенности
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x';
-import reactDom from 'eslint-plugin-react-dom';
+- 🎲 **Полная поддержка правил «Тысячи»**  
+  Автоматический учёт бочки, ям, болтов, обгонов, паспорта и всех очковых комбинаций.
+- ⚙️ **Гибкие настройки партии**  
+  Перед началом игры можно включить/отключить болты, ямы, обгоны, задать «паспорт» (очки для входа) и другие параметры.
+- 📊 **Журнал и статистика**  
+  Сохраняются все завершённые партии с датами, именами игроков и финальными счетами. Краткая статистика (победы, средний счёт) всегда под рукой.
+- 📖 **Встроенный справочник**  
+  Раздел с визуальными таблицами комбинаций и подробными правилами — всегда под рукой, не нужно искать в интернете.
+- 💾 **Экспорт / Импорт**  
+  История партий сохраняется в файл `.json` и восстанавливается при необходимости.
+- 📱 **PWA**  
+  Установите приложение на телефон или компьютер через браузер — оно работает офлайн и выглядит как нативное.
+- 🔒 **Приватность и офлайн**  
+  Все данные хранятся в `IndexedDB` на вашем устройстве. Никаких серверов, аккаунтов, трекеров.
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
-```
+---
+
+## 🖼️ Скриншоты
+
+> *Здесь можно разместить несколько изображений интерфейса.*  
+> *Рекомендуется добавить скриншоты: главный экран с игрой, экран настроек партии, журнал партий, справочник комбинаций.*
+
+| Игра | Настройки | Журнал |
+| :---: | :---: | :---: |
+| *(вставьте ссылку на скриншот)* | *(вставьте ссылку)* | *(вставьте ссылку)* |
+
+---
+
+## 🧰 Технологии
+
+- [TypeScript](https://www.typescriptlang.org/) – типизация
+- [React 18](https://reactjs.org/) – интерфейс
+- [Vite](https://vitejs.dev/) – сборка и дев-сервер
+- [TailwindCSS](https://tailwindcss.com/) – стилизация
+- [IndexedDB](https://developer.mozilla.org/en-US/docs/Web/API/IndexedDB_API) – локальное хранение данных
+- [VitePWA](https://vite-pwa-org.netlify.app/) – превращение в PWA
+
+---
+
+## 🚀 Установка и запуск
+
+**Требования**  
+- Node.js (версия 18 или выше)  
+- npm или yarn  
+
+**Шаги**  
+
+1. Клонируйте репозиторий:
+   git clone https://github.com/DanilZiborov/dice-game-1000.git
+   cd dice-game-1000
+
+2. Установите зависимости:
+   npm install
+
+3. Запустите в режиме разработки:
+   npm run dev
+
+4. Сборка для продакшена:
+   npm run build
+
+5. Предпросмотр собранного приложения:
+   npm run preview
+
+6. Деплой на GitHub Pages (ваш форк):
+   npm run deploy
+
+**Установка как PWA**  
+
+1. Откройте демо-версию в браузере (Chrome, Edge, Safari).  
+2. Нажмите на иконку «Установить» в адресной строке или в меню браузера.  
+3. Приложение появится на рабочем столе / в списке программ и будет работать без интернета.
+
+---
+
+## 📁 Структура проекта
+
+dice-game-1000/
+├── public/              # статические файлы (иконки, манифест)
+├── src/
+│   ├── components/      # UI-компоненты (доска, кнопки, модальные окна)
+│   ├── contexts/        # React-контексты (тема, настройки)
+│   ├── db/              # работа с IndexedDB (инициализация, CRUD)
+│   ├── helpers/         # игровая логика (подсчёт очков, правила)
+│   ├── pages/           # страницы: игра, журнал, правила, статистика
+│   ├── types/           # TypeScript-интерфейсы
+│   ├── App.tsx
+│   ├── main.tsx
+│   └── index.css
+├── index.html
+├── package.json
+├── vite.config.ts       # настройка Vite + PWA
+├── tsconfig.json
+└── README.md
+
+---
+
+## 🧭 Планы по развитию
+
+- [ ] Анимация бросков кубиков (визуальный эффект)
+- [ ] Режим «Турнир» (несколько партий подряд, таблица лидеров)
+- [ ] Экспорт статистики в CSV
+- [ ] Тёмная тема (сейчас светлая)
+- [ ] Поддержка до 6 игроков за партией
+
+---
+
+## 📄 Лицензия и контакты
+
+**Лицензия:** MIT  
+**Автор:** [DanilZiborov](https://github.com/DanilZiborov)
+
+По вопросам, предложениям или багам – открывайте issue в репозитории или пишите на [почту](mailto:ziborov.danil@gmail.com).
+
+---
+
+⭐ Если вам понравился проект, поставьте звезду на GitHub – это очень помогает!
