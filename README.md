@@ -1,12 +1,12 @@
 
-
-[![GitHub Pages](https://img.shields.io/badge/deployed-GH%20Pages-blue)](https://danilziborov.github.io/dice-game-1000/) 
-[![PWA](https://img.shields.io/badge/PWA-enabled-brightgreen)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) 
 [![React](https://img.shields.io/badge/React-18.3-61dafb)](https://reactjs.org/) 
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.5-3178c6)](https://www.typescriptlang.org/) 
-[![Vite](https://img.shields.io/badge/Vite-5.4-646cff)](https://vitejs.dev/) 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
 ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-4.1-38B2AC?logo=tailwindcss&logoColor=white) 
+[![Vite](https://img.shields.io/badge/Vite-5.4-646cff)](https://vitejs.dev/) 
+[![GitHub Pages](https://img.shields.io/badge/deployed-GH%20Pages-blue)](https://danilziborov.github.io/dice-game-1000/) 
+[![PWA](https://img.shields.io/badge/PWA-enabled-brightgreen)](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps) 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) 
+
 
 **Трекер для игры в «Тысячу» на костях.**
 
