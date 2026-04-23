@@ -18,7 +18,7 @@ export const countPlayerStaus = ({ player, game }: Args): PlayerStatus | null =>
   };
 
   const countPit = (start: number, end: number): void => {
-    const isInPit = score >= start && score <= end;
+    const isInPit = score >= start && score < end;
     status.isInPit = isInPit;
     // Считаем, сколько очков нужно, чтобы выпрыгнуть из ямы.
     // Поскольку для освобождения из ямы нужно выбросить больше, чем край ямы (end), а минимальное возможное значение для записи = 5.
