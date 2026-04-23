@@ -22,7 +22,7 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
 
   if (!game) throw new Error('Игра не существует!');
 
-  const playerStauts = usePlayerStatus({ player });
+  const playerStatus = usePlayerStatus({ player });
 
   // Если в массиве не хватает значений, дополняем до 3
   const stableEasyWinLog =
@@ -33,19 +33,19 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
   const additionalText = useMemo(() => {
     if (!player.isEnterGame) return `паспорт: ${game.enterLimit} очков`;
 
-    if (playerStauts?.isInPit) return `выбраться из ямы: ${playerStauts?.pitPointsLeft} очков`;
+    if (playerStatus?.isInPit) return `выбраться из ямы: ${playerStatus?.pitPointsLeft} очков`;
 
-    if (playerStauts?.isOnBarrel && game.withEasyWin) return `для победы нужно ${playerStauts?.barrelPointsLeft} очков`;
+    if (playerStatus?.isOnBarrel && game.withEasyWin) return `для победы нужно ${playerStatus?.barrelPointsLeft} очков`;
 
     return '';
   }, [
     game.enterLimit,
     game.withEasyWin,
     player.isEnterGame,
-    playerStauts?.barrelPointsLeft,
-    playerStauts?.isInPit,
-    playerStauts?.isOnBarrel,
-    playerStauts?.pitPointsLeft,
+    playerStatus?.barrelPointsLeft,
+    playerStatus?.isInPit,
+    playerStatus?.isOnBarrel,
+    playerStatus?.pitPointsLeft,
   ]);
 
   return (
@@ -72,14 +72,14 @@ export const RecordHeader = ({ player }: Props): JSX.Element => {
           <RepeatComponent count={player.boltsNumber}>
             <BoltIcon />
           </RepeatComponent>
-          {playerStauts?.isInPit && <ShovelIcon />}
+          {playerStatus?.isInPit && <ShovelIcon />}
         </div>
 
         {/*Доп. инфо*/}
         <p className="text-center font-mono text-xs text-cyber-text-secondary">{additionalText}</p>
 
         {/*Сетка для easyWin*/}
-        {game?.withEasyWin && playerStauts?.isOnBarrel && (
+        {game?.withEasyWin && playerStatus?.isOnBarrel && (
           <div className="mb-2 flex">
             {stableEasyWinLog.map((value, index, arr) => (
               <div

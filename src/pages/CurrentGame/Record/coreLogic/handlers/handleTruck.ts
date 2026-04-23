@@ -2,7 +2,7 @@ import { TRUCK_POINTS } from 'shared/constants';
 import type { Game, Player } from 'shared/types';
 
 /**
- * Спецслучай: самосвал
+ * Самосвал
  *
  * Если игрок набирает оговоренное количество очков (555 в классике),
  * его счёт обнуляется.

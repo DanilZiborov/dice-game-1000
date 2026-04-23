@@ -16,8 +16,6 @@ type GameWithPlayers = {
   players: Player[];
 };
 
-// TODO: большую часть комопнента FinishedGames писала нейронка. Требуется жёсткий рефакторинг всего раздела FinishedGames
-
 export const FinishedGames = (): JSX.Element => {
   const db = useDb();
   const navigate = useNavigate();
@@ -141,7 +139,11 @@ export const FinishedGames = (): JSX.Element => {
           timeInfo = `Начало: ${formatTime(startDate)} (игра идёт)`;
         }
 
-        const playersNames = players.map((p) => p.name).join(', ');
+        const sortedPlayers = [...players].sort((a, b) => {
+          if (a.isWinner === b.isWinner) return 0;
+
+          return a.isWinner ? -1 : 1;
+        });
 
         return (
           <div
@@ -163,8 +165,15 @@ export const FinishedGames = (): JSX.Element => {
             </div>
 
             {/* Список участников */}
-            <p className={`truncate font-info text-sm text-cyber-text-secondary`} title={playersNames}>
-              {playersNames || 'Нет игроков'}
+            <p className="truncate font-info text-sm text-cyber-text-secondary">
+              {sortedPlayers.length > 0
+                ? sortedPlayers.map((player, index, arr) => (
+                    <span key={player.id} className={player.isWinner ? 'font-bold text-cyber-gold' : ''}>
+                      {player.name}
+                      {index < arr.length - 1 ? ', ' : ' '}
+                    </span>
+                  ))
+                : 'Нет игроков'}
             </p>
 
             {/* Декоративная линия */}
